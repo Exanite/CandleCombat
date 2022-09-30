@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Exanite.Drawing;
 using UnityEngine;
 
@@ -11,17 +12,15 @@ namespace Prototype.Exanite.ProcGen
         [Header("Settings")]
         public Vector2Int Size = Vector2Int.one * 10;
 
-        [Space]
-
         // Walk
+        [Space]
         public float WalkPerlinScale = 1;
         public Vector2 WalkPerlinOffset = Vector2.one;
         public float WalkPerlinMultiplier = 1;
         public float WalkRandomMultiplier = 1;
 
-        [Space]
-
         // RoomSize
+        [Space]
         public float RoomSizePerlinScale = 1;
         public Vector2 RoomSizePerlinOffset = Vector2.one;
         public float RoomSizePerlinMultiplier = 1;
@@ -38,6 +37,13 @@ namespace Prototype.Exanite.ProcGen
         [Space]
         public Color RoomSizeCostMin = Color.yellow;
         public Color RoomSizeCostMax = Color.magenta;
+
+        [Space]
+        public Color RoomAnchorColor = Color.blue;
+        public Color RoomConnectionColor = Color.cyan;
+
+        [Header("Nodes")]
+        public List<RoomConnection> RoomConnections = new List<RoomConnection>();
 
         [Header("Generation")]
         public bool GenerateContinuously;
@@ -135,10 +141,13 @@ namespace Prototype.Exanite.ProcGen
             }
         }
 
+        private readonly HashSet<Transform> RoomAnchorSet = new HashSet<Transform>();
+
         private void OnRenderObject()
         {
             using (var handle = DrawingService.BeginDrawing())
             {
+                // Draw walk costs
                 var maxWalkCost = 0.001f;
                 for (var y = 0; y < walkCosts.GetLength(1); y++)
                 {
@@ -157,6 +166,7 @@ namespace Prototype.Exanite.ProcGen
                     }
                 }
 
+                // Draw room size costs
                 var maxRoomSizeCost = 0.001f;
                 for (var y = 0; y < roomSizeCosts.GetLength(1); y++)
                 {
@@ -173,6 +183,28 @@ namespace Prototype.Exanite.ProcGen
                         handle.Color = Color.Lerp(RoomSizeCostMin, RoomSizeCostMax, roomSizeCosts[x, y] / maxRoomSizeCost);
                         handle.DrawCube(Vector3.right * x + Vector3.forward * y + Vector3.down, Quaternion.identity, new Vector3(0.9f, 0.1f, 0.9f));
                     }
+                }
+
+                // Draw room anchors and connections
+                RoomAnchorSet.Clear();
+                foreach (var roomConnection in RoomConnections)
+                {
+                    RoomAnchorSet.Add(roomConnection.A);
+                    RoomAnchorSet.Add(roomConnection.B);
+                }
+
+                handle.Color = RoomAnchorColor;
+                foreach (var roomAnchor in RoomAnchorSet)
+                {
+                    handle.DrawSphere(roomAnchor.position, Quaternion.identity, Vector3.one, DrawType.WireAndSolid);
+                }
+                
+                handle.Color = RoomConnectionColor;
+                handle.Topology = MeshTopology.Lines;
+                foreach (var roomConnection in RoomConnections)
+                {
+                    handle.AddVertex(roomConnection.A.position);
+                    handle.AddVertex(roomConnection.B.position);
                 }
             }
         }
