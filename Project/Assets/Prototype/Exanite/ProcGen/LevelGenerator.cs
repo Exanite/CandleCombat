@@ -1,6 +1,7 @@
-using System.Collections;
+using System;
 using Exanite.Drawing;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Prototype.Exanite.ProcGen
 {
@@ -26,11 +27,36 @@ namespace Prototype.Exanite.ProcGen
         public Color WalkCostMin = Color.green;
         public Color WalkCostMax = Color.red;
 
+        [Header("Generation")]
+        public bool GenerateContinuously;
+        public float GenerationDelay = 0.25f;
+
         private float[,] walkCosts;
+        private float generationTimer;
+
+        private void Start()
+        {
+            Generate();
+        }
 
         private void Update()
         {
-            Generate();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Generate();
+            }
+
+            if (GenerateContinuously)
+            {
+                generationTimer += Time.deltaTime;
+
+                if (generationTimer > GenerationDelay)
+                {
+                    Generate();
+
+                    generationTimer = 0;
+                }
+            }
         }
 
         private void Generate()
@@ -57,7 +83,7 @@ namespace Prototype.Exanite.ProcGen
                     walkCosts[x, y] += perlin;
                 }
             }
-            
+
             for (var y = 0; y < walkCosts.GetLength(1); y++)
             {
                 for (var x = 0; x < walkCosts.GetLength(0); x++)
