@@ -158,8 +158,18 @@ MonoBehaviour:
   WalkPerlinOffset: {x: 1, y: 1}
   WalkPerlinMultiplier: 1
   WalkRandomMultiplier: 1
+  RoomSizePerlinScale: 1
+  RoomSizePerlinOffset: {x: 1, y: 1}
+  RoomSizePerlinMultiplier: 1
+  RoomSizeRandomMultiplier: 1
+  UseSeed: 1
+  Seed: 
   WalkCostMin: {r: 0, g: 1, b: 0, a: 1}
   WalkCostMax: {r: 1, g: 0, b: 0, a: 1}
+  RoomSizeCostMin: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  RoomSizeCostMax: {r: 1, g: 0, b: 1, a: 1}
+  GenerateContinuously: 1
+  GenerationDelay: 0
 --- !u!4 &59971643
 Transform:
   m_ObjectHideFlags: 0
