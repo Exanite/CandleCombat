@@ -156,7 +156,7 @@ MonoBehaviour:
   Size: {x: 20, y: 20}
   WalkPerlinScale: 0.3
   WalkPerlinOffset: {x: 1, y: 1}
-  WalkPerlinMultiplier: 1
+  WalkPerlinMultiplier: 6
   WalkRandomMultiplier: 1
   RoomSizePerlinScale: 1
   RoomSizePerlinOffset: {x: 1, y: 1}
@@ -170,6 +170,7 @@ MonoBehaviour:
   RoomSizeCostMax: {r: 1, g: 0, b: 1, a: 1}
   RoomAnchorColor: {r: 0, g: 0, b: 1, a: 1}
   RoomConnectionColor: {r: 0, g: 1, b: 1, a: 1}
+  RoomCandidateColor: {r: 0, g: 1, b: 1, a: 1}
   RoomConnections:
   - A: {fileID: 790131789}
     B: {fileID: 1190966297}
