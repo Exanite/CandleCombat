@@ -1,6 +1,9 @@
+#if ODIN_INSPECTOR
+using Sirenix.OdinInspector;
+#endif
+
 using System;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -24,10 +27,14 @@ namespace Exanite.Drawing
 
         public event Action Rendering;
 
+#if ODIN_INSPECTOR
         [ShowInInspector]
+#endif
         public int PooledHandleCount => pooledHandles.Count;
 
+#if ODIN_INSPECTOR
         [ShowInInspector]
+#endif
         public int RenderQueueCount => renderQueue.Count;
 
         private void OnEnable()
