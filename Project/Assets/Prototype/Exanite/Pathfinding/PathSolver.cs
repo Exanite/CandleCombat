@@ -79,7 +79,8 @@ namespace Prototype.Exanite.Pathfinding
                         nodeData[neighbor.x, neighbor.y].Parent = current;
                     }
 
-                    var newGCost = nodeData[current.x, current.y].GCost + Heuristics.Default(current, neighbor);
+                    var weight = Grid[neighbor.x, neighbor.y];
+                    var newGCost = nodeData[current.x, current.y].GCost + Heuristics.Default(current, neighbor) * weight;
 
                     if (newGCost < nodeData[neighbor.x, neighbor.y].GCost)
                     {
