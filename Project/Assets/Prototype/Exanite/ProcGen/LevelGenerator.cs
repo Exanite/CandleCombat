@@ -1,4 +1,3 @@
-using System;
 using Exanite.Drawing;
 using UnityEngine;
 
@@ -15,8 +14,12 @@ namespace Prototype.Exanite.ProcGen
         public float WalkPerlinScale = 1;
         public Vector2 WalkPerlinOffset = Vector2.one;
         public float WalkPerlinMultiplier = 1;
-        
+
         public float WalkRandomMultiplier = 1;
+
+        [Header("Seed")]
+        public bool UseSeed;
+        public string Seed;
 
         [Header("Visualization")]
         public Color WalkCostMin = Color.green;
@@ -39,18 +42,25 @@ namespace Prototype.Exanite.ProcGen
 
         private void Generate()
         {
+            if (UseSeed)
+            {
+                Random.InitState(Seed.GetHashCode());
+            }
+
+            var walkPerlinOffsetFromSeed = new Vector2(Random.Range(0f, 10000f), Random.Range(0f, 10000f));
+
             walkCosts = new float[Size.x, Size.y];
-            
+
             for (var y = 0; y < walkCosts.GetLength(1); y++)
             {
                 for (var x = 0; x < walkCosts.GetLength(0); x++)
                 {
                     var perlin = Mathf.PerlinNoise(
-                        x * WalkPerlinScale + WalkPerlinOffset.x, 
-                        y* WalkPerlinScale + WalkPerlinOffset.y);
+                        x * WalkPerlinScale + WalkPerlinOffset.x + walkPerlinOffsetFromSeed.x,
+                        y * WalkPerlinScale + WalkPerlinOffset.y + walkPerlinOffsetFromSeed.y);
 
                     perlin *= WalkPerlinMultiplier;
-                    
+
                     walkCosts[x, y] = perlin;
                 }
             }
