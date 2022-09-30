@@ -79,7 +79,7 @@ namespace Prototype.Exanite.Pathfinding
                         nodeData[neighbor.x, neighbor.y].Parent = current;
                     }
 
-                    var newGCost = nodeData[current.x, current.y].GCost + Heuristics.Manhattan(current, neighbor);
+                    var newGCost = nodeData[current.x, current.y].GCost + Heuristics.Default(current, neighbor);
 
                     if (newGCost < nodeData[neighbor.x, neighbor.y].GCost)
                     {
@@ -87,16 +87,12 @@ namespace Prototype.Exanite.Pathfinding
                         nodeData[neighbor.x, neighbor.y].Parent = current;
                     }
 
-                    nodeData[neighbor.x, neighbor.y].FCost = nodeData[neighbor.x, neighbor.y].GCost + Heuristics.Manhattan(neighbor, destination);
+                    nodeData[neighbor.x, neighbor.y].FCost = nodeData[neighbor.x, neighbor.y].GCost + Heuristics.Default(neighbor, destination);
                 }
 
-                ProcessNeighbor(new Vector2Int(current.x - 1, current.y - 1));
                 ProcessNeighbor(new Vector2Int(current.x - 1, current.y));
-                ProcessNeighbor(new Vector2Int(current.x - 1, current.y + 1));
                 ProcessNeighbor(new Vector2Int(current.x, current.y + 1));
-                ProcessNeighbor(new Vector2Int(current.x + 1, current.y + 1));
                 ProcessNeighbor(new Vector2Int(current.x + 1, current.y));
-                ProcessNeighbor(new Vector2Int(current.x + 1, current.y - 1));
                 ProcessNeighbor(new Vector2Int(current.x, current.y - 1));
             }
 
