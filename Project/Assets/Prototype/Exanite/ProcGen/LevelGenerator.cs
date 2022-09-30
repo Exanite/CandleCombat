@@ -1,3 +1,4 @@
+using System.Collections;
 using Exanite.Drawing;
 using UnityEngine;
 
@@ -27,17 +28,9 @@ namespace Prototype.Exanite.ProcGen
 
         private float[,] walkCosts;
 
-        private void Start()
-        {
-            Generate();
-        }
-
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Generate();
-            }
+            Generate();
         }
 
         private void Generate()
@@ -61,7 +54,15 @@ namespace Prototype.Exanite.ProcGen
 
                     perlin *= WalkPerlinMultiplier;
 
-                    walkCosts[x, y] = perlin;
+                    walkCosts[x, y] += perlin;
+                }
+            }
+            
+            for (var y = 0; y < walkCosts.GetLength(1); y++)
+            {
+                for (var x = 0; x < walkCosts.GetLength(0); x++)
+                {
+                    walkCosts[x, y] += Random.Range(0f, WalkRandomMultiplier);
                 }
             }
         }
