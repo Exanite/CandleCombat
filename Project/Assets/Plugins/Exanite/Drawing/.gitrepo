@@ -6,7 +6,7 @@
 [subrepo]
 	remote = git@github.com:Exanite/Exanite.Drawing.git
 	branch = main
-	commit = 9102598178d54485f021f5f34290969eee04ea6b
-	parent = ab3688ca2695d4dd7879b594d3f429029a7d8752
+	commit = 867282079d402d0bf90c9940161279b71679a30a
+	parent = 7b42d1d7bfa3daa77bf63b6aeac65491fb056ce6
 	method = merge
 	cmdver = 0.4.3
