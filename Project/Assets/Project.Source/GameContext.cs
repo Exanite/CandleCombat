@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Project.Source.Abilities;
+using Project.Source.Input;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Project.Source
 {
-    public class GameContext : SingletonBehaviour<GameContext>
+    public class GameContext : SingletonBehaviour<GameContext>, AbilityInputActions.IPlayerAbilitiesActions
     {
         // public Character ControlledCharacter;
 
@@ -16,9 +18,28 @@ namespace Project.Source
 
         public List<Ability> Abilities = new List<Ability>();
 
+        private AbilityInputActions abilityInputActions;
+
         protected override void Awake()
         {
+            base.Awake();
+
+            abilityInputActions = new AbilityInputActions();
+            abilityInputActions.PlayerAbilities.SetCallbacks(this);
+
             Abilities = Abilities.Select(asset => Instantiate(asset)).ToList();
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+
+            abilityInputActions.Enable();
+        }
+
+        private void OnDisable()
+        {
+            abilityInputActions.Disable();
         }
 
         private void Update()
@@ -46,13 +67,23 @@ namespace Project.Source
         {
             Debug.Log("Character died");
         }
-        
+
         private void UpdateAbilityCooldowns()
         {
             foreach (var ability in Abilities)
             {
                 ability.CurrentCooldown -= Time.deltaTime;
             }
+        }
+
+        public void OnExecuteAbility(InputAction.CallbackContext context)
+        {
+            if (!context.performed)
+            {
+                return;
+            }
+            
+            Debug.Log(context.ReadValue<float>());
         }
     }
 }

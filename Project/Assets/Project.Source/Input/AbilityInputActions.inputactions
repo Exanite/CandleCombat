@@ -1,0 +1,45 @@
+{
+    "name": "AbilityInputActions",
+    "maps": [
+        {
+            "name": "PlayerAbilities",
+            "id": "beda1f7d-3362-4779-b8c8-05f45bffcd70",
+            "actions": [
+                {
+                    "name": "ExecuteAbility",
+                    "type": "Button",
+                    "id": "74c5e96b-96df-41e1-9251-a1f58f33969a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6b328389-bad4-49c3-abe2-3f7f79482bfc",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "Scale",
+                    "groups": "",
+                    "action": "ExecuteAbility",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "421388ad-e64c-40e3-b227-d5f8ab2959f4",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "Scale(factor=2)",
+                    "groups": "",
+                    "action": "ExecuteAbility",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
