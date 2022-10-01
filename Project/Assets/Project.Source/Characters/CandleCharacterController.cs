@@ -10,6 +10,9 @@ namespace Project.Source.Characters
         public SkinnedMeshRenderer MeshRenderer;
         public Animator Animator;
 
+        [Header("Attacks")]
+        public float AttackRange = 1;
+
         [Header("Jump")]
         public float JumpDistance = 5;
         public string JumpAnimationTrigger = "Jump";
@@ -17,7 +20,6 @@ namespace Project.Source.Characters
         public float JumpLeftGroundTime = 0.349f;
         public float JumpLandedTime = 0.983f;
 
-        public float JumpSpreadActivationDistance = 2f;
         public float JumpSpreadDistance = 1f;
 
         [Header("Death")]
@@ -52,12 +54,7 @@ namespace Project.Source.Characters
 
         private void Update()
         {
-            Animator.SetBool(IsDeadAnimationBool, Character.IsDead);
-
-            var targetHealthRatio = Mathf.Clamp01(Character.CurrentHealth / Character.MaxHealth);
-            smoothedHealthRatio = Mathf.SmoothDamp(smoothedHealthRatio, targetHealthRatio, ref smoothedHealthRatioVelocity, HealthRatioSmoothTime);
-
-            Animator.SetFloat(HealthRatioAnimationFloat, smoothedHealthRatio);
+            UpdateAnimator();
 
             if (Character.IsDead)
             {
@@ -70,9 +67,23 @@ namespace Project.Source.Characters
 
                 if (target && !isJumping)
                 {
-                    jumpCoroutine = StartCoroutine(JumpTowardsTarget());
+                    var offset = target.transform.position - transform.position;
+                    if (offset.magnitude > AttackRange + 0.5f)
+                    {
+                        jumpCoroutine = StartCoroutine(JumpTowardsTarget());
+                    }
                 }
             }
+        }
+
+        private void UpdateAnimator()
+        {
+            Animator.SetBool(IsDeadAnimationBool, Character.IsDead);
+
+            var targetHealthRatio = Mathf.Clamp01(Character.CurrentHealth / Character.MaxHealth);
+            smoothedHealthRatio = Mathf.SmoothDamp(smoothedHealthRatio, targetHealthRatio, ref smoothedHealthRatioVelocity, HealthRatioSmoothTime);
+
+            Animator.SetFloat(HealthRatioAnimationFloat, smoothedHealthRatio);
         }
 
         private void OnDead(Character character)
@@ -114,7 +125,14 @@ namespace Project.Source.Characters
 
         private Vector3 SelectJumpPosition()
         {
-            return transform.position + Vector3.ClampMagnitude(target.transform.position - transform.position, JumpDistance);
+            var offset = target.transform.position - transform.position;
+            var targetPosition = transform.position + Vector3.ClampMagnitude(offset, Mathf.Min(JumpDistance, offset.magnitude - AttackRange));
+
+            var angleRadians = Random.Range(0, 2 * Mathf.PI);
+            var distance = Random.Range(0, JumpSpreadDistance);
+            targetPosition += new Vector3(distance * Mathf.Cos(angleRadians), 0, distance * Mathf.Sin(angleRadians));
+
+            return targetPosition;
         }
     }
 }
