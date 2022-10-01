@@ -108,7 +108,7 @@ MonoBehaviour:
   JumpSpreadDistance: 1
   IsDeadAnimationBool: IsDead
   HealthRatioAnimationFloat: HealthRatio
-  HealthRatioSmoothTime: 0.1
+  HealthRatioSmoothTime: 0.25
 --- !u!114 &2250288973554215811 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7910702306209672518, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
