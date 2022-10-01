@@ -76,14 +76,36 @@ namespace Project.Source
             }
         }
 
-        public void OnExecuteAbility(InputAction.CallbackContext context)
+        public void OnExecuteAbility(int index)
         {
-            if (!context.performed)
+            if (index < 0 || index >= Abilities.Count)
             {
                 return;
             }
-            
-            Debug.Log(context.ReadValue<float>());
+
+            var ability = Abilities[index];
+            if (ability == null)
+            {
+                return;
+            }
+
+            ability.Execute();
+        }
+
+        void AbilityInputActions.IPlayerAbilitiesActions.OnExecuteAbility0(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                OnExecuteAbility(0);
+            }
+        }
+
+        void AbilityInputActions.IPlayerAbilitiesActions.OnExecuteAbility1(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                OnExecuteAbility(1);
+            }
         }
     }
 }

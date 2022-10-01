@@ -30,9 +30,18 @@ namespace Project.Source.Input
             ""id"": ""beda1f7d-3362-4779-b8c8-05f45bffcd70"",
             ""actions"": [
                 {
-                    ""name"": ""ExecuteAbility"",
+                    ""name"": ""ExecuteAbility0"",
                     ""type"": ""Button"",
-                    ""id"": ""74c5e96b-96df-41e1-9251-a1f58f33969a"",
+                    ""id"": ""93d0bfdf-4ea8-4b60-bbdd-a24608b28127"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ExecuteAbility1"",
+                    ""type"": ""Button"",
+                    ""id"": ""31b1c8bd-625c-4029-89c9-e80997ae6a34"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -42,23 +51,23 @@ namespace Project.Source.Input
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""6b328389-bad4-49c3-abe2-3f7f79482bfc"",
+                    ""id"": ""a58fd2ca-fddf-44ca-9f07-f618c89f6015"",
                     ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
-                    ""processors"": ""Scale"",
+                    ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ExecuteAbility"",
+                    ""action"": ""ExecuteAbility0"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""421388ad-e64c-40e3-b227-d5f8ab2959f4"",
+                    ""id"": ""8c460063-32ee-44c0-a774-9db4d79f35e0"",
                     ""path"": ""<Keyboard>/2"",
                     ""interactions"": """",
-                    ""processors"": ""Scale(factor=2)"",
+                    ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ExecuteAbility"",
+                    ""action"": ""ExecuteAbility1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -69,7 +78,8 @@ namespace Project.Source.Input
 }");
             // PlayerAbilities
             m_PlayerAbilities = asset.FindActionMap("PlayerAbilities", throwIfNotFound: true);
-            m_PlayerAbilities_ExecuteAbility = m_PlayerAbilities.FindAction("ExecuteAbility", throwIfNotFound: true);
+            m_PlayerAbilities_ExecuteAbility0 = m_PlayerAbilities.FindAction("ExecuteAbility0", throwIfNotFound: true);
+            m_PlayerAbilities_ExecuteAbility1 = m_PlayerAbilities.FindAction("ExecuteAbility1", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -129,12 +139,14 @@ namespace Project.Source.Input
         // PlayerAbilities
         private readonly InputActionMap m_PlayerAbilities;
         private IPlayerAbilitiesActions m_PlayerAbilitiesActionsCallbackInterface;
-        private readonly InputAction m_PlayerAbilities_ExecuteAbility;
+        private readonly InputAction m_PlayerAbilities_ExecuteAbility0;
+        private readonly InputAction m_PlayerAbilities_ExecuteAbility1;
         public struct PlayerAbilitiesActions
         {
             private @AbilityInputActions m_Wrapper;
             public PlayerAbilitiesActions(@AbilityInputActions wrapper) { m_Wrapper = wrapper; }
-            public InputAction @ExecuteAbility => m_Wrapper.m_PlayerAbilities_ExecuteAbility;
+            public InputAction @ExecuteAbility0 => m_Wrapper.m_PlayerAbilities_ExecuteAbility0;
+            public InputAction @ExecuteAbility1 => m_Wrapper.m_PlayerAbilities_ExecuteAbility1;
             public InputActionMap Get() { return m_Wrapper.m_PlayerAbilities; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -144,23 +156,30 @@ namespace Project.Source.Input
             {
                 if (m_Wrapper.m_PlayerAbilitiesActionsCallbackInterface != null)
                 {
-                    @ExecuteAbility.started -= m_Wrapper.m_PlayerAbilitiesActionsCallbackInterface.OnExecuteAbility;
-                    @ExecuteAbility.performed -= m_Wrapper.m_PlayerAbilitiesActionsCallbackInterface.OnExecuteAbility;
-                    @ExecuteAbility.canceled -= m_Wrapper.m_PlayerAbilitiesActionsCallbackInterface.OnExecuteAbility;
+                    @ExecuteAbility0.started -= m_Wrapper.m_PlayerAbilitiesActionsCallbackInterface.OnExecuteAbility0;
+                    @ExecuteAbility0.performed -= m_Wrapper.m_PlayerAbilitiesActionsCallbackInterface.OnExecuteAbility0;
+                    @ExecuteAbility0.canceled -= m_Wrapper.m_PlayerAbilitiesActionsCallbackInterface.OnExecuteAbility0;
+                    @ExecuteAbility1.started -= m_Wrapper.m_PlayerAbilitiesActionsCallbackInterface.OnExecuteAbility1;
+                    @ExecuteAbility1.performed -= m_Wrapper.m_PlayerAbilitiesActionsCallbackInterface.OnExecuteAbility1;
+                    @ExecuteAbility1.canceled -= m_Wrapper.m_PlayerAbilitiesActionsCallbackInterface.OnExecuteAbility1;
                 }
                 m_Wrapper.m_PlayerAbilitiesActionsCallbackInterface = instance;
                 if (instance != null)
                 {
-                    @ExecuteAbility.started += instance.OnExecuteAbility;
-                    @ExecuteAbility.performed += instance.OnExecuteAbility;
-                    @ExecuteAbility.canceled += instance.OnExecuteAbility;
+                    @ExecuteAbility0.started += instance.OnExecuteAbility0;
+                    @ExecuteAbility0.performed += instance.OnExecuteAbility0;
+                    @ExecuteAbility0.canceled += instance.OnExecuteAbility0;
+                    @ExecuteAbility1.started += instance.OnExecuteAbility1;
+                    @ExecuteAbility1.performed += instance.OnExecuteAbility1;
+                    @ExecuteAbility1.canceled += instance.OnExecuteAbility1;
                 }
             }
         }
         public PlayerAbilitiesActions @PlayerAbilities => new PlayerAbilitiesActions(this);
         public interface IPlayerAbilitiesActions
         {
-            void OnExecuteAbility(InputAction.CallbackContext context);
+            void OnExecuteAbility0(InputAction.CallbackContext context);
+            void OnExecuteAbility1(InputAction.CallbackContext context);
         }
     }
 }
