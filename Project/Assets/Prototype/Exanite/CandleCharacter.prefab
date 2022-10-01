@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 8072702675715705161, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
         type: 3}
       propertyPath: m_Name
-      value: Enemy
+      value: CandleCharacter
       objectReference: {fileID: 0}
     - target: {fileID: 8882172673435702259, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
         type: 3}
@@ -89,7 +89,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 2250288973554215811}
   MeshRenderer: {fileID: 5212907410817122171}
-  Animator: {fileID: 371598035}
+  Animator: {fileID: 5222602482561746104}
   JumpDistance: 2
   JumpTrigger: Jump
   JumpLeftGroundTime: 0.349
@@ -121,26 +121,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   Target: {fileID: 0}
---- !u!95 &371598035
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 214717456750579596}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f83f74265304dcd429137780d50a14ff, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &2250288973554215811 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7910702306209672518, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
@@ -156,6 +136,12 @@ MonoBehaviour:
 --- !u!137 &5212907410817122171 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 4225822962962512318, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
+    type: 3}
+  m_PrefabInstance: {fileID: 8282915983078770373}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &5222602482561746104 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4217829383722386045, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
     type: 3}
   m_PrefabInstance: {fileID: 8282915983078770373}
   m_PrefabAsset: {fileID: 0}

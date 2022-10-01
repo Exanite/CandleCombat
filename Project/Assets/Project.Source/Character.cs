@@ -18,11 +18,6 @@ namespace Project.Source
 
         public event Action<Character> Dead;
 
-        private void Start()
-        {
-            Rigidbody = GetComponent<Rigidbody>();
-        }
-
         private void Update()
         {
             if (IsDead)
