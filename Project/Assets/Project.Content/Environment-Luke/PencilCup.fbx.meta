@@ -3,7 +3,37 @@ guid: 5e924cc4efaba8a4fa567a973a0d432b
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cup
+    second: {fileID: 2100000, guid: 18ef86d493fe7da48b79a68b97d50d53, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LampPole
+    second: {fileID: 2100000, guid: e0b2e8a72e5966a4fb90a112f3f178b3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pencil
+    second: {fileID: 2100000, guid: ddafe697b6e9ed44f8cee0f05bb4ad90, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PencilLead
+    second: {fileID: 2100000, guid: 6a1399a5fbb0d1a42bc4a91acc835d0d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PencilTip
+    second: {fileID: 2100000, guid: 18ef86d493fe7da48b79a68b97d50d53, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WaterCoolerBlue
+    second: {fileID: 2100000, guid: 605e7a84d75d1ca4292080ab87cbd7d0, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -35,7 +65,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 10
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -88,7 +118,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
+    globalScale: 0.099999994
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
