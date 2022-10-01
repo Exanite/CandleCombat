@@ -45,9 +45,12 @@ namespace Project.Source.Characters
                 return;
             }
 
-            if (Target && !isJumping)
+            if (!Character.IsPlayer)
             {
-                var jumpCoroutine = StartCoroutine(JumpTowardsTarget());
+                if (Target && !isJumping)
+                {
+                    jumpCoroutine = StartCoroutine(JumpTowardsTarget());
+                }
             }
         }
 

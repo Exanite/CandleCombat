@@ -166,5 +166,11 @@ MonoBehaviour:
   MaxHealth: 10
   IsDead: 0
   HealthRegenPerSecond: 0
-  GunPosition: {fileID: 0}
-  Rigidbody: {fileID: 0}
+  GunPosition: {fileID: 8882172673435702259}
+  Rigidbody: {fileID: 657701656}
+--- !u!4 &8882172673435702259 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b6f0b066183245f44a322985a716a76e,
+    type: 3}
+  m_PrefabInstance: {fileID: 8991834137676248088}
+  m_PrefabAsset: {fileID: 0}

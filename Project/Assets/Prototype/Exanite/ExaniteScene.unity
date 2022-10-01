@@ -190,11 +190,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2250288973554215811, guid: 197f7da89cb16a44d950eed8c635c82c,
-        type: 3}
-      propertyPath: HealthRegenPerSecond
-      value: -2.3
-      objectReference: {fileID: 0}
     - target: {fileID: 8991834137252470452, guid: 197f7da89cb16a44d950eed8c635c82c,
         type: 3}
       propertyPath: Target
@@ -202,6 +197,18 @@ PrefabInstance:
       objectReference: {fileID: 349352337}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 197f7da89cb16a44d950eed8c635c82c, type: 3}
+--- !u!114 &66419338 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2250288973554215811, guid: 197f7da89cb16a44d950eed8c635c82c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1635351153}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6d0e8fedea4a1949b9994d7f48cc8e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &139525990
 GameObject:
   m_ObjectHideFlags: 0
@@ -455,11 +462,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2250288973554215811, guid: 197f7da89cb16a44d950eed8c635c82c,
-        type: 3}
-      propertyPath: HealthRegenPerSecond
-      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 8991834137252470452, guid: 197f7da89cb16a44d950eed8c635c82c,
         type: 3}
@@ -840,11 +842,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2250288973554215811, guid: 197f7da89cb16a44d950eed8c635c82c,
-        type: 3}
-      propertyPath: HealthRegenPerSecond
-      value: -1.5
-      objectReference: {fileID: 0}
     - target: {fileID: 8991834137252470452, guid: 197f7da89cb16a44d950eed8c635c82c,
         type: 3}
       propertyPath: Target
@@ -895,6 +892,7 @@ GameObject:
   - component: {fileID: 1175499560}
   - component: {fileID: 1175499559}
   - component: {fileID: 1175499562}
+  - component: {fileID: 1175499563}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -960,8 +958,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1175499558}
-  m_LocalRotation: {x: 0.3535534, y: -0.61237246, z: 0.3535534, w: 0.61237246}
-  m_LocalPosition: {x: 5.72098, y: 8.747275, z: 0.03848856}
+  m_LocalRotation: {x: 0.43491682, y: 0, z: 0, w: 0.9004707}
+  m_LocalPosition: {x: 0, y: 11.542597, z: -7.9769473}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1001,6 +999,40 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &1175499563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175499558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowDebugText: 0
+  m_ShowCameraFrustum: 1
+  m_IgnoreTimeScale: 0
+  m_WorldUpOverride: {fileID: 0}
+  m_UpdateMethod: 2
+  m_BlendUpdateMethod: 1
+  m_DefaultBlend:
+    m_Style: 1
+    m_Time: 2
+    m_CustomCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  m_CustomBlends: {fileID: 0}
+  m_CameraCutEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_CameraActivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &1265512113
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1067,11 +1099,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2250288973554215811, guid: 197f7da89cb16a44d950eed8c635c82c,
-        type: 3}
-      propertyPath: HealthRegenPerSecond
-      value: -1.4
       objectReference: {fileID: 0}
     - target: {fileID: 8991834137252470452, guid: 197f7da89cb16a44d950eed8c635c82c,
         type: 3}
@@ -1208,11 +1235,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2250288973554215811, guid: 197f7da89cb16a44d950eed8c635c82c,
-        type: 3}
-      propertyPath: HealthRegenPerSecond
-      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 8991834137252470452, guid: 197f7da89cb16a44d950eed8c635c82c,
         type: 3}
@@ -1427,6 +1449,11 @@ PrefabInstance:
       propertyPath: MainCamera
       value: 
       objectReference: {fileID: 1175499560}
+    - target: {fileID: 2172941941509775111, guid: 57615ce97bbc97e46a4674c14d33db8c,
+        type: 3}
+      propertyPath: CurrentPlayer
+      value: 
+      objectReference: {fileID: 66419338}
     - target: {fileID: 5578559470589387425, guid: 57615ce97bbc97e46a4674c14d33db8c,
         type: 3}
       propertyPath: virtualCamera

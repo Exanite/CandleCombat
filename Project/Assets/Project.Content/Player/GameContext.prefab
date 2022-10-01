@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4686590657947957126}
   - component: {fileID: 412501272478291803}
   - component: {fileID: 3495844000217364866}
+  - component: {fileID: 7421392470636029689}
   m_Layer: 0
   m_Name: GameContext
   m_TagString: Untagged
@@ -142,6 +143,37 @@ MonoBehaviour:
   equippableGuns:
   - {fileID: 7965470926689174171}
   - {fileID: 6889528484753050692}
+--- !u!114 &7421392470636029689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2172941941509775108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+    type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1001 &2251507297843713833
 PrefabInstance:
   m_ObjectHideFlags: 0
