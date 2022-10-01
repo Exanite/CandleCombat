@@ -15,11 +15,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        var rb = character?.Rigidbody;
-        if (rb == null)
+        if (!character || !character.Rigidbody)
         {
             return;
         }
+
+        var rb = character.Rigidbody;
 
         var targetVelocity = new Vector3(moveDirection.x, 0, moveDirection.y);
         targetVelocity *= movementSpeed;
