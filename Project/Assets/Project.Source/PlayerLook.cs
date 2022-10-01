@@ -2,34 +2,69 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using Project.Source;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerLook : MonoBehaviour
 {
+    public Transform LookAt => targetGroup.transform;
+
     //Using separate CinemachineTargetGroup.
     [Header("Dependencies")]
-    [SerializeField] private Camera mainCamera;
-    [SerializeField] private Transform startObject;
-    [SerializeField] private Transform endObject;
+    [SerializeField] private CinemachineTargetGroup targetGroupPrefab;
+    [SerializeField] private Transform endObjectPrefab;
 
     [Header("Settings")]
     [SerializeField] private float groundHeight = 1f;
     [SerializeField] private float maxRadius = 5f;
-
+    [Range(0,1)]
+    [SerializeField] private float playerWeight = 1f;
+    [Range(0,1)]
+    [SerializeField] private float pointerWeight = 0.2f;
+    
+    private CinemachineTargetGroup targetGroup;
+    private Transform endObject;
+    
     private Plane plane;
+    private Character character;
+    private Camera mainCamera;
     private Vector3 pointerPosition;
+
+    private void Awake()
+    {
+        targetGroup = Instantiate(targetGroupPrefab);
+        endObject = Instantiate(endObjectPrefab);
+        endObject.position = Vector3.zero;
+    }
 
     private void Start()
     {
         plane = new Plane();
         plane.SetNormalAndPosition(Vector3.up, new Vector3(0, groundHeight, 0));
+        
+        targetGroup.AddMember(endObject, pointerWeight, 0);
     }
 
     private void Update()
     {
+        if (character == null) return;
+        
         Vector3 endPosition = PointerToWorldPosition(pointerPosition);
-        endObject.position = ClampEndPosition(startObject.position, endPosition, maxRadius);
+        endObject.position = ClampEndPosition(character.transform.position, endPosition, maxRadius);
+    }
+    
+    public void SetCharacter(Character newCharacter)
+    {
+        if (character != null)
+        {
+            if (targetGroup.FindMember(character.transform) > -1)
+                targetGroup.RemoveMember(character.transform);
+            
+            targetGroup.AddMember(newCharacter.transform, playerWeight, 0);
+        }
+
+        character = newCharacter;
     }
 
     public void SetPointerPosition(Vector3 pointerPos)
@@ -37,7 +72,12 @@ public class PlayerLook : MonoBehaviour
         pointerPosition = pointerPos;
     }
 
-    private Vector3 PointerToWorldPosition(Vector3 pointerPositio)
+    public void SetCamera(Camera camera)
+    {
+        mainCamera = camera;
+    }
+
+    private Vector3 PointerToWorldPosition(Vector3 pointerPosition)
     {
         if (mainCamera == null)
         {
