@@ -7,11 +7,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -4140058397007785958, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
-        type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8072702675715705161, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
         type: 3}
       propertyPath: m_Name
@@ -96,35 +91,10 @@ MonoBehaviour:
   MeshRenderer: {fileID: 5212907410817122171}
   Animator: {fileID: 5222602482561746104}
   JumpDistance: 2
-  JumpTrigger: Jump
+  JumpAnimationTrigger: Jump
   JumpLeftGroundTime: 0.349
   JumpLandedTime: 0.983
-  DeathBlendShapeIndex: 3
-  DeathAnimationTime: 0.5
-  DeathAnimationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  IsDeadAnimationBool: IsDead
   Target: {fileID: 0}
 --- !u!114 &2250288973554215811 stripped
 MonoBehaviour:
