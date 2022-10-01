@@ -13,5 +13,7 @@ namespace Project.Source.Abilities
         
         [Header("Runtime")]
         public float CurrentCooldown;
+
+        public abstract void Execute();
     }
 }
