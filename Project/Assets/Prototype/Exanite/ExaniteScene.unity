@@ -1032,21 +1032,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCamera
       objectReference: {fileID: 0}
-    - target: {fileID: 705308142634744619, guid: 331cb4b253ed5fc43835e99264b3fd0b,
-        type: 3}
-      propertyPath: m_CameraDistance
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 705308142634744619, guid: 331cb4b253ed5fc43835e99264b3fd0b,
-        type: 3}
-      propertyPath: m_TrackedObjectOffset.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 705308142634744619, guid: 331cb4b253ed5fc43835e99264b3fd0b,
-        type: 3}
-      propertyPath: m_TrackedObjectOffset.z
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 331cb4b253ed5fc43835e99264b3fd0b, type: 3}
 --- !u!1001 &1883361530845287469
