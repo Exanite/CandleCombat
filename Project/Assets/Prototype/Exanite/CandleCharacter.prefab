@@ -116,7 +116,7 @@ MonoBehaviour:
   MeshRenderer: {fileID: 5212907410817122171}
   Animator: {fileID: 5222602482561746104}
   AttackRange: 0
-  JumpDistance: 2
+  JumpDistance: 3
   JumpAnimationTrigger: Jump
   JumpLeftGroundTime: 0.349
   JumpLandedTime: 0.983

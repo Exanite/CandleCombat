@@ -200,6 +200,11 @@ PrefabInstance:
       propertyPath: CurrentHealth
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2250288973554215811, guid: 197f7da89cb16a44d950eed8c635c82c,
+        type: 3}
+      propertyPath: currentHealth
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8991834137252470452, guid: 197f7da89cb16a44d950eed8c635c82c,
         type: 3}
       propertyPath: Target
@@ -1044,6 +1049,11 @@ PrefabInstance:
     - target: {fileID: 2250288973554215811, guid: 197f7da89cb16a44d950eed8c635c82c,
         type: 3}
       propertyPath: CurrentHealth
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250288973554215811, guid: 197f7da89cb16a44d950eed8c635c82c,
+        type: 3}
+      propertyPath: currentHealth
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8991834137252470452, guid: 197f7da89cb16a44d950eed8c635c82c,
@@ -2324,6 +2334,11 @@ PrefabInstance:
     - target: {fileID: 2250288973554215811, guid: 197f7da89cb16a44d950eed8c635c82c,
         type: 3}
       propertyPath: CurrentHealth
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250288973554215811, guid: 197f7da89cb16a44d950eed8c635c82c,
+        type: 3}
+      propertyPath: currentHealth
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8991834137252470452, guid: 197f7da89cb16a44d950eed8c635c82c,
@@ -4777,6 +4792,11 @@ PrefabInstance:
     - target: {fileID: 2250288973554215811, guid: 197f7da89cb16a44d950eed8c635c82c,
         type: 3}
       propertyPath: CurrentHealth
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250288973554215811, guid: 197f7da89cb16a44d950eed8c635c82c,
+        type: 3}
+      propertyPath: currentHealth
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8991834137252470452, guid: 197f7da89cb16a44d950eed8c635c82c,
@@ -8552,11 +8572,6 @@ PrefabInstance:
       propertyPath: CurrentPlayer
       value: 
       objectReference: {fileID: 66419338}
-    - target: {fileID: 2172941941509775111, guid: 57615ce97bbc97e46a4674c14d33db8c,
-        type: 3}
-      propertyPath: HealthRegenPerSecond
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5578559470589387425, guid: 57615ce97bbc97e46a4674c14d33db8c,
         type: 3}
       propertyPath: virtualCamera

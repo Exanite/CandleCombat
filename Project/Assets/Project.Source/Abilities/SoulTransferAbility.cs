@@ -1,5 +1,3 @@
-using System.Collections;
-using Project.Source.Characters;
 using UnityEngine;
 
 namespace Project.Source.Abilities
@@ -11,15 +9,22 @@ namespace Project.Source.Abilities
         {
             Debug.Log("SoulTransferAbility");
 
-            Character player = GameContext.Instance.CurrentPlayer;
+            var player = GameContext.Instance.CurrentPlayer;
+            if (player == null)
+            {
+                return;
+            }
 
-            if (player == null) return;
-            
-            //TODO: Don't reach into directly.
+            // TODO: Don't reach into directly.
             var gunController = GameContext.Instance.gameObject.GetComponent<GunController>();
             gunController.SwitchGun(1);
             gunController.Fire();
             gunController.SwitchGun(0);
+
+            var previousPlayer = player;
+            
+            GameContext.Instance.CurrentHealth = GameContext.Instance.MaxHealth;
+            previousPlayer.OverwriteHealth(-1);
         }
     }
 }
