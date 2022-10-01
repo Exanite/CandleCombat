@@ -1,9 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Project.Source
+namespace Project.Source.Characters
 {
-    public class EnemyCharacter : MonoBehaviour
+    public class CandleCharacterController : MonoBehaviour
     {
         [Header("Dependencies")]
         public Character Character;

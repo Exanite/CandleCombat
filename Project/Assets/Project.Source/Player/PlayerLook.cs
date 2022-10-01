@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using Project.Source;
+using Project.Source.Characters;
 using UnityEngine;
 using UnityEngine.InputSystem;
 

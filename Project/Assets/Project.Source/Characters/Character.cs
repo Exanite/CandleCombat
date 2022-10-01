@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Project.Source
+namespace Project.Source.Characters
 {
     public class Character : MonoBehaviour
     {

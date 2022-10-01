@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Project.Source;
+using Project.Source.Characters;
 using UnityEngine;
 
 public class LineProjectile : Projectile
