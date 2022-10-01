@@ -55,16 +55,28 @@ namespace Project.Source
             
             UpdateHealthDecay();
             CheckDeath();
+            SyncHealth();
 
             UpdateAbilityCooldowns();
         }
 
         private void CheckDeath()
         {
-            if (CurrentHealth <= 0)
+            if (CurrentHealth <= 0 || CurrentPlayer == null)
             {
                 OnDead();
             }
+        }
+
+        private void SyncHealth()
+        {
+            if (!CurrentPlayer)
+            {
+                return;
+            }
+
+            CurrentPlayer.CurrentHealth = CurrentHealth;
+            CurrentPlayer.MaxHealth = MaxHealth;
         }
 
         private void UpdateHealthDecay()
