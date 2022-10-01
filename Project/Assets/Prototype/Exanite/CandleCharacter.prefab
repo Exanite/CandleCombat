@@ -115,12 +115,13 @@ MonoBehaviour:
   Character: {fileID: 2250288973554215811}
   MeshRenderer: {fileID: 5212907410817122171}
   Animator: {fileID: 5222602482561746104}
+  AttackRange: 0
   JumpDistance: 2
   JumpAnimationTrigger: Jump
   JumpLeftGroundTime: 0.349
   JumpLandedTime: 0.983
-  JumpSpreadActivationDistance: 2
   JumpSpreadDistance: 1
+  JumpLookAheadTime: 1
   IsDeadAnimationBool: IsDead
   HealthRatioAnimationFloat: HealthRatio
   HealthRatioSmoothTime: 0.25

@@ -21,6 +21,7 @@ namespace Project.Source.Characters
         public float JumpLandedTime = 0.983f;
 
         public float JumpSpreadDistance = 1f;
+        public float JumpLookAheadTime = 1f;
 
         [Header("Death")]
         public string IsDeadAnimationBool = "IsDead";
@@ -125,14 +126,16 @@ namespace Project.Source.Characters
 
         private Vector3 SelectJumpPosition()
         {
-            var offset = target.transform.position - transform.position;
-            var targetPosition = transform.position + Vector3.ClampMagnitude(offset, Mathf.Min(JumpDistance, offset.magnitude - AttackRange));
+            var targetPosition = target.transform.position + target.Rigidbody.velocity * JumpLookAheadTime;
+            var offset = targetPosition - transform.position;
+            
+            var targetJumpPosition = transform.position + Vector3.ClampMagnitude(offset, Mathf.Min(JumpDistance, offset.magnitude - AttackRange));
 
             var angleRadians = Random.Range(0, 2 * Mathf.PI);
             var distance = Random.Range(0, JumpSpreadDistance);
-            targetPosition += new Vector3(distance * Mathf.Cos(angleRadians), 0, distance * Mathf.Sin(angleRadians));
+            targetJumpPosition += new Vector3(distance * Mathf.Cos(angleRadians), 0, distance * Mathf.Sin(angleRadians));
 
-            return targetPosition;
+            return targetJumpPosition;
         }
     }
 }
