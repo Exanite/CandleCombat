@@ -10,7 +10,7 @@ namespace Project.Source.Characters
         public SkinnedMeshRenderer MeshRenderer;
         public Animator Animator;
 
-        [Header("Jump Animation")]
+        [Header("Jump")]
         public float JumpDistance = 5;
         public string JumpAnimationTrigger = "Jump";
 
@@ -20,13 +20,25 @@ namespace Project.Source.Characters
         public float JumpSpreadActivationDistance = 2f;
         public float JumpSpreadDistance = 1f;
 
-        [Header("Death Animation")]
+        [Header("Death")]
         public string IsDeadAnimationBool = "IsDead";
-        
+
+        [Header("Health Melting")]
+        public string HealthRatioAnimationFloat = "HealthRatio";
+        public float HealthRatioSmoothTime = 0.1f;
+
         private bool isJumping;
         private Coroutine jumpCoroutine;
 
         private Character target;
+
+        private float smoothedHealthRatio;
+        private float smoothedHealthRatioVelocity;
+
+        private void Start()
+        {
+            smoothedHealthRatio = Mathf.Clamp01(Character.CurrentHealth / Character.MaxHealth);
+        }
 
         private void OnEnable()
         {
@@ -41,7 +53,12 @@ namespace Project.Source.Characters
         private void Update()
         {
             Animator.SetBool(IsDeadAnimationBool, Character.IsDead);
-            
+
+            var targetHealthRatio = Mathf.Clamp01(Character.CurrentHealth / Character.MaxHealth);
+            smoothedHealthRatio = Mathf.SmoothDamp(smoothedHealthRatio, targetHealthRatio, ref smoothedHealthRatioVelocity, HealthRatioSmoothTime);
+
+            Animator.SetFloat(HealthRatioAnimationFloat, smoothedHealthRatio);
+
             if (Character.IsDead)
             {
                 return;
@@ -50,7 +67,7 @@ namespace Project.Source.Characters
             if (!Character.IsPlayer)
             {
                 target = GameContext.Instance.CurrentPlayer;
-                
+
                 if (target && !isJumping)
                 {
                     jumpCoroutine = StartCoroutine(JumpTowardsTarget());
@@ -65,7 +82,7 @@ namespace Project.Source.Characters
                 StopCoroutine(jumpCoroutine);
             }
         }
-        
+
         private IEnumerator JumpTowardsTarget()
         {
             isJumping = true;
