@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!character || !character.Rigidbody)
+        if (!character || character.IsDead || !character.Rigidbody)
         {
             return;
         }
