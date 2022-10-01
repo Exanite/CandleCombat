@@ -60,9 +60,9 @@ namespace Project.Source
 
         private void CheckDeath()
         {
-            if (CurrentHealth < 0)
+            if (CurrentHealth <= 0)
             {
-                OnDeath();
+                OnDead();
             }
         }
 
@@ -71,7 +71,7 @@ namespace Project.Source
             CurrentHealth -= Time.deltaTime * HealthDecayPerSecond;
         }
 
-        private void OnDeath()
+        private void OnDead()
         {
             IsDead = true;
             
