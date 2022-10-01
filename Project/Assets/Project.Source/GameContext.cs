@@ -16,6 +16,8 @@ namespace Project.Source
 
         public float HealthDecayPerSecond = 5f;
 
+        public bool IsDead;
+
         public List<Ability> Abilities = new List<Ability>();
 
         private AbilityInputActions abilityInputActions;
@@ -44,6 +46,11 @@ namespace Project.Source
 
         private void Update()
         {
+            if (IsDead)
+            {
+                return;
+            }
+            
             UpdateHealthDecay();
             CheckDeath();
 
@@ -65,6 +72,8 @@ namespace Project.Source
 
         private void OnDeath()
         {
+            IsDead = true;
+            
             Debug.Log("Character died");
         }
 
@@ -78,6 +87,11 @@ namespace Project.Source
 
         public void OnExecuteAbility(int index)
         {
+            if (IsDead)
+            {
+                return;
+            }
+            
             if (index < 0 || index >= Abilities.Count)
             {
                 return;
