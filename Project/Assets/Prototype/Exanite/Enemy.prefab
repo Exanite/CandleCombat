@@ -20,7 +20,7 @@ PrefabInstance:
     - target: {fileID: 8882172673435702259, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 1.9
       objectReference: {fileID: 0}
     - target: {fileID: 8882172673435702259, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
         type: 3}
@@ -40,17 +40,17 @@ PrefabInstance:
     - target: {fileID: 8882172673435702259, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8882172673435702259, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8882172673435702259, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8882172673435702259, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
         type: 3}
@@ -89,32 +89,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 2250288973554215811}
   MeshRenderer: {fileID: 5212907410817122171}
-  Animator: {fileID: 0}
-  JumpDistance: 5
-  JumpAnimationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.5028076
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 0
-    m_RotationOrder: 4
+  Animator: {fileID: 371598035}
+  JumpDistance: 2
   JumpTrigger: Jump
   JumpLeftGroundTime: 0.349
   JumpLandedTime: 0.983
@@ -145,6 +121,26 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   Target: {fileID: 0}
+--- !u!95 &371598035
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214717456750579596}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f83f74265304dcd429137780d50a14ff, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &2250288973554215811 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7910702306209672518, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
