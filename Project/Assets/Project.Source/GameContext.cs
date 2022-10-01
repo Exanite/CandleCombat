@@ -89,6 +89,14 @@ namespace Project.Source
                 return;
             }
 
+            if (ability.CurrentCooldown > 0)
+            {
+                return;
+            }
+            
+            ability.CurrentCooldown = ability.CooldownDuration;
+            CurrentHealth -= ability.HealthCost;
+            
             ability.Execute();
         }
 

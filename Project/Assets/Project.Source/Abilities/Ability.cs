@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Project.Source.Abilities
 {
@@ -7,9 +8,10 @@ namespace Project.Source.Abilities
         [Header("UI")]
         public Sprite Icon;
 
+        [FormerlySerializedAs("CooldownTime")]
         [Header("Configuration")]
-        public float CooldownTime = 1;
-        public float WaxCost = 1;
+        public float CooldownDuration = 1;
+        public float HealthCost = 1;
         
         [Header("Runtime")]
         public float CurrentCooldown;

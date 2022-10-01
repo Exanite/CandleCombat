@@ -19,7 +19,7 @@ namespace Project.Source.UserInterface
             }
 
             // Cooldown
-            var cooldownRatio = ability.CurrentCooldown / ability.CooldownTime;
+            var cooldownRatio = ability.CurrentCooldown / ability.CooldownDuration;
             cooldownRatio = Mathf.Clamp01(cooldownRatio);
 
             CooldownImage.fillAmount = cooldownRatio;
