@@ -23,8 +23,10 @@ namespace Project.Source
 
         private void Update()
         {
-            ApplyHealthDecay();
+            UpdateHealthDecay();
             CheckDeath();
+
+            UpdateAbilityCooldowns();
         }
 
         private void CheckDeath()
@@ -35,7 +37,7 @@ namespace Project.Source
             }
         }
 
-        private void ApplyHealthDecay()
+        private void UpdateHealthDecay()
         {
             CurrentHealth -= Time.deltaTime * HealthDecayPerSecond;
         }
@@ -43,6 +45,14 @@ namespace Project.Source
         private void OnDeath()
         {
             Debug.Log("Character died");
+        }
+        
+        private void UpdateAbilityCooldowns()
+        {
+            foreach (var ability in Abilities)
+            {
+                ability.CurrentCooldown -= Time.deltaTime;
+            }
         }
     }
 }

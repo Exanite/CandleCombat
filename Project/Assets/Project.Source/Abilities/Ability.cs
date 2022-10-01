@@ -4,9 +4,14 @@ namespace Project.Source.Abilities
 {
     public abstract class Ability : ScriptableObject
     {
+        [Header("UI")]
         public Sprite Icon;
-        
-        public float Cooldown = 1;
+
+        [Header("Configuration")]
+        public float CooldownTime = 1;
         public float WaxCost = 1;
+        
+        [Header("Runtime")]
+        public float CurrentCooldown;
     }
 }
