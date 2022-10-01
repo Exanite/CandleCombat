@@ -848,21 +848,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7965470926689174171, guid: 57615ce97bbc97e46a4674c14d33db8c,
-        type: 3}
-      propertyPath: MaxAmmo
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965470926689174171, guid: 57615ce97bbc97e46a4674c14d33db8c,
-        type: 3}
-      propertyPath: ReloadTime
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965470926689174171, guid: 57615ce97bbc97e46a4674c14d33db8c,
-        type: 3}
-      propertyPath: TimeBetweenShots
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 7965470926984057628, guid: 57615ce97bbc97e46a4674c14d33db8c,
         type: 3}
       propertyPath: SelectedProjectile

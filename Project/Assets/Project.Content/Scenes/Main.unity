@@ -8422,6 +8422,11 @@ PrefabInstance:
       propertyPath: CurrentPlayer
       value: 
       objectReference: {fileID: 66419338}
+    - target: {fileID: 2172941941509775111, guid: 57615ce97bbc97e46a4674c14d33db8c,
+        type: 3}
+      propertyPath: HealthRegenPerSecond
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5578559470589387425, guid: 57615ce97bbc97e46a4674c14d33db8c,
         type: 3}
       propertyPath: virtualCamera
