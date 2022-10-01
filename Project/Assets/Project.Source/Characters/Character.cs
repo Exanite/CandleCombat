@@ -10,6 +10,7 @@ namespace Project.Source.Characters
         public float MaxHealth = 100;
 
         public bool IsDead;
+        public bool IsDodging = false;
 
         public float HealthRegenPerSecond;
 
