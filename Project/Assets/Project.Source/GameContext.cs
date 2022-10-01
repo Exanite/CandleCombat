@@ -75,7 +75,7 @@ namespace Project.Source
                 return;
             }
 
-            CurrentPlayer.CurrentHealth = CurrentHealth;
+            CurrentPlayer.OverwriteHealth(CurrentHealth);
             CurrentPlayer.MaxHealth = MaxHealth;
         }
 
@@ -99,7 +99,7 @@ namespace Project.Source
             }
         }
 
-        public void OnExecuteAbility(int index)
+        private void ExecuteAbility(int index)
         {
             if (IsDead)
             {
@@ -132,7 +132,7 @@ namespace Project.Source
         {
             if (context.performed)
             {
-                OnExecuteAbility(0);
+                ExecuteAbility(0);
             }
         }
 
@@ -140,7 +140,7 @@ namespace Project.Source
         {
             if (context.performed)
             {
-                OnExecuteAbility(1);
+                ExecuteAbility(1);
             }
         }
     }

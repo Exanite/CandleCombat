@@ -52,7 +52,7 @@ public class LineProjectile : Projectile
         bool sameTeam = owner.IsPlayer == character.IsPlayer;
         if (sameTeam || character.IsDodging) return;
 
-        character.CurrentHealth -= damage;
+        character.TakeDamage(damage);
     }
     
     private void Update()
