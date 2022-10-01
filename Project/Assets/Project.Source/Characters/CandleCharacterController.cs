@@ -17,6 +17,9 @@ namespace Project.Source.Characters
         public float JumpLeftGroundTime = 0.349f;
         public float JumpLandedTime = 0.983f;
 
+        public float JumpSpreadActivationDistance = 2f;
+        public float JumpSpreadDistance = 1f;
+
         [Header("Death Animation")]
         public string IsDeadAnimationBool = "IsDead";
         
@@ -72,7 +75,7 @@ namespace Project.Source.Characters
 
             var timer = 0f;
             var startPosition = transform.position;
-            var targetPosition = transform.position + Vector3.ClampMagnitude(target.transform.position - transform.position, JumpDistance);
+            var targetPosition = SelectJumpPosition();
 
             var airTime = JumpLandedTime - JumpLeftGroundTime;
 
@@ -90,6 +93,11 @@ namespace Project.Source.Characters
 
             transform.position = targetPosition;
             isJumping = false;
+        }
+
+        private Vector3 SelectJumpPosition()
+        {
+            return transform.position + Vector3.ClampMagnitude(target.transform.position - transform.position, JumpDistance);
         }
     }
 }
