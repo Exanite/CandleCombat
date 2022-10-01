@@ -9,7 +9,8 @@ namespace Project.Source
 {
     public class GameContext : SingletonBehaviour<GameContext>, AbilityInputActions.IPlayerAbilitiesActions
     {
-        public Character currentPlayer;
+        public Camera MainCamera;
+        public Character CurrentPlayer;
 
         public float CurrentHealth = 100;
         public float MaxHealth = 100;
