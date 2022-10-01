@@ -52,6 +52,13 @@ public class PlayerLook : MonoBehaviour
         
         Vector3 endPosition = PointerToWorldPosition(pointerPosition);
         endObject.position = ClampEndPosition(character.transform.position, endPosition, maxRadius);
+
+        Transform cT = character.transform;
+
+        Quaternion rotationTowardsEnd = Quaternion.LookRotation(GetXZDirection(cT.position, endObject.position));
+        cT.rotation = rotationTowardsEnd;
+        //if (character.GunPosition != null)
+        //    character.GunPosition.rotation = rotationTowardsEnd;
     }
     
     public void SetCharacter(Character newCharacter)
@@ -101,5 +108,11 @@ public class PlayerLook : MonoBehaviour
             return startPosition + (direction * maxRadius);
         
         return endPosition;
+    }
+
+    private Vector3 GetXZDirection(Vector3 startPosition, Vector3 endPosition)
+    {
+        Vector3 direction = (endPosition - startPosition).normalized;
+        return new Vector3(direction.x, 0, direction.z).normalized;
     }
 }

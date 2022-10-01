@@ -5,6 +5,7 @@ namespace Project.Source
 {
     public class Character : MonoBehaviour
     {
+        public bool IsPlayer => this == GameContext.Instance.CurrentPlayer;
         public float CurrentHealth = 100;
         public float MaxHealth = 100;
 
@@ -12,6 +13,7 @@ namespace Project.Source
 
         public float HealthRegenPerSecond;
 
+        public Transform GunPosition;
         public Rigidbody Rigidbody;
 
         public event Action<Character> Dead;

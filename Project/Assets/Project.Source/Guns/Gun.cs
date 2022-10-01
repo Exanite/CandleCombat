@@ -6,24 +6,72 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
-    public int selectedProjectile = 0;
-    public int burst = 1;
-
+    [Header("Dependencies")]
     [SerializeField] private Transform firePoint;
     [SerializeField] private List<Projectile> projectilePrefabs = new List<Projectile>();
     
-    public void Fire(Character characterFrom, Vector2 characterVelocity)
+    [Header("Settings")]
+    public int SelectedProjectile = 0;
+    public int Burst = 1;
+    public float TimeBetweenShots = 1f;
+    public int MaxAmmo = 1;
+    public float ReloadTime = 2f;
+    
+    private float elapsedTimeSinceShot = 0f;
+    private float elapsedReloadTime = 0f;
+    private int ammo = 0;
+    private bool isReloading = false;
+
+    private void Start()
     {
-        Vector3 direction = firePoint.forward;
-        for (int i = 0; i < burst; i++)
+        ammo = MaxAmmo;
+    }
+    
+    private void Update()
+    {
+        elapsedTimeSinceShot += Time.deltaTime;
+        elapsedTimeSinceShot = Mathf.Clamp(elapsedTimeSinceShot, 0, TimeBetweenShots);
+
+        if (isReloading && elapsedReloadTime >= ReloadTime)
         {
-            Projectile projectile = Instantiate(projectilePrefabs[selectedProjectile], firePoint.position, Quaternion.Euler(firePoint.forward));
-            projectile.Fire(characterFrom, characterVelocity, direction);
+            Reload();
         }
+        else if(ammo == 0)
+        {
+            isReloading = true;
+            elapsedReloadTime += Time.deltaTime;
+        }
+    }
+
+    public void Fire(Character characterFrom)
+    {
+        if (elapsedTimeSinceShot < TimeBetweenShots || isReloading) return;
+
+        Vector3 direction = firePoint.forward;
+        
+        for (int i = 0; i < Burst; i++)
+        {
+            if (ammo == 0) return;
+            
+            Projectile projectile = Instantiate(projectilePrefabs[SelectedProjectile], firePoint.position, Quaternion.Euler(firePoint.forward));
+            projectile.Fire(characterFrom, direction);
+            
+            ammo--;
+        }
+
+        elapsedTimeSinceShot -= TimeBetweenShots;
+    }
+
+    private void Reload()
+    {
+        ammo = MaxAmmo;
+        isReloading = false;
+        elapsedReloadTime = 0;
     }
 
     private void OnValidate()
     {
-        selectedProjectile = Mathf.Clamp(selectedProjectile, 0, projectilePrefabs.Count);
+        SelectedProjectile = Mathf.Clamp(SelectedProjectile, 0, projectilePrefabs.Count - 1);
+        MaxAmmo = Mathf.Clamp(MaxAmmo, Burst, 100); //Arbitrary max
     }
 }

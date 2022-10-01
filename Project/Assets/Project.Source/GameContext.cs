@@ -15,7 +15,7 @@ namespace Project.Source
         public float CurrentHealth = 100;
         public float MaxHealth = 100;
 
-        public float HealthDecayPerSecond = 5f;
+        public float HealthRegenPerSecond = -5f;
 
         public bool IsDead;
 
@@ -68,7 +68,7 @@ namespace Project.Source
 
         private void UpdateHealthDecay()
         {
-            CurrentHealth -= Time.deltaTime * HealthDecayPerSecond;
+            CurrentHealth += Time.deltaTime * HealthRegenPerSecond;
         }
 
         private void OnDead()
