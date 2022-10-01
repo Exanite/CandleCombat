@@ -6,7 +6,7 @@ using Project.Source.Characters;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class PlayerGunController : MonoBehaviour
+public class GunController : MonoBehaviour
 {
     public int EquippedGunIndex = 0;
     [SerializeField] private List<Gun> equippableGuns = new List<Gun>();

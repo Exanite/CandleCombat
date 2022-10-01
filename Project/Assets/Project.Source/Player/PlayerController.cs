@@ -16,13 +16,13 @@ public class PlayerController : MonoBehaviour
 
     private PlayerMovement playerMovement;
     private PlayerLook playerLook;
-    private PlayerGunController playerGunController;
+    private GunController gunController;
 
     private void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
         playerLook = GetComponent<PlayerLook>();
-        playerGunController = GetComponent<PlayerGunController>();
+        gunController = GetComponent<GunController>();
         
         playerLook.SetCamera(GameContext.Instance.MainCamera);
     }
@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
         
         playerMovement.SetCharacter(character);
         playerLook.SetCharacter(character);
-        playerGunController.SetCharacter(character);
+        gunController.SetCharacter(character);
 
         playerMovement.SetMoveDirection(movementReference.action.ReadValue<Vector2>());
         Vector3 pointerPosition = pointerReference.action.ReadValue<Vector2>();
@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
 
         if (shootReference.action.IsPressed())
         {
-            playerGunController.Fire();
+            gunController.Fire();
         }
     }
 }
