@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 427757ec1a2b50f439ba31858ab64c50
+guid: ec027cf25d59ca24e93a087c3b02365b
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -7,13 +7,23 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: PrimaryCubicle
-    second: {fileID: 2100000, guid: de6f052a2034cd8418531786ae69f1ae, type: 2}
+      name: FanBladeMat
+    second: {fileID: 2100000, guid: 18ef86d493fe7da48b79a68b97d50d53, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: SecondaryCubicle
-    second: {fileID: 2100000, guid: 655e88ba9e57618438cc35cd4642fe71, type: 2}
+      name: FanDetail
+    second: {fileID: 2100000, guid: 605e7a84d75d1ca4292080ab87cbd7d0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: FanMiddle
+    second: {fileID: 2100000, guid: b9ef3d8c7914fd042b1176cbbc4ecfb9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: FanTip
+    second: {fileID: 2100000, guid: 86ed43d255daf444da064f2683df09c5, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -45,7 +55,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 10
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -98,7 +108,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
+    globalScale: 10
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
