@@ -67,6 +67,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8988051371630655952, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8988051371630655952, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.821
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 500c2eddb2a4dcc4b936df6da57d21fa, type: 3}
 --- !u!1 &214717456750579596 stripped
@@ -94,8 +104,9 @@ MonoBehaviour:
   JumpAnimationTrigger: Jump
   JumpLeftGroundTime: 0.349
   JumpLandedTime: 0.983
+  JumpSpreadActivationDistance: 2
+  JumpSpreadDistance: 1
   IsDeadAnimationBool: IsDead
-  Target: {fileID: 0}
 --- !u!114 &2250288973554215811 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7910702306209672518, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
