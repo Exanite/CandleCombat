@@ -16,7 +16,7 @@ namespace Project.Source.Abilities
             if (player == null) return;
             
             //TODO: Don't reach into directly.
-            var gunController = GameContext.Instance.gameObject.GetComponent<PlayerGunController>();
+            var gunController = GameContext.Instance.gameObject.GetComponent<GunController>();
             gunController.SwitchGun(1);
             gunController.Fire();
             gunController.SwitchGun(0);
