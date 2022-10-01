@@ -9,16 +9,22 @@ namespace Project.Source
         public Character Character;
         public SkinnedMeshRenderer MeshRenderer;
 
-        [Header("Configuration")]
-        public float MovementSpeed = 5;
+        [Header("Jump Animation")]
+        public float JumpHeight = 2;
+        public float JumpDistance = 5;
+        public float JumpDelay = 0.5f;
+        public float JumpTime = 1;
+        public AnimationCurve JumpAnimationCurve;
 
         [Header("Death Animation")]
         public int DeathBlendShapeIndex;
-        public AnimationCurve DeathAnimationCurve;
         public float DeathAnimationTime = 1;
+        public AnimationCurve DeathAnimationCurve;
 
         [Header("Runtime")]
         public Transform Target;
+
+        private bool isJumping;
 
         private void OnEnable()
         {
@@ -39,11 +45,9 @@ namespace Project.Source
 
             var rb = Character.Rigidbody;
 
-            if (Target)
+            if (Target && !isJumping)
             {
-                var direction = Vector3.ClampMagnitude(Target.transform.position - transform.position, 1);
-
-                rb.velocity = direction * MovementSpeed;
+                StartCoroutine(JumpTowardsTarget());
             }
         }
 
@@ -65,6 +69,34 @@ namespace Project.Source
 
                 yield return null;
             }
+        }
+        
+        private IEnumerator JumpTowardsTarget()
+        {
+            isJumping = true;
+            
+            var timer = 0f;
+            var startPosition = transform.position;
+            var targetPosition = transform.position + Vector3.ClampMagnitude(Target.transform.position - transform.position, JumpDistance);
+            
+            while (timer < JumpTime)
+            {
+                timer += Time.deltaTime;
+
+                var ratio = timer / JumpTime;
+                var height = JumpAnimationCurve.Evaluate(ratio) * JumpHeight;
+                var position = Vector3.Lerp(startPosition, targetPosition, ratio);
+
+                transform.position = position + Vector3.up * height;
+
+                yield return null;
+            }
+
+            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+
+            yield return new WaitForSeconds(JumpDelay);
+
+            isJumping = false;
         }
     }
 }
