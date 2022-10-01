@@ -89,8 +89,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 2250288973554215811}
   MeshRenderer: {fileID: 5212907410817122171}
-  MovementSpeed: 5
+  Animator: {fileID: 0}
+  JumpDistance: 5
+  JumpAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5028076
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 0
+    m_RotationOrder: 4
+  JumpTrigger: Jump
+  JumpLeftGroundTime: 0.349
+  JumpLandedTime: 0.983
   DeathBlendShapeIndex: 3
+  DeathAnimationTime: 0.5
   DeathAnimationCurve:
     serializedVersion: 2
     m_Curve:
@@ -115,7 +144,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  DeathAnimationTime: 0.5
   Target: {fileID: 0}
 --- !u!114 &2250288973554215811 stripped
 MonoBehaviour:
