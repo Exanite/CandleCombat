@@ -10,8 +10,9 @@ public class Gun : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private Transform firePoint;
     [SerializeField] private List<Projectile> projectilePrefabs = new List<Projectile>();
-    
+
     [Header("Settings")]
+    public bool ReloadOnSwitchTo = false;
     public int SelectedProjectile = 0;
     public int Burst = 1;
     public float TimeBetweenShots = 1f;
@@ -23,9 +24,9 @@ public class Gun : MonoBehaviour
     private int ammo = 0;
     private bool isReloading = false;
 
-    private void Start()
+    private void Awake()
     {
-        ammo = MaxAmmo;
+        Reload();
     }
     
     private void Update()
@@ -63,11 +64,18 @@ public class Gun : MonoBehaviour
         elapsedTimeSinceShot -= TimeBetweenShots;
     }
 
+    public void OnSwitch()
+    {
+        if(ReloadOnSwitchTo)
+            Reload();
+    }
+
     private void Reload()
     {
         ammo = MaxAmmo;
         isReloading = false;
         elapsedReloadTime = 0;
+        elapsedTimeSinceShot = TimeBetweenShots;
     }
 
     private void OnValidate()

@@ -11,7 +11,7 @@ public class SoulTransferProjectile :  LineProjectile
         GameContext.Instance.CurrentPlayer = character;
         
         //TODO: Don't reach into directly.
-        var gunController = GameContext.Instance.gameObject.GetComponent<PlayerGunController>();
-        gunController.EquippedGunIndex = 0;
+        //var gunController = GameContext.Instance.gameObject.GetComponent<PlayerGunController>();
+        //gunController.SwitchGun(0);
     }
 }

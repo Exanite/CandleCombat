@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
 
         if (shootReference.action.IsPressed())
         {
-            playerGunController.Fire(character);
+            playerGunController.Fire();
         }
     }
 }

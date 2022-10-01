@@ -22,18 +22,15 @@ public class PlayerGunController : MonoBehaviour
         SwitchGun(EquippedGunIndex);
 
         if (equippedGun == null || character == null) return;
-
-        Transform eT = equippedGun.transform;
-        Transform cgT = character.GunPosition.transform;
-        eT.position = cgT.position;
-        eT.rotation = cgT.rotation;
+        
+        MoveGunToCharacterGunPoint(character);
     }
     
-    public void Fire(Character characterFrom)
+    public void Fire()
     {
         if (equippedGun == null) return;
         
-        equippedGun.Fire(characterFrom);
+        equippedGun.Fire(character);
     }
 
     public void SetCharacter(Character newCharacter)
@@ -41,21 +38,35 @@ public class PlayerGunController : MonoBehaviour
         character = newCharacter;
     }
 
-    private void SwitchGun(int gunIndex)
+    public void SwitchGun(int gunIndex)
     {
-        if (equippedGun != null && EquippedGunIndex == currentEquippedGunIndex) return;
+        if (equippedGun != null && gunIndex == currentEquippedGunIndex) return;
         
         for (int i = 0; i < equippableGuns.Count; i++)
         {
             if (gunIndex == i)
             {
+                EquippedGunIndex = i;
+                currentEquippedGunIndex = i;
                 equippedGun = equippableGuns[i];
                 equippedGun.gameObject.SetActive(true);
-                currentEquippedGunIndex = i;
+                
+                if(character != null)
+                    MoveGunToCharacterGunPoint(character);
+                
+                equippedGun.OnSwitch();
             }
             else
                 equippableGuns[i].gameObject.SetActive(false); 
         }
+    }
+
+    private void MoveGunToCharacterGunPoint(Character character)
+    {
+        Transform eT = equippedGun.transform;
+        Transform cgT = character.GunPosition.transform;
+        eT.position = cgT.position;
+        eT.rotation = cgT.rotation;
     }
 
     private void OnValidate()

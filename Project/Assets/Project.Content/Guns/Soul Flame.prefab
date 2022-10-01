@@ -177,6 +177,7 @@ MonoBehaviour:
   firePoint: {fileID: 892416972826810785}
   projectilePrefabs:
   - {fileID: 3139284629023083357, guid: 213a45c013792c94a978bcdcc220a690, type: 3}
+  ReloadOnSwitchTo: 1
   SelectedProjectile: 0
   Burst: 1
   TimeBetweenShots: 1

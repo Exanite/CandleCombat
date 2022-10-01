@@ -1,3 +1,5 @@
+using System.Collections;
+using Project.Source.Characters;
 using UnityEngine;
 
 namespace Project.Source.Abilities
@@ -8,10 +10,16 @@ namespace Project.Source.Abilities
         public override void Execute()
         {
             Debug.Log("SoulTransferAbility");
+
+            Character player = GameContext.Instance.CurrentPlayer;
+
+            if (player == null) return;
             
             //TODO: Don't reach into directly.
             var gunController = GameContext.Instance.gameObject.GetComponent<PlayerGunController>();
-            gunController.EquippedGunIndex = 1;
+            gunController.SwitchGun(1);
+            gunController.Fire();
+            gunController.SwitchGun(0);
         }
     }
 }
