@@ -47,7 +47,7 @@ public class PlayerLook : MonoBehaviour
         targetGroup.AddMember(endObject, pointerWeight, 0);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (character == null) return;
         

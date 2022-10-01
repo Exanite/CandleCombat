@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private Character character;
     private Vector2 moveDirection;
     
-    private void Update()
+    private void FixedUpdate()
     {
         if (character == null) return;
 
