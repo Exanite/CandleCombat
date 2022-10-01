@@ -24,8 +24,6 @@ public class LineProjectile : Projectile
 
     public override void Fire(Character characterFrom, Vector3 direction)
     {
-        Debug.Log("Pow!!!!");
-
         owner = characterFrom;
         var tPosition = transform.position;
         LineRenderer line = Instantiate(linePrefab, tPosition, Quaternion.Euler(direction));
