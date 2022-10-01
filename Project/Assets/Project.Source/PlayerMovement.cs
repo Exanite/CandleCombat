@@ -10,22 +10,23 @@ using Vector3 = UnityEngine.Vector3;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Dependencies")]
-    [SerializeField] private InputActionReference movementAction;
     [SerializeField] private Rigidbody rbRef;
     
     [Header("Settings")]
     [SerializeField] private int movementSpeed;
+
+    private Vector2 moveDirection;
     
     private void Update()
     {
-        Vector2 xyVelocity = GetDirection() * movementSpeed;
+        Vector2 xyVelocity = moveDirection * movementSpeed;
         Rigidbody rb = GetRigidBody();
         rb.velocity = new Vector3(xyVelocity.x, 0, xyVelocity.y);
     }
 
-    private Vector2 GetDirection()
+    public void SetMoveDirection(Vector2 moveDir)
     {
-        return movementAction.action.ReadValue<Vector2>();
+        moveDirection = moveDir;
     }
 
     private Rigidbody GetRigidBody()

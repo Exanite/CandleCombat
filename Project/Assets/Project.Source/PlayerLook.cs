@@ -10,7 +10,6 @@ public class PlayerLook : MonoBehaviour
     //Using separate CinemachineTargetGroup.
     [Header("Dependencies")]
     [SerializeField] private Camera mainCamera;
-    [SerializeField] private InputActionReference pointerReference;
     [SerializeField] private Transform startObject;
     [SerializeField] private Transform endObject;
 
@@ -19,6 +18,7 @@ public class PlayerLook : MonoBehaviour
     [SerializeField] private float maxRadius = 5f;
 
     private Plane plane;
+    private Vector3 pointerPosition;
 
     private void Start()
     {
@@ -28,19 +28,23 @@ public class PlayerLook : MonoBehaviour
 
     private void Update()
     {
-        Vector3 endPosition = GetPointerWorldPosition();
+        Vector3 endPosition = PointerToWorldPosition(pointerPosition);
         endObject.position = ClampEndPosition(startObject.position, endPosition, maxRadius);
     }
 
-    private Vector3 GetPointerWorldPosition()
+    public void SetPointerPosition(Vector3 pointerPos)
     {
-        if (mainCamera == null || pointerReference == null)
+        pointerPosition = pointerPos;
+    }
+
+    private Vector3 PointerToWorldPosition(Vector3 pointerPositio)
+    {
+        if (mainCamera == null)
         {
             Debug.Log("Main camera or pointer reference is not set");
             return transform.position;
         }
         
-        Vector3 pointerPosition = pointerReference.action.ReadValue<Vector2>();
         Ray ray = mainCamera.ScreenPointToRay(pointerPosition);
         float enter = 0;
         bool success = plane.Raycast(ray, out enter);
