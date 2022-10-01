@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: cebd0ad1463a3a649939d74cd19625ee
+guid: ec027cf25d59ca24e93a087c3b02365b
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -7,13 +7,23 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: LampPole
-    second: {fileID: 2100000, guid: e0b2e8a72e5966a4fb90a112f3f178b3, type: 2}
+      name: FanBladeMat
+    second: {fileID: 2100000, guid: 18ef86d493fe7da48b79a68b97d50d53, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: LampShade
-    second: {fileID: 2100000, guid: 372503dcfdc1d0c4fa728cc4a7a815ca, type: 2}
+      name: FanDetail
+    second: {fileID: 2100000, guid: 605e7a84d75d1ca4292080ab87cbd7d0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: FanMiddle
+    second: {fileID: 2100000, guid: b9ef3d8c7914fd042b1176cbbc4ecfb9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: FanTip
+    second: {fileID: 2100000, guid: 86ed43d255daf444da064f2683df09c5, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
