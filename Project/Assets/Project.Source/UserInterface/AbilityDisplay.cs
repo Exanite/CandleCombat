@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,7 +7,9 @@ namespace Project.Source.UserInterface
     public class AbilityDisplay : MonoBehaviour
     {
         public int AbilityIndex;
+        public string KeyTextContent;
 
+        public TMP_Text KeyText;
         public Image IconImage;
         public Image CooldownImage;
 
@@ -26,6 +29,9 @@ namespace Project.Source.UserInterface
             
             // Icon
             IconImage.sprite = ability.Icon;
+            
+            // Key text
+            KeyText.text = KeyTextContent;
         }
     }
 }
