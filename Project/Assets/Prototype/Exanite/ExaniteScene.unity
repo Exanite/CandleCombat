@@ -499,6 +499,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5074512353664290214, guid: b6f0b066183245f44a322985a716a76e,
         type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5074512353664290214, guid: b6f0b066183245f44a322985a716a76e,
+        type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[1]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5074512353664290214, guid: b6f0b066183245f44a322985a716a76e,
+        type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[2]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5074512353664290214, guid: b6f0b066183245f44a322985a716a76e,
+        type: 3}
       propertyPath: m_BlendShapeWeights.Array.data[3]
       value: 0
       objectReference: {fileID: 0}
