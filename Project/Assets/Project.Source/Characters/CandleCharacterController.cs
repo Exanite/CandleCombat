@@ -20,11 +20,10 @@ namespace Project.Source.Characters
         [Header("Death Animation")]
         public string IsDeadAnimationBool = "IsDead";
         
-        [Header("Runtime")]
-        public Transform Target;
-
         private bool isJumping;
         private Coroutine jumpCoroutine;
+
+        private Character target;
 
         private void OnEnable()
         {
@@ -47,7 +46,9 @@ namespace Project.Source.Characters
 
             if (!Character.IsPlayer)
             {
-                if (Target && !isJumping)
+                target = GameContext.Instance.CurrentPlayer;
+                
+                if (target && !isJumping)
                 {
                     jumpCoroutine = StartCoroutine(JumpTowardsTarget());
                 }
@@ -71,7 +72,7 @@ namespace Project.Source.Characters
 
             var timer = 0f;
             var startPosition = transform.position;
-            var targetPosition = transform.position + Vector3.ClampMagnitude(Target.transform.position - transform.position, JumpDistance);
+            var targetPosition = transform.position + Vector3.ClampMagnitude(target.transform.position - transform.position, JumpDistance);
 
             var airTime = JumpLandedTime - JumpLeftGroundTime;
 
