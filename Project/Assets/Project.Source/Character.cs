@@ -1,9 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public class Character : MonoBehaviour
+namespace Project.Source
 {
-    
+    public class Character : MonoBehaviour
+    {
+        public float CurrentHealth = 100;
+        public float MaxHealth = 100;
+
+        public Rigidbody Rigidbody;
+
+        private void Start()
+        {
+            Rigidbody = GetComponent<Rigidbody>();
+        }
+    }
 }
