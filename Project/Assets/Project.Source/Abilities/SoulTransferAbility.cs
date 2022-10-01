@@ -20,11 +20,6 @@ namespace Project.Source.Abilities
             gunController.SwitchGun(1);
             gunController.Fire();
             gunController.SwitchGun(0);
-
-            var previousPlayer = player;
-            
-            GameContext.Instance.CurrentHealth = GameContext.Instance.MaxHealth;
-            previousPlayer.OverwriteHealth(-1);
         }
     }
 }
