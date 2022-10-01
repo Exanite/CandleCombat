@@ -12,20 +12,19 @@ namespace Project.Source.Characters
 
         [Header("Jump Animation")]
         public float JumpDistance = 5;
-        public string JumpTrigger = "Jump";
+        public string JumpAnimationTrigger = "Jump";
 
         public float JumpLeftGroundTime = 0.349f;
         public float JumpLandedTime = 0.983f;
 
         [Header("Death Animation")]
-        public int DeathBlendShapeIndex;
-        public float DeathAnimationTime = 1;
-        public AnimationCurve DeathAnimationCurve;
-
+        public string IsDeadAnimationBool = "IsDead";
+        
         [Header("Runtime")]
         public Transform Target;
 
         private bool isJumping;
+        private Coroutine jumpCoroutine;
 
         private void OnEnable()
         {
@@ -39,43 +38,31 @@ namespace Project.Source.Characters
 
         private void Update()
         {
+            Animator.SetBool(IsDeadAnimationBool, Character.IsDead);
+            
             if (Character.IsDead)
             {
                 return;
             }
 
-            var rb = Character.Rigidbody;
-
             if (Target && !isJumping)
             {
-                StartCoroutine(JumpTowardsTarget());
+                var jumpCoroutine = StartCoroutine(JumpTowardsTarget());
             }
         }
 
         private void OnDead(Character character)
         {
-            StartCoroutine(PlayDeathAnimation());
-        }
-
-        private IEnumerator PlayDeathAnimation()
-        {
-            var timer = 0f;
-
-            while (timer < DeathAnimationTime)
+            if (jumpCoroutine != null)
             {
-                timer += Time.deltaTime;
-
-                var weight = DeathAnimationCurve.Evaluate(timer / DeathAnimationTime) * 100;
-                MeshRenderer.SetBlendShapeWeight(DeathBlendShapeIndex, weight);
-
-                yield return null;
+                StopCoroutine(jumpCoroutine);
             }
         }
-
+        
         private IEnumerator JumpTowardsTarget()
         {
             isJumping = true;
-            Animator.SetTrigger(JumpTrigger);
+            Animator.SetTrigger(JumpAnimationTrigger);
 
             yield return new WaitForSeconds(JumpLeftGroundTime);
 
