@@ -178,26 +178,26 @@ namespace Project.Source.Characters
             isJumping = false;
         }
 
-        private void OnRenderObject()
-        {
-            var resultCount = path.GetCornersNonAlloc(pathBuffer);
-            if (resultCount > 1)
-            {
-                using (var handle = GameContext.Instance.DrawingService.BeginDrawing())
-                {
-                    handle.Topology = MeshTopology.Lines;
-                    handle.Color = Color.cyan;
-
-                    for (var i = 1; i < resultCount; i++)
-                    {
-                        handle.AddVertex(pathBuffer[i - 1]);
-                        handle.AddVertex(pathBuffer[i]);
-                    }
-
-                    handle.DrawSphere(pathBuffer[1], Quaternion.identity, Vector3.one);
-                }
-            }
-        }
+        // private void OnRenderObject()
+        // {
+        //     var resultCount = path.GetCornersNonAlloc(pathBuffer);
+        //     if (resultCount > 1)
+        //     {
+        //         using (var handle = GameContext.Instance.DrawingService.BeginDrawing())
+        //         {
+        //             handle.Topology = MeshTopology.Lines;
+        //             handle.Color = Color.cyan;
+        //
+        //             for (var i = 1; i < resultCount; i++)
+        //             {
+        //                 handle.AddVertex(pathBuffer[i - 1]);
+        //                 handle.AddVertex(pathBuffer[i]);
+        //             }
+        //
+        //             handle.DrawSphere(pathBuffer[1], Quaternion.identity, Vector3.one);
+        //         }
+        //     }
+        // }
 
         private Vector3 SelectJumpPosition()
         {
