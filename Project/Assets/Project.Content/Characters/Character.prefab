@@ -411,6 +411,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5074512353664290214, guid: b6f0b066183245f44a322985a716a76e,
         type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: eec99872447be2843a0301661c3d96e9, type: 2}
+    - target: {fileID: 5074512353664290214, guid: b6f0b066183245f44a322985a716a76e,
+        type: 3}
       propertyPath: m_BlendShapeWeights.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -436,6 +441,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b6f0b066183245f44a322985a716a76e, type: 3}
+--- !u!137 &4225822962962512318 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5074512353664290214, guid: b6f0b066183245f44a322985a716a76e,
+    type: 3}
+  m_PrefabInstance: {fileID: 8991834137676248088}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6103822931686772627 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2917289242402929547, guid: b6f0b066183245f44a322985a716a76e,
@@ -594,6 +605,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1613626332578841448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8072702675715705161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5bbb1d1c8dbc674195ae20462becda7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  smRenderer: {fileID: 4225822962962512318}
+  Duration: 1
 --- !u!114 &7910702306209672518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -607,6 +632,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Rigidbody: {fileID: 657701656}
+  DissolveShader: {fileID: 1613626332578841448}
   currentHealth: 3
   MaxHealth: 3
   HealthRegenPerSecond: 0
