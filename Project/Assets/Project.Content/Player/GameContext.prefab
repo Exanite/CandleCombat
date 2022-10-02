@@ -140,6 +140,8 @@ MonoBehaviour:
   movementSmoothTime: 0.05
   moveTiltDegrees: 1
   dodgeSpeed: 0
+  dodgeTime: 0.2
+  timeBetweenDodge: 2
 --- !u!114 &3495844000217364866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -466,6 +468,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8765663156813503573, guid: 9f9b08be9e17b5940b8f318e0fa6b5ec,
+        type: 3}
+      propertyPath: projectilePrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 1736735354113402081, guid: dcd92216766d149498358a53e74f1418,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f9b08be9e17b5940b8f318e0fa6b5ec, type: 3}
 --- !u!4 &6558467135243631116 stripped

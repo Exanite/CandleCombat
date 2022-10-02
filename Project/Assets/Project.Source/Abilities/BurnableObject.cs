@@ -63,6 +63,8 @@ public class BurnableObject : MonoBehaviour, IBurn
     private GameObject spawnedFracturedObject;
 
     private int possesses = 0;
+
+    private GameContext subscribedGameContext;
     
     private void Awake()
     {
@@ -73,12 +75,13 @@ public class BurnableObject : MonoBehaviour, IBurn
 
     private void OnEnable()
     {
-        GameContext.Instance.Possessed += HandlePossessed;
+        subscribedGameContext = GameContext.Instance;
+        subscribedGameContext.Possessed += HandlePossessed;
     }
 
     private void OnDisable()
     {
-        GameContext.Instance.Possessed -= HandlePossessed;
+        subscribedGameContext.Possessed -= HandlePossessed;
     }
 
     private void Update()

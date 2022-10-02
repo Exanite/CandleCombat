@@ -57,6 +57,8 @@ namespace Project.Source.Characters
 
         private NavMeshPath path;
         private readonly Vector3[] pathBuffer = new Vector3[8];
+        
+        private GameContext subscribedGameContext;
 
         private void Awake()
         {
@@ -71,14 +73,16 @@ namespace Project.Source.Characters
 
         private void OnEnable()
         {
+            subscribedGameContext = GameContext.Instance;
+            
             Character.Dead += OnDead;
-            GameContext.Instance.Possessed += OnPossessed;
+            subscribedGameContext.Possessed += OnPossessed;
         }
 
         private void OnDisable()
         {
             Character.Dead -= OnDead;
-            GameContext.Instance.Possessed -= OnPossessed;
+            subscribedGameContext.Possessed -= OnPossessed;
         }
 
         private void Update()
