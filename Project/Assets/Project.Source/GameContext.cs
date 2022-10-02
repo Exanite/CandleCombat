@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Exanite.Drawing;
 using Project.Source.Abilities;
 using Project.Source.Characters;
 using Project.Source.Input;
@@ -19,6 +20,7 @@ namespace Project.Source
         [FormerlySerializedAs("EnemySpawnManager")]
         public WaveManager waveManager;
         public VisualEffect PlayerWickPrefab;
+        public DrawingService DrawingService;
 
         [Header("Health")]
         public float CurrentHealth = 100;
