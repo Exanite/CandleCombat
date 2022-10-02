@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3761831735701263424}
+  - component: {fileID: 5737007065948574004}
   - component: {fileID: 259921924871478245}
   - component: {fileID: 2629990946948525871}
   - component: {fileID: 6528896624904533556}
@@ -35,6 +36,62 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5737007065948574004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4575488604447674106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60e1745c395d61648aff751925e9910e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightObjectPrefab: {fileID: 8694731223929521399, guid: 1e99cb1fac659664aa58acc619af2df6,
+    type: 3}
+  fireVisualEffect: {fileID: 6358338238166705649, guid: e6fd9552c2fc93544b699d284b153adb,
+    type: 3}
+  fracturedVersionPrefab: {fileID: 0}
+  MaxHealth: 50
+  MaxFireSize: 4
+  MinFireSize: 1
+  LightStartingHeight: 6
+  MinIntensity: 20
+  MaxIntensity: 200
+  healthToIntensityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.08007876
+      outSlope: 0.08007876
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.08386092
+    - serializedVersion: 3
+      time: 0.50803804
+      value: 0.75246435
+      inSlope: -1.0217886
+      outSlope: -1.0217886
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: -0.013195038
+      inSlope: -1.5563387
+      outSlope: -1.5563387
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!33 &259921924871478245
 MeshFilter:
   m_ObjectHideFlags: 0

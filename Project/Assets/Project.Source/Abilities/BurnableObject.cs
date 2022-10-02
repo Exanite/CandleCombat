@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public interface IBurn
 {
@@ -14,14 +15,19 @@ public class BurnableObject : MonoBehaviour, IBurn
 {
     [Header("Dependencies")]
     [SerializeField] private Light lightObjectPrefab;
+    [SerializeField] private VisualEffect fireVisualEffect;
 
     [Header("Optional")]
     [SerializeField] private GameObject fracturedVersionPrefab;
     
     [Header("Settings")]
     public int MaxHealth = 100;
-    
+
     [Header("Light Settings")]
+    [Range(1, 14)]
+    public float MaxFireSize = 6;
+    [Range(1, 14)]
+    public int MinFireSize = 2;
     public int LightStartingHeight = 6;
     public int MinIntensity = 80;
     public int MaxIntensity = 170;
@@ -29,13 +35,14 @@ public class BurnableObject : MonoBehaviour, IBurn
 
     private MeshRenderer meshRenderer;
     
-    private int CurrentHealth = 0;
+    private float CurrentHealth = 0;
     private int currentFireDPS = 0;
     private bool isOnFire = false;
     private bool isFractured = false; 
 
     private float timeElapsedSinceDamaged = 0;
     private Light spawnedLight;
+    private VisualEffect spawnedFireVisualEffect;
     private GameObject spawnedFracturedObject;
 
     private void Awake()
@@ -49,32 +56,37 @@ public class BurnableObject : MonoBehaviour, IBurn
         if (!isOnFire) return;
 
         timeElapsedSinceDamaged += Time.deltaTime;
-
-        if (timeElapsedSinceDamaged > 1)
-        {
-            CurrentHealth -= currentFireDPS;
-            timeElapsedSinceDamaged--;
-        }
+        
+        CurrentHealth -= currentFireDPS * Time.deltaTime;
 
         if(spawnedLight != null)
             UpdateLightIntensity();
 
-        if (CurrentHealth != MaxHealth && !isFractured)
+        if (CurrentHealth <= MaxHealth && !isFractured)
             Fracture();
 
         if(CurrentHealth <= 0)
             Expire();
     }
 
-    public void AddFire(int fireDOT)
+    public void AddFire(int fireDPS)
     {
-        currentFireDPS = fireDOT;
+        if (isOnFire || fireDPS < currentFireDPS) return;
+        
+        currentFireDPS = fireDPS;
         isOnFire = true;
 
         if (spawnedLight == null)
         {
-            Vector3 spawnPosition = transform.position + (transform.up * LightStartingHeight);
-            spawnedLight = Instantiate(lightObjectPrefab, spawnPosition, Quaternion.identity);
+            Vector3 highSpawnPosition = transform.position + (transform.up * LightStartingHeight);
+            spawnedLight = Instantiate(lightObjectPrefab, highSpawnPosition, Quaternion.identity);
+
+            if (fireVisualEffect != null)
+            {
+                
+                spawnedFireVisualEffect = Instantiate(fireVisualEffect, transform.position, Quaternion.identity);
+                spawnedFireVisualEffect.SetFloat("FlamesSize", MaxFireSize);
+            }
         }
         else
             spawnedLight.gameObject.SetActive(true);
@@ -98,11 +110,19 @@ public class BurnableObject : MonoBehaviour, IBurn
 
     private void UpdateLightIntensity()
     {
-        float healthPercent = (float)CurrentHealth/MaxHealth;
+        float healthPercent = 1 - (float)CurrentHealth/MaxHealth;
         float intensity = healthToIntensityCurve.Evaluate(healthPercent) * MaxIntensity;
         intensity = Mathf.Clamp(intensity, MinIntensity, MaxIntensity);
+        
+        Debug.Log("Intensite: " + intensity);
 
         spawnedLight.intensity = intensity;
+
+        float size = healthToIntensityCurve.Evaluate(healthPercent) * MaxFireSize;
+        size = Mathf.Clamp(size, MinFireSize, MaxFireSize);
+        
+        if(fireVisualEffect != null)
+            fireVisualEffect.SetFloat("FlamesSize", size);
     }
     
     private void Fracture()
@@ -119,10 +139,13 @@ public class BurnableObject : MonoBehaviour, IBurn
     private void Expire()
     {
         if (spawnedLight != null) 
-            Destroy(spawnedLight);
+            Destroy(spawnedLight.gameObject);
         
         if(spawnedFracturedObject != null)
-            Destroy(spawnedFracturedObject);
+            Destroy(spawnedFracturedObject.gameObject);
+        
+        if(spawnedFireVisualEffect != null)
+            Destroy(spawnedFireVisualEffect.gameObject);
         
         Destroy(gameObject);
     }

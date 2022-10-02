@@ -50,11 +50,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lightObjectPrefab: {fileID: 8694731223929521399, guid: 1e99cb1fac659664aa58acc619af2df6,
     type: 3}
-  MaxHealth: 100
-  CurrentHealth: 100
+  fireVisualEffect: {fileID: 6358338238166705649, guid: e6fd9552c2fc93544b699d284b153adb,
+    type: 3}
+  fracturedVersionPrefab: {fileID: 3638084043743922117, guid: a4d3cf9f7cd5f694cbde7ebe3bd02e63,
+    type: 3}
+  MaxHealth: 150
+  MaxFireSize: 5
+  MinFireSize: 1
   LightStartingHeight: 6
-  MinIntensity: 80
-  MaxIntensity: 170
+  MinIntensity: 10
+  MaxIntensity: 80
   healthToIntensityCurve:
     serializedVersion: 2
     m_Curve:
