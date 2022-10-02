@@ -263,11 +263,13 @@ MonoBehaviour:
   JumpSpreadDistance: 0
   JumpLookAheadTime: 1
   JumpLookAheadMaxDistance: 5
-  CharacterRadius: 0.3
+  JumpSpeed: 1
+  JumpSpeedAnimatorFloat: JumpSpeed
+  CharacterRadius: 0.25
   IsDeadAnimationBool: IsDead
   CollisionDamageAmount: 10
-  CollisionForce: 30
-  CollisionForceDuration: 5
+  CollisionForce: 200
+  CollisionForceDuration: 0.1
   HealthRatioAnimationFloat: HealthRatio
   HealthRatioSmoothTime: 0.25
 --- !u!4 &698344705162859830 stripped
