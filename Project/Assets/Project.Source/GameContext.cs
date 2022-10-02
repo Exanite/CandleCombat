@@ -38,6 +38,7 @@ namespace Project.Source
         public List<Ability> Abilities = new List<Ability>();
 
         private AbilityInputActions abilityInputActions;
+        private GunController playerGunController;
         
         //TODO: Move event??
         public event Action<Character> Possessed;
@@ -53,6 +54,7 @@ namespace Project.Source
 
             //TODO: Ensure component is on main camera with separate script w/ require component.
             AudioSource = MainCamera.GetComponent<AudioSource>();
+            playerGunController = GetComponent<GunController>();
         }
 
         private void Start()
@@ -96,6 +98,7 @@ namespace Project.Source
             }
             
             CurrentPlayer = character;
+            CurrentPlayer.OnPossessed(); //Containt
             
             Possessed?.Invoke(character);
         }

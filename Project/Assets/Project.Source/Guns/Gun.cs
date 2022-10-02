@@ -125,6 +125,11 @@ public class Gun : MonoBehaviour
         return model;
     }
 
+    public int GetAmmo()
+    {
+        return ammo;
+    }
+
     private void Reload()
     {
         OnReload?.Invoke();
