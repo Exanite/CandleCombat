@@ -88,11 +88,11 @@ namespace Project.Source.Characters
                 
                 target = GameContext.Instance.CurrentPlayer;
 
-                var currentPosition = transform.position;
-                var targetPosition = target.transform.position;
-
                 if (target && !isJumping)
                 {
+                    var currentPosition = transform.position;
+                    var targetPosition = target.transform.position;
+                    
                     var offset = targetPosition - currentPosition;
                     var distanceToTarget = offset.magnitude;
                     if (distanceToTarget > AttackRange + 0.5f)
