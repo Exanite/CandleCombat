@@ -55,7 +55,7 @@ namespace Project.Source.Characters
         {
             if (IsPlayer)
             {
-                HandlePossessed(this);
+                OnPossessed();
             }
             else
             {
@@ -104,6 +104,22 @@ namespace Project.Source.Characters
         public void OverwriteHealth(float value)
         {
             CurrentHealth = value;
+        }
+        
+        public void OnPossessed()
+        {
+            int playerLayer = LayerMask.NameToLayer("Player");
+            gameObject.layer = playerLayer;
+            Rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            
+            foreach(var pointLight in PointLights)
+                pointLight.gameObject.SetActive(true);
+        }
+
+        public void SwitchLights(bool onToffF)
+        {
+            foreach(var pointLight in PointLights)
+                pointLight.gameObject.SetActive(onToffF);
         }
 
         private void UpdateHealthDecay()
@@ -164,18 +180,6 @@ namespace Project.Source.Characters
             Destroy(gameObject, OnDeathDestroyDelay);
 
             Dead?.Invoke(this);
-        }
-
-        private void HandlePossessed(Character obj)
-        {
-            if (obj != GameContext.Instance.CurrentPlayer) return;
-
-            int playerLayer = LayerMask.NameToLayer("Player");
-            gameObject.layer = playerLayer;
-            Rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
-            
-            foreach(var pointLight in PointLights)
-                pointLight.gameObject.SetActive(true);
         }
     }
 }

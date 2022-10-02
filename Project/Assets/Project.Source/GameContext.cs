@@ -96,6 +96,7 @@ namespace Project.Source
             }
             
             CurrentPlayer = character;
+            CurrentPlayer.OnPossessed(); //Containt
             
             Possessed?.Invoke(character);
         }
