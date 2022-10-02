@@ -54,7 +54,6 @@ MonoBehaviour:
   - {fileID: 1736735354113402081, guid: dcd92216766d149498358a53e74f1418, type: 3}
   fireAudioClip: {fileID: 8300000, guid: ef5c4fc38af646a4c95d40ca5abb8c11, type: 3}
   fireAudioScale: 0.151
-  audioSource: {fileID: 8684875990757802580}
   GunHoldType: 1
   TimeToHolsterGun: 2
   ReloadOnSwitchTo: 1

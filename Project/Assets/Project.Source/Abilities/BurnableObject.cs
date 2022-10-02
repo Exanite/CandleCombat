@@ -12,7 +12,7 @@ public interface IBurn
     public void RemoveFire(int fireDPSRemoved);
 }
 
-[RequireComponent(typeof(MeshRenderer))]
+[RequireComponent(typeof(MeshRenderer), typeof(AudioSource))]
 public class BurnableObject : MonoBehaviour, IBurn
 {
     [Header("Dependencies")]
@@ -21,6 +21,8 @@ public class BurnableObject : MonoBehaviour, IBurn
 
     [Header("Optional")]
     [SerializeField] private GameObject fracturedVersionPrefab;
+    [Tooltip("Audio is only enabled and disabled.")]
+    private AudioSource audioSource;
     
     [Header("Settings")]
     public int MaxHealth = 100;
@@ -68,9 +70,11 @@ public class BurnableObject : MonoBehaviour, IBurn
     
     private void Awake()
     {
+        audioSource = GetComponent <AudioSource>();
         meshRenderer = GetComponent<MeshRenderer>();
         CurrentHealth = MaxHealth;
         originalFireColor.a = 255;
+        audioSource.enabled = false;
     }
 
     private void OnEnable()
@@ -136,13 +140,14 @@ public class BurnableObject : MonoBehaviour, IBurn
 
             if (fireVisualEffect != null)
             {
-                
                 spawnedFireVisualEffect = Instantiate(fireVisualEffect, transform.position, Quaternion.identity);
                 spawnedFireVisualEffect.SetFloat(flameSizeAttribute, MaxFireSize);
             }
         }
         else
             spawnedLight.gameObject.SetActive(true);
+
+        audioSource.enabled = true;
     }
 
     public void RemoveFire(int fireDPSRemoved)
@@ -157,6 +162,8 @@ public class BurnableObject : MonoBehaviour, IBurn
             {
                 currentFireDPS = 0;
                 spawnedLight.gameObject.SetActive(false);
+
+                audioSource.enabled = false;
             }
         }
     }

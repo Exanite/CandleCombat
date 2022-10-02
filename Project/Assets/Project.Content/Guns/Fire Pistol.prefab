@@ -156,9 +156,8 @@ MonoBehaviour:
   firePointVisual: {fileID: 5011619906631964488}
   projectilePrefabs:
   - {fileID: 7209473686946063059, guid: e3c1a4ceceb71de49b40722066382d29, type: 3}
-  fireAudioClip: {fileID: 8300000, guid: 3581942034e21514381dd3c9d45265c3, type: 3}
-  fireAudioScale: 0.05
-  audioSource: {fileID: 4813533812991842476}
+  fireAudioClip: {fileID: 8300000, guid: 630da8ad19628504eb22cb0436f1f363, type: 3}
+  fireAudioScale: 0.2
   GunHoldType: 0
   TimeToHolsterGun: 2
   ReloadOnSwitchTo: 1
