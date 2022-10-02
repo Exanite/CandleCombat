@@ -9,7 +9,7 @@ namespace Project.Source.Abilities
         
         public override void Execute()
         {
-            Debug.Log("SoulTransferAbility");
+            // Debug.Log("SoulTransferAbility");
 
             var player = GameContext.Instance.CurrentPlayer;
             if (player == null)

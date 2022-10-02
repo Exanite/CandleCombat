@@ -1,45 +1,36 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DissolveShader : MonoBehaviour
 {
     private Material material;
-    [SerializeField] private SkinnedMeshRenderer smRenderer = null;
-  
-    private float dissolveValue = 1f;
-    private float timer;
-    [SerializeField] private float duration = 0f;
+    [SerializeField]
+    private SkinnedMeshRenderer smRenderer;
+
+    [SerializeField]
+    public float Duration = 1;
 
     private void Start()
     {
         material = smRenderer.material;
-        DissolveStart();
     }
 
-    private void Update()
-    {
-       // material.SetFloat("_DissolveAmount", dissolveValue);
-    }
-
-    private void DissolveStart()
+    public void StartDissolve()
     {
         StartCoroutine(Dissolve());
-        
     }
+
     private IEnumerator Dissolve()
     {
-        while(timer < duration)
+        var timer = 0f;
+        while (timer < Duration)
         {
             timer += Time.deltaTime;
 
-            dissolveValue = Mathf.Lerp(1, 0, timer / duration);
-
+            var dissolveValue = Mathf.Lerp(1, 0, timer / Duration);
             material.SetFloat("_DissolveAmount", dissolveValue);
 
             yield return null;
         }
-
-        
     }
 }

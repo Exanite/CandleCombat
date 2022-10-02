@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cinemachine;
 using Exanite.Drawing;
 using Project.Source.Abilities;
 using Project.Source.Characters;
@@ -19,6 +20,7 @@ namespace Project.Source
     {
         [Header("Dependencies")]
         public Camera MainCamera;
+        public CinemachineVirtualCamera VirtualCamera;
         public Character CurrentPlayer;
         [FormerlySerializedAs("EnemySpawnManager")]
         public WaveManager waveManager;
@@ -38,7 +40,7 @@ namespace Project.Source
         public List<Ability> Abilities = new List<Ability>();
 
         private AbilityInputActions abilityInputActions;
-        private GunController playerGunController;
+        public GunController PlayerGunController;
         
         //TODO: Move event??
         public event Action<Character> Possessed;
@@ -54,7 +56,7 @@ namespace Project.Source
 
             //TODO: Ensure component is on main camera with separate script w/ require component.
             AudioSource = MainCamera.GetComponent<AudioSource>();
-            playerGunController = GetComponent<GunController>();
+            PlayerGunController = GetComponent<GunController>();
         }
 
         private void Start()
@@ -98,9 +100,29 @@ namespace Project.Source
             }
             
             CurrentPlayer = character;
-            CurrentPlayer.OnPossessed(); //Containt
+            CurrentPlayer.OnPossessed(); 
             
             Possessed?.Invoke(character);
+        }
+
+        public void ScreenShake()
+        {
+            StartCoroutine(ShakeScreen(0.1f, 1));
+        }
+
+        private IEnumerator ShakeScreen(float duration, float intensity)
+        {
+            var timer = 0f;
+            var channels = VirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            channels.m_AmplitudeGain = intensity;
+            
+            while (timer < duration)
+            {
+                timer += Time.deltaTime;
+                yield return null;
+            }
+
+            channels.m_AmplitudeGain = 0f;
         }
         
         private void CheckDeath()
@@ -131,7 +153,7 @@ namespace Project.Source
         {
             IsDead = true;
             
-            Debug.Log("Character died");
+            // Debug.Log("Character died");
 
             StartCoroutine(Restart(5));
         }

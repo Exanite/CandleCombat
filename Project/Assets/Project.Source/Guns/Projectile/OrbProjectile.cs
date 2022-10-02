@@ -30,6 +30,7 @@ public class OrbProjectile : Projectile
     public override void Fire(Character characterFrom, Vector3 direction, Vector3 visualPosition)
     {
         owner = characterFrom;
+        transform.position = visualPosition;
         transform.forward = direction;
         rb.velocity = direction * speed;
 
@@ -52,7 +53,7 @@ public class OrbProjectile : Projectile
             Hit(otherCharacter);
         }
 
-        Debug.Log($"{name} Hit");
+        // Debug.Log($"{name} Hit");
 
         Destroy(gameObject);
     }
@@ -97,7 +98,7 @@ public class OrbProjectile : Projectile
 
     protected void Expire()
     {
-        Debug.Log("Destroy!");
+        // Debug.Log("Destroy!");
 
         Destroy(gameObject);
     }
