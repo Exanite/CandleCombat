@@ -122,6 +122,8 @@ namespace Project.Source.Characters
                 collider.enabled = false;
             }
 
+            Rigidbody.velocity = Vector3.zero;
+
             Destroy(gameObject, OnDeathDestroyDelay);
 
             Dead?.Invoke(this);
