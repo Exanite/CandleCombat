@@ -46,6 +46,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   linePrefab: {fileID: 2679890241875917706, guid: 5acbaf86d1f53ad4abc608810e85dc69,
     type: 3}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 192
   damage: 1
+  radius: 1
   maxDistance: 10
   timeToExpire: 0.01

@@ -22,15 +22,17 @@ public class LineProjectile : Projectile
     private Character owner;
     private float lifetime = 0;
     private bool fired;
-
+    
     public override void Fire(Character characterFrom, Vector3 direction)
     {
         owner = characterFrom;
         var tPosition = transform.position;
         Vector3 endPosition = Vector3.zero;
 
+        int layerMask = GetLayerToHit(characterFrom);
+
         Ray ray = new Ray(tPosition, direction);
-        if (Physics.SphereCast(ray, radius, out RaycastHit hit) && hit.distance <= maxDistance)
+        if (Physics.SphereCast(ray, radius, out RaycastHit hit, maxDistance, layerMask, QueryTriggerInteraction.Ignore) && hit.distance <= maxDistance)
         {
             endPosition = direction * hit.distance;
             Debug.Log("Hit: " + hit.collider.gameObject);
@@ -72,6 +74,20 @@ public class LineProjectile : Projectile
         spawned = line.gameObject;
     }
 
+    private int GetLayerToHit(Character character)
+    {
+        int playerLayer = LayerMask.NameToLayer("Player");
+        int enemyLayer = LayerMask.NameToLayer("Enemy");
+        
+        int layerMask;
+        if (character.IsPlayer)
+            layerMask =~ playerLayer;
+        else
+            layerMask =~ enemyLayer;
+
+        return layerMask;
+    }
+    
     private void Expire()
     {
         Debug.Log("Destroy!");
