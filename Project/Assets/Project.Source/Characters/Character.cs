@@ -124,6 +124,11 @@ namespace Project.Source.Characters
 
             Rigidbody.velocity = Vector3.zero;
 
+            if (playerWick)
+            {
+                Destroy(playerWick);
+            }
+            
             Destroy(gameObject, OnDeathDestroyDelay);
 
             Dead?.Invoke(this);
