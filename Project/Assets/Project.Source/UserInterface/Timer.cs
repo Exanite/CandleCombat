@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,9 +18,8 @@ namespace Project.Source
             if (GameContext.Instance.CurrentHealth > 0)
             {
                 timer += Time.deltaTime;
-                text.text = timer.ToString("#.00");
+                text.text = TimeSpan.FromSeconds(timer).ToString(@"mm\:ss\.fff");
             }
-
         }
     }
 }

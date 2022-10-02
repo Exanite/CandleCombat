@@ -8116,6 +8116,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 429675132139917707, guid: ed2bcae6e875154468291f3821d7cfbc,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -100
+      objectReference: {fileID: 0}
     - target: {fileID: 1883361530679678029, guid: ed2bcae6e875154468291f3821d7cfbc,
         type: 3}
       propertyPath: m_Pivot.x
@@ -8230,6 +8235,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2395249589239654378, guid: ed2bcae6e875154468291f3821d7cfbc,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3951076698699354520, guid: ed2bcae6e875154468291f3821d7cfbc,
         type: 3}
