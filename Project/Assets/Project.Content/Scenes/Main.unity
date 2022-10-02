@@ -1417,8 +1417,33 @@ PrefabInstance:
       objectReference: {fileID: 349352337}
     - target: {fileID: 8991834137252470452, guid: 197f7da89cb16a44d950eed8c635c82c,
         type: 3}
+      propertyPath: AttackRange
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991834137252470452, guid: 197f7da89cb16a44d950eed8c635c82c,
+        type: 3}
+      propertyPath: JumpDistance
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991834137252470452, guid: 197f7da89cb16a44d950eed8c635c82c,
+        type: 3}
+      propertyPath: CollisionForce
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991834137252470452, guid: 197f7da89cb16a44d950eed8c635c82c,
+        type: 3}
+      propertyPath: JumpLookAheadTime
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991834137252470452, guid: 197f7da89cb16a44d950eed8c635c82c,
+        type: 3}
       propertyPath: HealthRatioSmoothTime
       value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991834137252470452, guid: 197f7da89cb16a44d950eed8c635c82c,
+        type: 3}
+      propertyPath: CollisionForceDuration
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 197f7da89cb16a44d950eed8c635c82c, type: 3}

@@ -33,6 +33,11 @@ namespace Project.Source.Characters
         [Header("Death")]
         public string IsDeadAnimationBool = "IsDead";
 
+        [Header("Collision Damage")]
+        public float CollisionDamageAmount = 10f;
+        public float CollisionForce = 5f;
+        public float CollisionForceDuration = 5f;
+
         [Header("Health Melting")]
         public string HealthRatioAnimationFloat = "HealthRatio";
         public float HealthRatioSmoothTime = 0.1f;
@@ -85,14 +90,14 @@ namespace Project.Source.Characters
             if (!Character.IsPlayer)
             {
                 Character.Rigidbody.velocity = Vector3.SmoothDamp(Character.Rigidbody.velocity, Vector3.zero, ref smoothedVelocityVelocity, 0.5f);
-                
+
                 target = GameContext.Instance.CurrentPlayer;
 
                 if (target && !isJumping)
                 {
                     var currentPosition = transform.position;
                     var targetPosition = target.transform.position;
-                    
+
                     var offset = targetPosition - currentPosition;
                     var distanceToTarget = offset.magnitude;
                     if (distanceToTarget > AttackRange + 0.5f)
@@ -113,6 +118,37 @@ namespace Project.Source.Characters
                         GunController.Fire();
                     }
                 }
+            }
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (Character.IsPlayer)
+            {
+                return;
+            }
+
+            if (collision.collider.TryGetComponent(out Character otherCharacter))
+            {
+                if (otherCharacter.IsPlayer)
+                {
+                    var direction = (otherCharacter.transform.position - transform.position).normalized;
+
+                    otherCharacter.TakeDamage(CollisionDamageAmount);
+                    StartCoroutine(ApplyKnockback(direction, otherCharacter, CollisionForceDuration));
+                }
+            }
+        }
+
+        private IEnumerator ApplyKnockback(Vector3 direction, Character character, float duration)
+        {
+            var timer = 0f;
+            while (timer < duration)
+            {
+                timer += Time.deltaTime;
+                character.Rigidbody.AddForce(direction * CollisionForce, ForceMode.Acceleration);
+
+                yield return null;
             }
         }
 
@@ -218,7 +254,7 @@ namespace Project.Source.Characters
                         var directionFromSelf = (cornerPosition - transform.position).normalized;
                         targetPosition = cornerPosition + directionFromSelf * 2f;
                     }
-                    
+
                     SetTargetPosition(pathBuffer[1]);
                     for (var i = 2; i < resultCount; i++)
                     {
