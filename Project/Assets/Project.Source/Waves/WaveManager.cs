@@ -52,6 +52,8 @@ namespace Project.Source.Waves
                 {
                     ActiveSpawners[Random.Range(0, ActiveSpawners.Count)].TrySpawn();
                 }
+
+                spawnCooldown = GlobalSpawnCooldownTime;
             }
         }
 
