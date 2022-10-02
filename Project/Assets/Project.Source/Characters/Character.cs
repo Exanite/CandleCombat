@@ -25,6 +25,7 @@ namespace Project.Source.Characters
         [Header("Configuration")]
         public float HealthRegenPerSecond;
         public GunPosition GunPosition;
+        public List<Light> PointLights;
         
         [Header("Wick")]
         public Transform PlayerWickPosition;
@@ -55,6 +56,11 @@ namespace Project.Source.Characters
             if (IsPlayer)
             {
                 HandlePossessed(this);
+            }
+            else
+            {
+                foreach(var pointLight in PointLights)
+                    pointLight.gameObject.SetActive(false);
             }
         }
 
@@ -163,10 +169,13 @@ namespace Project.Source.Characters
         private void HandlePossessed(Character obj)
         {
             if (obj != GameContext.Instance.CurrentPlayer) return;
-            
+
             int playerLayer = LayerMask.NameToLayer("Player");
             gameObject.layer = playerLayer;
             Rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            
+            foreach(var pointLight in PointLights)
+                pointLight.gameObject.SetActive(true);
         }
     }
 }

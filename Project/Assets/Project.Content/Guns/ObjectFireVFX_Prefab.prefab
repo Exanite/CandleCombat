@@ -50,11 +50,7 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-<<<<<<< HEAD
-      - m_Value: 2.805429
-=======
-      - m_Value: 1
->>>>>>> 6e03d788a1a534ca8d29569e1c181bebe334c78d
+      - m_Value: 4.7428923
         m_Name: FlamesSize
         m_Overridden: 1
     m_Vector2f:

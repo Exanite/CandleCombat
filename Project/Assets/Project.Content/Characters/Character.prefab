@@ -478,51 +478,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!95 &4217829383722386045
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8072702675715705161}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f83f74265304dcd429137780d50a14ff, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7910702306209672518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8072702675715705161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6d0e8fedea4a1949b9994d7f48cc8e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Rigidbody: {fileID: 657701656}
-  currentHealth: 3
-  MaxHealth: 3
-  HealthRegenPerSecond: 0
-  GunPosition: {fileID: 852783407833605768}
-  PlayerWickPosition: {fileID: 2793208382292039038}
-  WickVelocityVfxString: Player Velocity
-  IsDead: 0
-  IsInvulnerable: 0
-  DisableOnDeathBehaviours: []
-  DisableOnDeathColliders:
-  - {fileID: -4140058397007785958}
-  OnDeathDestroyDelay: 3
 --- !u!82 &1793292660549038451
 AudioSource:
   m_ObjectHideFlags: 0
@@ -619,6 +574,54 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &4217829383722386045
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8072702675715705161}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f83f74265304dcd429137780d50a14ff, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7910702306209672518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8072702675715705161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6d0e8fedea4a1949b9994d7f48cc8e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Rigidbody: {fileID: 657701656}
+  currentHealth: 3
+  MaxHealth: 3
+  HealthRegenPerSecond: 0
+  GunPosition: {fileID: 852783407833605768}
+  PointLights:
+  - {fileID: 9221979871578742543}
+  - {fileID: 1675002262891726957}
+  PlayerWickPosition: {fileID: 2793208382292039038}
+  WickVelocityVfxString: Player Velocity
+  IsDead: 0
+  IsInvulnerable: 0
+  DisableOnDeathBehaviours: []
+  DisableOnDeathColliders:
+  - {fileID: -4140058397007785958}
+  OnDeathDestroyDelay: 3
 --- !u!4 &8882172673435702259 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b6f0b066183245f44a322985a716a76e,

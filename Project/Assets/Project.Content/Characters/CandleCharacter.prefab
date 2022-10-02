@@ -228,6 +228,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 7910702306209672518, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
+        type: 3}
+      propertyPath: PointLight
+      value: 
+      objectReference: {fileID: 939521583050922442}
     - target: {fileID: 8008501097462280943, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
         type: 3}
       propertyPath: m_Layer
@@ -389,6 +394,12 @@ MonoBehaviour:
 --- !u!4 &698344705162859830 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8882172673435702259, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
+    type: 3}
+  m_PrefabInstance: {fileID: 8282915983078770373}
+  m_PrefabAsset: {fileID: 0}
+--- !u!108 &939521583050922442 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 9221979871578742543, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
     type: 3}
   m_PrefabInstance: {fileID: 8282915983078770373}
   m_PrefabAsset: {fileID: 0}
