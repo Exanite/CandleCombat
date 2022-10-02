@@ -5,6 +5,8 @@ namespace Project.Source.Abilities
     [CreateAssetMenu(menuName = "Project/Abilities/SoulTransfer")]
     public class SoulTransferAbility : Ability
     {
+        [SerializeField] private int soulGunIndex = 2;
+        
         public override void Execute()
         {
             Debug.Log("SoulTransferAbility");
@@ -15,11 +17,12 @@ namespace Project.Source.Abilities
                 return;
             }
 
-            // TODO: Don't reach into directly.
+            // TODO: Don't reach into Ability directly.
             var gunController = GameContext.Instance.gameObject.GetComponent<GunController>();
-            gunController.SwitchGun(1);
+            int previousGun = gunController.EquippedGunIndex;
+            gunController.SwitchGun(soulGunIndex);
             gunController.Fire();
-            gunController.SwitchGun(0);
+            gunController.SwitchGun(previousGun);
         }
     }
 }

@@ -13,6 +13,9 @@ public enum GunHoldType{
 
 public class Gun : MonoBehaviour
 {
+    public Action OnShoot;
+    public Action OnReload;
+    
     [Header("Dependencies")]
     [SerializeField] private Transform model;
     [SerializeField] private Transform firePoint;
@@ -79,10 +82,17 @@ public class Gun : MonoBehaviour
             projectile.Fire(characterFrom, direction, firePointVisual.position);
             
             ammo--;
+            OnShoot?.Invoke();
         }
 
         elapsedTimeSinceShot -= TimeBetweenShots;
         elapsedTimeSinceHolstered = 0;
+    }
+
+    public void SwitchAmmo(int index)
+    {
+        if (index >= 0 && index < projectilePrefabs.Count)
+            SelectedProjectile = index;
     }
 
     public void OnSwitch()
@@ -109,6 +119,8 @@ public class Gun : MonoBehaviour
 
     private void Reload()
     {
+        OnReload?.Invoke();
+        
         ammo = MaxAmmo;
         isReloading = false;
         elapsedReloadTime = 0;

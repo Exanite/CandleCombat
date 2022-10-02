@@ -29,8 +29,10 @@ public class BurnableObject : MonoBehaviour, IBurn
     [SerializeField] private string flameColorAttribute = "Color";
 
     [Header("Light Settings")]
-    public Color PossessColor = Color.blue;
-    public float PossessSwitchTime = 1f;
+    [ColorUsage(true, true)]
+    public Color PossessColor = new Vector4(0,4.7311759f,22.0403557f,1);
+    public Color PossessLightColor = new Vector4(0,4.7311759f,22.0403557f, 1);
+    public float PossessSwitchTime = 0.5f;
     
     [Range(1, 14)]
     public float MaxFireSize = 6;
@@ -51,13 +53,18 @@ public class BurnableObject : MonoBehaviour, IBurn
     private bool isFractured = false; 
     
     private float timeElapsedSincePossess = 0;
-    private Color originalLightColor;
-    private Color originalFireColor;
+    private Color originalLightColor = Color.white;
+    private float originalLightColorTemperature;
+    private Color originalFireColor = Color.white;
     private bool wasPossessed = false;
 
     private Light spawnedLight;
     private VisualEffect spawnedFireVisualEffect;
     private GameObject spawnedFracturedObject;
+
+    private int possesses = 0;
+
+    private GameContext subscribedGameContext;
     
     private void Awake()
     {
@@ -68,12 +75,27 @@ public class BurnableObject : MonoBehaviour, IBurn
 
     private void OnEnable()
     {
-        GameContext.Instance.Possessed += HandlePossessed;
+        try
+        {
+            subscribedGameContext = GameContext.Instance;
+        }
+        catch (NullReferenceException)
+        {
+            // Blank
+        }
+
+        if (subscribedGameContext)
+        {
+            subscribedGameContext.Possessed += HandlePossessed;
+        }
     }
 
     private void OnDisable()
     {
-        GameContext.Instance.Possessed -= HandlePossessed;
+        if (subscribedGameContext)
+        {
+            subscribedGameContext.Possessed -= HandlePossessed;
+        }
     }
 
     private void Update()
@@ -94,10 +116,10 @@ public class BurnableObject : MonoBehaviour, IBurn
         if(CurrentHealth <= 0)
             Expire();
 
-        //if (wasPossessed && timeElapsedSincePossess > PossessSwitchTime)
-        //{
-        //    HandleReturnFromPossessed();
-        //}
+        if (wasPossessed && timeElapsedSincePossess > PossessSwitchTime)
+        {
+            HandleReturnFromPossessed();
+        }
     }
 
     public void AddFire(int fireDPS)
@@ -145,7 +167,7 @@ public class BurnableObject : MonoBehaviour, IBurn
         float intensity = healthToIntensityCurve.Evaluate(healthPercent) * MaxIntensity;
         intensity = Mathf.Clamp(intensity, MinIntensity, MaxIntensity);
         
-        Debug.Log("Intensite: " + intensity);
+        // Debug.Log("Intensity: " + intensity);
 
         spawnedLight.intensity = intensity;
 
@@ -169,12 +191,19 @@ public class BurnableObject : MonoBehaviour, IBurn
 
     private void HandlePossessed(Character character)
     {
+        //TODO: Remove this hack.
+        possesses++;
+        if (possesses < 2) return;
+        
         wasPossessed = true;
         
         if (spawnedLight != null)
         {
             originalLightColor = spawnedLight.color;
-            spawnedLight.color = PossessColor;
+            spawnedLight.color = PossessLightColor;
+
+            originalLightColorTemperature = spawnedLight.colorTemperature; 
+            spawnedLight.colorTemperature = 4500f; //TODO: Remove magic number. 
         }
         
         if (spawnedFireVisualEffect != null)
@@ -188,11 +217,15 @@ public class BurnableObject : MonoBehaviour, IBurn
 
     private void HandleReturnFromPossessed()
     {
+        //TODO: Remove this hack.
+        if (possesses < 2) return;
+        
         wasPossessed = false;
         
         if (spawnedLight != null)
         {
             spawnedLight.color = originalLightColor;
+            spawnedLight.colorTemperature = originalLightColorTemperature;
         }
 
         if (spawnedFireVisualEffect != null)

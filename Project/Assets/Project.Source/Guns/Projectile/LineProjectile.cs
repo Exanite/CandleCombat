@@ -18,7 +18,7 @@ public class LineProjectile : Projectile
     [SerializeField] private LineRenderer linePrefab;
 
     [Header("Settings")]
-    [SerializeField] private ForwardType projectileVisualForward = ForwardType.BlueZ; 
+    // [SerializeField] private ForwardType projectileVisualForward = ForwardType.BlueZ; 
     [SerializeField] private float startPositionOffset = -1f;
     [SerializeField] private float damage = 1f;
     [SerializeField] private float radius = 1f;

@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private InputActionReference shootReference;
     [SerializeField] private InputActionReference movementReference;
     [SerializeField] private InputActionReference pointerReference;
+    [SerializeField] private InputActionReference dodgeReference;
 
     private PlayerMovement playerMovement;
     private PlayerLook playerLook;
@@ -44,6 +45,11 @@ public class PlayerController : MonoBehaviour
         if (shootReference.action.IsPressed())
         {
             gunController.Fire();
+        }
+
+        if (dodgeReference.action.WasPressedThisFrame())
+        {
+            playerMovement.Dodge();
         }
     }
 }

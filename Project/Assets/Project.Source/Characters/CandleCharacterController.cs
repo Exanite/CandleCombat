@@ -57,6 +57,8 @@ namespace Project.Source.Characters
 
         private NavMeshPath path;
         private readonly Vector3[] pathBuffer = new Vector3[8];
+        
+        private GameContext subscribedGameContext;
 
         private void Awake()
         {
@@ -71,14 +73,16 @@ namespace Project.Source.Characters
 
         private void OnEnable()
         {
+            subscribedGameContext = GameContext.Instance;
+            
             Character.Dead += OnDead;
-            GameContext.Instance.Possessed += OnPossessed;
+            subscribedGameContext.Possessed += OnPossessed;
         }
 
         private void OnDisable()
         {
             Character.Dead -= OnDead;
-            GameContext.Instance.Possessed -= OnPossessed;
+            subscribedGameContext.Possessed -= OnPossessed;
         }
 
         private void Update()
@@ -103,7 +107,12 @@ namespace Project.Source.Characters
 
                     var offset = targetPosition - currentPosition;
                     var distanceToTarget = offset.magnitude;
-                    if (distanceToTarget > AttackRange + 0.5f)
+                    
+                    var canSeePlayer = Physics.Linecast(transform.position + Vector3.up, target.transform.position + Vector3.up, out var hit)
+                        && hit.collider.TryGetComponent(out Character character)
+                        && character.IsPlayer;
+                    
+                    if (distanceToTarget > AttackRange + 0.5f || !canSeePlayer)
                     {
                         jumpCoroutine = StartCoroutine(JumpTowardsTarget());
                     }
@@ -117,7 +126,7 @@ namespace Project.Source.Characters
                         }
 
                         var directionToTarget = offset.normalized;
-                        transform.rotation = quaternion.LookRotation(directionToTarget, transform.up);
+                        transform.rotation = Quaternion.LookRotation(directionToTarget, transform.up);
                         GunController.Fire();
                     }
                 }
@@ -181,6 +190,11 @@ namespace Project.Source.Characters
 
         private void OnPossessed(Character character)
         {
+            if (Character != character)
+            {
+                return;
+            }
+            
             if (GunController != null)
             {
                 GunController.Cleanup();

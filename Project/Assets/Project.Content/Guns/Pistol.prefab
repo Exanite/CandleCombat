@@ -119,7 +119,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4936708337404964576
 Transform:
   m_ObjectHideFlags: 0
@@ -154,16 +154,16 @@ MonoBehaviour:
   firePoint: {fileID: 734832255062589920}
   firePointVisual: {fileID: 4936708336607297399}
   projectilePrefabs:
-  - {fileID: 4056577536999462432, guid: b51d2d33836961841a60a4b1665d7c20, type: 3}
+  - {fileID: 6382536856981632727, guid: ed5b076e318cbdc4db9b413cbeb8dd4b, type: 3}
   GunHoldType: 0
-  TimeToHolsterGun: 4
+  TimeToHolsterGun: 1
   ReloadOnSwitchTo: 0
   SelectedProjectile: 0
   Burst: 1
-  BurstRadius: 1
-  TimeBetweenShots: 1
-  MaxAmmo: 3
-  ReloadTime: 5
+  BurstRadius: 0.2
+  TimeBetweenShots: 0.1
+  MaxAmmo: 20
+  ReloadTime: 3
 --- !u!1001 &1849699880124189734
 PrefabInstance:
   m_ObjectHideFlags: 0
