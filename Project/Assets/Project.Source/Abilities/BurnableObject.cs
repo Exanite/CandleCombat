@@ -47,9 +47,7 @@ public class BurnableObject : MonoBehaviour, IBurn
 
     private MeshRenderer meshRenderer;
 
-    private Character currentCharacter;
     private float CurrentHealth = 0;
-    private float timeElapsedSinceDamaged = 0;
     private int currentFireDPS = 0;
     private bool isOnFire = false;
     private bool isFractured = false; 
@@ -113,7 +111,6 @@ public class BurnableObject : MonoBehaviour, IBurn
     {
         if (!isOnFire) return;
 
-        timeElapsedSinceDamaged += Time.deltaTime;
         timeElapsedSincePossess += Time.deltaTime;
         
         CurrentHealth -= currentFireDPS * Time.deltaTime;
@@ -127,7 +124,7 @@ public class BurnableObject : MonoBehaviour, IBurn
         if(CurrentHealth <= 0)
             Expire();
 
-        if (wasPossessed && timeElapsedSincePossess > PossessSwitchTime)
+        if (timeElapsedSincePossess >= PossessSwitchTime)
         {
             HandleReturnFromPossessed();
         }
@@ -190,10 +187,6 @@ public class BurnableObject : MonoBehaviour, IBurn
 
     private void HandlePossessed(Character character)
     {
-        //TODO: Remove this hack.
-        possesses++;
-        if (possesses < 2) return;
-        
         wasPossessed = true;
         
         if (spawnedLight != null)
@@ -212,9 +205,6 @@ public class BurnableObject : MonoBehaviour, IBurn
 
     private void HandleReturnFromPossessed()
     {
-        //TODO: Remove this hack.
-        if (possesses < 2) return;
-        
         wasPossessed = false;
         
         if (spawnedLight != null)
@@ -227,6 +217,8 @@ public class BurnableObject : MonoBehaviour, IBurn
         {
             spawnedFireVisualEffect.SetVector4(flameColorAttribute, originalFireColor);
         }
+
+        timeElapsedSincePossess = PossessSwitchTime;
     }
 
     private void SpawnLight()
