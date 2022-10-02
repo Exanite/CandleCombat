@@ -1,3 +1,5 @@
+using System;
+using Project.Source;
 using Project.Source.Characters;
 using UnityEngine;
 
@@ -10,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dodgeSpeed = 50f;
     [SerializeField] private float dodgeTime = 0.2f;
     [SerializeField] private float timeBetweenDodge = 2f;
+
+    public int DodgeAbilityIndex = 2;
     
     private Character character;
     private Vector2 moveDirection;
@@ -21,6 +25,14 @@ public class PlayerMovement : MonoBehaviour
 
     // Not a typo
     private Vector3 smoothedVelocityVelocity;
+
+    private void Update()
+    {
+        var ability = GameContext.Instance.Abilities[DodgeAbilityIndex];
+        ability.CooldownDuration = timeBetweenDodge;
+        ability.CurrentCooldown = timeBetweenDodge - elapsedTimeSinceDodge;
+        ability.HealthCost = 0;
+    }
 
     private void FixedUpdate()
     {
@@ -60,14 +72,13 @@ public class PlayerMovement : MonoBehaviour
     public void Dodge()
     {
         if (elapsedTimeSinceDodge < timeBetweenDodge) return;
-        
+
         startingMoveSpeed = movementSpeed;
         movementSpeed = dodgeSpeed;
         isDodging = true;
         character.IsInvulnerable = true;
         elapsedDodgeTime = 0;
         elapsedTimeSinceDodge = 0;
-        
     }
 
     private void StopDodging()

@@ -70,6 +70,7 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: 3bbcf68d3010090499326e70efba97d9, type: 2}
   - {fileID: 11400000, guid: 4c69f3deede8592429001808c5a6daf5, type: 2}
+  - {fileID: 11400000, guid: dab59f19e23b4a94e8d976e371dd891a, type: 2}
 --- !u!114 &5578559470589387425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,10 +139,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 5
   movementSmoothTime: 0.05
-  moveTiltDegrees: 1
   dodgeSpeed: 0
   dodgeTime: 0.2
   timeBetweenDodge: 2
+  DodgeAbilityIndex: 2
 --- !u!114 &3495844000217364866
 MonoBehaviour:
   m_ObjectHideFlags: 0
