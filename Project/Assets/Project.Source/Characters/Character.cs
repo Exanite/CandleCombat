@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Exanite.Core.Events;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.VFX;
 
 namespace Project.Source.Characters
 {
@@ -10,19 +11,24 @@ namespace Project.Source.Characters
     {
         public bool IsPlayer => this == GameContext.Instance.CurrentPlayer;
 
+        [Header("Dependencies")]
+        public Rigidbody Rigidbody;
+        
+        [Header("Configuration")]
         [SerializeField]
         [FormerlySerializedAs("CurrentHealth")]
         private float currentHealth = 100;
         public float MaxHealth = 100;
 
+        [Header("Configuration")]
+        public float HealthRegenPerSecond;
+        public GunPosition GunPosition;
+        public Transform PlayerWickPosition;
+        
+        [Header("Runtime")]
         public bool IsDead;
         public bool IsDodging;
         public bool IsInvulnerable;
-
-        public float HealthRegenPerSecond;
-
-        public GunPosition GunPosition;
-        public Rigidbody Rigidbody;
         
         [Header("On Death")]
         public List<Behaviour> DisableOnDeathBehaviours = new List<Behaviour>();
@@ -38,6 +44,8 @@ namespace Project.Source.Characters
         public event Action<Character> Dead;
         public event EventHandler<Character, float> TookDamage;
 
+        private VisualEffect playerWick;
+
         private void Update()
         {
             if (IsDead)
@@ -47,6 +55,8 @@ namespace Project.Source.Characters
 
             UpdateHealthDecay();
             CheckDeath();
+
+            UpdatePlayerWick();
         }
 
         public void TakeDamage(float damageAmount)
@@ -61,17 +71,37 @@ namespace Project.Source.Characters
             CurrentHealth = value;
         }
 
+        private void UpdateHealthDecay()
+        {
+            CurrentHealth += Time.deltaTime * HealthRegenPerSecond;
+        }
+        
+        private void UpdatePlayerWick()
+        {
+            if (IsPlayer)
+            {
+                if (!playerWick)
+                {
+                    playerWick = Instantiate(GameContext.Instance.PlayerWickPrefab);
+                }
+
+                playerWick.transform.position = PlayerWickPosition.transform.position;
+
+                // Todo Set wick velocity
+            }
+            else
+            {
+                Destroy(playerWick);
+                playerWick = null;
+            }
+        }
+        
         private void CheckDeath()
         {
             if (CurrentHealth <= 0)
             {
                 OnDead();
             }
-        }
-
-        private void UpdateHealthDecay()
-        {
-            CurrentHealth += Time.deltaTime * HealthRegenPerSecond;
         }
 
         protected virtual void OnDead()

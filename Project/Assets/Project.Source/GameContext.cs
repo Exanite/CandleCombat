@@ -7,16 +7,20 @@ using Project.Source.Waves;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using UnityEngine.VFX;
 
 namespace Project.Source
 {
     public class GameContext : SingletonBehaviour<GameContext>, AbilityInputActions.IPlayerAbilitiesActions
     {
+        [Header("Dependencies")]
         public Camera MainCamera;
         public Character CurrentPlayer;
         [FormerlySerializedAs("EnemySpawnManager")]
         public WaveManager waveManager;
+        public VisualEffect PlayerWickPrefab;
 
+        [Header("Health")]
         public float CurrentHealth = 100;
         public float MaxHealth = 100;
 
@@ -24,6 +28,7 @@ namespace Project.Source
 
         public bool IsDead;
 
+        [Header("Abilities")]
         public List<Ability> Abilities = new List<Ability>();
 
         private AbilityInputActions abilityInputActions;
