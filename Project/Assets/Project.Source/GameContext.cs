@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Exanite.Drawing;
@@ -8,6 +9,7 @@ using Project.Source.Input;
 using Project.Source.Waves;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
 
@@ -123,6 +125,15 @@ namespace Project.Source
             IsDead = true;
             
             Debug.Log("Character died");
+
+            StartCoroutine(Restart(5));
+        }
+
+        private IEnumerator Restart(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
         private void UpdateAbilityCooldowns()

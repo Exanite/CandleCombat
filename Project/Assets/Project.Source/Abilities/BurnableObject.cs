@@ -153,7 +153,7 @@ public class BurnableObject : MonoBehaviour, IBurn
         float intensity = healthToIntensityCurve.Evaluate(healthPercent) * MaxIntensity;
         intensity = Mathf.Clamp(intensity, MinIntensity, MaxIntensity);
         
-        Debug.Log("Intensity: " + intensity);
+        // Debug.Log("Intensity: " + intensity);
 
         spawnedLight.intensity = intensity;
 
