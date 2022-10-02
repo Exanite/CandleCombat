@@ -14,7 +14,7 @@ public class DissolveShader : MonoBehaviour
     private void Start()
     {
         material = smRenderer.material;
-        DissolveStart();
+        
     }
 
     private void Update()
