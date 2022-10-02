@@ -61,7 +61,11 @@ namespace Project.Source.Waves
         {
             ActiveSpawners.Clear();
 
-            var playerPosition = GameContext.Instance.CurrentPlayer.transform.position;
+            Character player = GameContext.Instance.CurrentPlayer;
+
+            if (player == null) return;
+            
+            var playerPosition = player.transform.position;
 
             foreach (var spawner in Spawners)
             {

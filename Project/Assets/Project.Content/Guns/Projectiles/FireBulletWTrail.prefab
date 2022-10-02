@@ -120,7 +120,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6177778693624120369}
   - component: {fileID: 6453381176245979934}
-  - component: {fileID: 3855076780625221744}
+  - component: {fileID: 7209473686946063059}
   - component: {fileID: 1228328845391044785}
   - component: {fileID: 2008100857105420592}
   m_Layer: 0
@@ -245,7 +245,7 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
---- !u!114 &3855076780625221744
+--- !u!114 &7209473686946063059
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -254,15 +254,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 6742544393075917520}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9fedf2f49f2b424b8a97dd660920be8, type: 3}
+  m_Script: {fileID: 11500000, guid: 2200a216308df014d8b782ff539467c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 1228328845391044785}
   retainCharacterVelocity: 0
-  damage: 10
+  damage: 1
   timeToExpire: 3
   speed: 10
   acceleration: 0.01
+  FireManipulatorType: 0
+  FlameManipulationDPS: 10
 --- !u!54 &1228328845391044785
 Rigidbody:
   m_ObjectHideFlags: 0

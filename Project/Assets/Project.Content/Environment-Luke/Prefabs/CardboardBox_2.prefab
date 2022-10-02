@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1879222899345391900}
+  - component: {fileID: 7625100451107345154}
   - component: {fileID: 3295382379468426937}
   - component: {fileID: 747451962732903027}
   - component: {fileID: 2067168285122796701}
@@ -35,6 +36,57 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7625100451107345154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251868658980051878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60e1745c395d61648aff751925e9910e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightObjectPrefab: {fileID: 0}
+  MaxHealth: 100
+  CurrentHealth: 100
+  LightStartingHeight: 6
+  MinIntensity: 80
+  MaxIntensity: 170
+  healthToIntensityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.08007876
+      outSlope: 0.08007876
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.08386092
+    - serializedVersion: 3
+      time: 0.50803804
+      value: 0.75246435
+      inSlope: -1.0217886
+      outSlope: -1.0217886
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: -0.013195038
+      inSlope: -1.5563387
+      outSlope: -1.5563387
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!33 &3295382379468426937
 MeshFilter:
   m_ObjectHideFlags: 0

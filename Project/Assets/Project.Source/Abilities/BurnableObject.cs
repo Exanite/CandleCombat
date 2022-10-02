@@ -9,29 +9,38 @@ public interface IBurn
     public void RemoveFire(int fireDPSRemoved);
 }
 
+[RequireComponent(typeof(MeshRenderer))]
 public class BurnableObject : MonoBehaviour, IBurn
 {
     [Header("Dependencies")]
     [SerializeField] private Light lightObjectPrefab;
 
+    [Header("Optional")]
+    [SerializeField] private GameObject fracturedVersionPrefab;
+    
     [Header("Settings")]
     public int MaxHealth = 100;
-    public int CurrentHealth = 100;
     
     [Header("Light Settings")]
     public int LightStartingHeight = 6;
     public int MinIntensity = 80;
     public int MaxIntensity = 170;
     public AnimationCurve healthToIntensityCurve;
+
+    private MeshRenderer meshRenderer;
     
+    private int CurrentHealth = 0;
     private int currentFireDPS = 0;
     private bool isOnFire = false;
+    private bool isFractured = false; 
 
     private float timeElapsedSinceDamaged = 0;
     private Light spawnedLight;
+    private GameObject spawnedFracturedObject;
 
     private void Awake()
     {
+        meshRenderer = GetComponent<MeshRenderer>();
         CurrentHealth = MaxHealth;
     }
 
@@ -47,11 +56,11 @@ public class BurnableObject : MonoBehaviour, IBurn
             timeElapsedSinceDamaged--;
         }
 
-        float healthPercent = (float)CurrentHealth/MaxHealth;
-        float intensity = healthToIntensityCurve.Evaluate(healthPercent) * MaxIntensity;
-        intensity = Mathf.Clamp(intensity, MinIntensity, MaxIntensity);
+        if(spawnedLight != null)
+            UpdateLightIntensity();
 
-        spawnedLight.intensity = intensity;
+        if (CurrentHealth != MaxHealth && !isFractured)
+            Fracture();
 
         if(CurrentHealth <= 0)
             Expire();
@@ -87,10 +96,33 @@ public class BurnableObject : MonoBehaviour, IBurn
         }
     }
 
+    private void UpdateLightIntensity()
+    {
+        float healthPercent = (float)CurrentHealth/MaxHealth;
+        float intensity = healthToIntensityCurve.Evaluate(healthPercent) * MaxIntensity;
+        intensity = Mathf.Clamp(intensity, MinIntensity, MaxIntensity);
+
+        spawnedLight.intensity = intensity;
+    }
+    
+    private void Fracture()
+    {
+        isFractured = true;
+
+        if (fracturedVersionPrefab != null && spawnedFracturedObject == null)
+        {
+            spawnedFracturedObject = Instantiate(fracturedVersionPrefab, transform.position, transform.rotation);
+            meshRenderer.enabled = false;
+        }
+    }
+
     private void Expire()
     {
         if (spawnedLight != null) 
             Destroy(spawnedLight);
+        
+        if(spawnedFracturedObject != null)
+            Destroy(spawnedFracturedObject);
         
         Destroy(gameObject);
     }
