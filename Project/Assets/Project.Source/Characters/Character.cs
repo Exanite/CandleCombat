@@ -85,6 +85,11 @@ namespace Project.Source.Characters
         public void TakeDamage(float damageAmount)
         {
             CurrentHealth -= damageAmount;
+
+            if (IsPlayer)
+            {
+                GameContext.Instance.CurrentHealth -= damageAmount;
+            }
             
             TookDamage?.Invoke(this, damageAmount);
         }
