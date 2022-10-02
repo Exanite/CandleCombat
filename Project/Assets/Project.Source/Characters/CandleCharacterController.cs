@@ -1,5 +1,7 @@
 using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Project.Source.Characters
 {
@@ -9,6 +11,7 @@ namespace Project.Source.Characters
         public Character Character;
         public SkinnedMeshRenderer MeshRenderer;
         public Animator Animator;
+        public GunController GunController;
 
         [Header("Attacks")]
         public float AttackRange = 1;
@@ -43,16 +46,19 @@ namespace Project.Source.Characters
         private void Start()
         {
             smoothedHealthRatio = Mathf.Clamp01(Character.CurrentHealth / Character.MaxHealth);
+            GunController.SetCharacter(Character);
         }
 
         private void OnEnable()
         {
             Character.Dead += OnDead;
+            Character.Possessed += OnPossessed;
         }
 
         private void OnDisable()
         {
             Character.Dead -= OnDead;
+            Character.Possessed -= OnPossessed;
         }
 
         private void Update()
@@ -68,12 +74,26 @@ namespace Project.Source.Characters
             {
                 target = GameContext.Instance.CurrentPlayer;
 
+                Vector3 currentPosition = transform.position;
+                Vector3 targetPosition = target.transform.position;
+                
                 if (target && !isJumping)
                 {
-                    var offset = target.transform.position - transform.position;
-                    if (offset.magnitude > AttackRange + 0.5f)
+                    var offset = targetPosition - currentPosition;
+                    float distanceToTarget = offset.magnitude;
+                    if (distanceToTarget > AttackRange + 0.5f)
                     {
                         jumpCoroutine = StartCoroutine(JumpTowardsTarget());
+                    }
+                    else
+                    {
+                        //Firing logic
+                        
+                        if (!GunController) return;
+
+                        Vector3 directionToTarget = offset.normalized;
+                        transform.rotation = quaternion.LookRotation(directionToTarget,  transform.up);
+                        GunController.Fire();
                     }
                 }
             }
@@ -94,6 +114,15 @@ namespace Project.Source.Characters
             if (jumpCoroutine != null)
             {
                 StopCoroutine(jumpCoroutine);
+            }
+        }
+
+        private void OnPossessed(Character character)
+        {
+            if (GunController != null)
+            {
+                GunController.Cleanup();   
+                Destroy(GunController);
             }
         }
 

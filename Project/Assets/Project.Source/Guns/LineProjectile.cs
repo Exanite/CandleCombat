@@ -50,7 +50,7 @@ public class LineProjectile : Projectile
     public override void Hit(Character character)
     {
         bool sameTeam = owner.IsPlayer == character.IsPlayer;
-        if (sameTeam || character.IsDodging) return;
+        if (sameTeam || character.IsInvulnerable) return;
 
         character.TakeDamage(damage);
     }

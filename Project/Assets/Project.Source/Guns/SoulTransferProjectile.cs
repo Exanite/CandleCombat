@@ -17,9 +17,9 @@ public class SoulTransferProjectile : LineProjectile
             return;
 
         GameContext.Instance.CurrentPlayer.OverwriteHealth(-1);
-
         GameContext.Instance.CurrentPlayer = character;
         GameContext.Instance.CurrentHealth = GameContext.Instance.MaxHealth;
+        GameContext.Instance.CurrentPlayer.Possess();
     }
     
     public override void CreateVisual(Vector3 startPosition, Vector3 endPosition, float distance, Vector3 direction)
