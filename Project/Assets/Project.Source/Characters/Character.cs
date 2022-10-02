@@ -73,6 +73,8 @@ namespace Project.Source.Characters
         {
             if (IsDead)
             {
+                Rigidbody.velocity = Vector3.zero;
+                
                 return;
             }
 
