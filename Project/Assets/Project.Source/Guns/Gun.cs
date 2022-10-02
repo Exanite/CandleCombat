@@ -22,6 +22,11 @@ public class Gun : MonoBehaviour
     [SerializeField] private Transform firePointVisual;
     [SerializeField] private List<Projectile> projectilePrefabs = new List<Projectile>();
 
+    [Header("Sounds")]
+    [SerializeField] private AudioClip fireAudioClip;
+    [Range(0, 1)]
+    [SerializeField] private float fireAudioScale; 
+    
     [Header("Settings")]
     public GunHoldType GunHoldType = GunHoldType.OneHandGun;
     public float TimeToHolsterGun = 4f;
@@ -70,7 +75,7 @@ public class Gun : MonoBehaviour
         
         for (int i = 0; i < Burst; i++)
         {
-            if (ammo == 0) return;
+            if (ammo <= 0) continue;
 
             if (i > 0)
             {
@@ -83,6 +88,9 @@ public class Gun : MonoBehaviour
             
             ammo--;
             OnShoot?.Invoke();
+
+            if (fireAudioClip != null)
+                GameContext.Instance.AudioSource.PlayOneShot(fireAudioClip, fireAudioScale);
         }
 
         elapsedTimeSinceShot -= TimeBetweenShots;

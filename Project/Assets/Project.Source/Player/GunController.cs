@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class GunController : MonoBehaviour
 {
+    [Header("Settings")]
     public int EquippedGunIndex = 0;
     [SerializeField] private List<Gun> equippableGuns = new List<Gun>();
 
@@ -15,11 +16,15 @@ public class GunController : MonoBehaviour
     private int currentEquippedGunIndex = 0;
     private Gun equippedGun;
 
+    private void Start()
+    {
+        
+        SwitchGun(EquippedGunIndex);
+    }
+
     private void Update()
     {
         if (equippableGuns.Count == 0) return;
-        
-        SwitchGun(EquippedGunIndex);
 
         if (equippedGun == null || character == null) return;
 
