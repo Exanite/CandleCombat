@@ -827,11 +827,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1395119139454833317, guid: 57615ce97bbc97e46a4674c14d33db8c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2172941941509775108, guid: 57615ce97bbc97e46a4674c14d33db8c,
         type: 3}
       propertyPath: m_Name
@@ -894,11 +889,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2172941941509775111, guid: 57615ce97bbc97e46a4674c14d33db8c,
         type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2172941941509775111, guid: 57615ce97bbc97e46a4674c14d33db8c,
-        type: 3}
       propertyPath: MainCamera
       value: 
       objectReference: {fileID: 330585545}
@@ -912,42 +902,10 @@ PrefabInstance:
       propertyPath: virtualCamera
       value: 
       objectReference: {fileID: 1569153339}
-    - target: {fileID: 7965470926689174170, guid: 57615ce97bbc97e46a4674c14d33db8c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7965470926689174171, guid: 57615ce97bbc97e46a4674c14d33db8c,
         type: 3}
-      propertyPath: Burst
+      propertyPath: TimeToHolsterGun
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965470926689174171, guid: 57615ce97bbc97e46a4674c14d33db8c,
-        type: 3}
-      propertyPath: projectilePrefabs.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965470926689174171, guid: 57615ce97bbc97e46a4674c14d33db8c,
-        type: 3}
-      propertyPath: projectilePrefabs.Array.data[0]
-      value: 
-      objectReference: {fileID: 4056577536999462432, guid: b51d2d33836961841a60a4b1665d7c20,
-        type: 3}
-    - target: {fileID: 7965470926689174171, guid: 57615ce97bbc97e46a4674c14d33db8c,
-        type: 3}
-      propertyPath: projectilePrefabs.Array.data[1]
-      value: 
-      objectReference: {fileID: 7684210110739778004, guid: dcd92216766d149498358a53e74f1418,
-        type: 3}
-    - target: {fileID: 7965470926984057628, guid: 57615ce97bbc97e46a4674c14d33db8c,
-        type: 3}
-      propertyPath: SelectedProjectile
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965470927251503740, guid: 57615ce97bbc97e46a4674c14d33db8c,
-        type: 3}
-      propertyPath: SelectedProjectile
-      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57615ce97bbc97e46a4674c14d33db8c, type: 3}

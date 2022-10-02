@@ -174,9 +174,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1b6f48ac788f094b86405c4626d94e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  model: {fileID: 892416972598488192}
   firePoint: {fileID: 892416972826810785}
   projectilePrefabs:
   - {fileID: 3139284629023083357, guid: 213a45c013792c94a978bcdcc220a690, type: 3}
+  GunHoldType: 0
+  TimeToHolsterGun: 4
   ReloadOnSwitchTo: 1
   SelectedProjectile: 0
   Burst: 1

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Exanite.Core.Events;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -20,8 +21,13 @@ namespace Project.Source.Characters
 
         public float HealthRegenPerSecond;
 
-        public Transform GunPosition;
+        public GunPosition GunPosition;
         public Rigidbody Rigidbody;
+        
+        [Header("On Death")]
+        public List<Behaviour> DisableOnDeathBehaviours = new List<Behaviour>();
+        public List<Collider> DisableOnDeathColliders = new List<Collider>();
+        public float OnDeathDestroyDelay = 3f;
 
         public float CurrentHealth
         {
@@ -73,6 +79,18 @@ namespace Project.Source.Characters
             IsDead = true;
 
             Debug.Log($"{name} died");
+            
+            foreach (var behaviour in DisableOnDeathBehaviours)
+            {
+                behaviour.enabled = false;
+            }
+            
+            foreach (var collider in DisableOnDeathColliders)
+            {
+                collider.enabled = false;
+            }
+
+            Destroy(gameObject, OnDeathDestroyDelay);
 
             Dead?.Invoke(this);
         }
