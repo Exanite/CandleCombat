@@ -63,9 +63,10 @@ MonoBehaviour:
   PlayerWickPrefab: {fileID: 8536334166681188412, guid: 23cf517df9df38846ba2a81f7885ebbc,
     type: 3}
   DrawingService: {fileID: 6465885308093522785}
+  AudioSource: {fileID: 0}
   CurrentHealth: 100
   MaxHealth: 100
-  HealthRegenPerSecond: 0
+  HealthRegenPerSecond: -2
   IsDead: 0
   Abilities:
   - {fileID: 11400000, guid: 3bbcf68d3010090499326e70efba97d9, type: 2}
@@ -104,6 +105,8 @@ MonoBehaviour:
   pointerReference: {fileID: 8361749311868396992, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
   dodgeReference: {fileID: 5933847315574979479, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+    type: 3}
+  reloadReference: {fileID: 7209500551064937317, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
 --- !u!114 &4686590657947957126
 MonoBehaviour:

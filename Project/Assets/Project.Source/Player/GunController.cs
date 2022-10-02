@@ -89,6 +89,30 @@ public class GunController : MonoBehaviour
         equippedGun.SwitchAmmo(ammoIndex);
     }
 
+    public int GetCurrentAmmo()
+    {
+        if (equippedGun == null) return 0;
+        return equippedGun.GetAmmo();
+    }
+
+    public int GetMaxAmmo()
+    {
+        if (equippedGun == null) return 0;
+        return equippedGun.MaxAmmo;
+    }
+
+    public bool IsReloading()
+    {
+        if (equippedGun == null) return false;
+        return equippedGun.IsReloading();
+    }
+    
+    public void ReloadEquippedGun()
+    {
+        if (equippedGun == null) return;
+        equippedGun.StartReload();
+    }
+
     public Gun GetEquippedGun()
     {
         return equippedGun;

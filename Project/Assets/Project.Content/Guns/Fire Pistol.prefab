@@ -158,7 +158,6 @@ MonoBehaviour:
   - {fileID: 7209473686946063059, guid: e3c1a4ceceb71de49b40722066382d29, type: 3}
   fireAudioClip: {fileID: 8300000, guid: 3581942034e21514381dd3c9d45265c3, type: 3}
   fireAudioScale: 0.05
-  audioSource: {fileID: 4813533812991842476}
   GunHoldType: 0
   TimeToHolsterGun: 2
   ReloadOnSwitchTo: 1
@@ -177,7 +176,8 @@ AudioSource:
   m_GameObject: {fileID: 5011619906924807889}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: a020abe5a9701ba45987a9e1d113ec48,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
