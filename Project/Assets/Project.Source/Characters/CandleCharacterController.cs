@@ -108,7 +108,7 @@ namespace Project.Source.Characters
                     var offset = targetPosition - currentPosition;
                     var distanceToTarget = offset.magnitude;
                     
-                    var canSeePlayer = Physics.Linecast(transform.position + Vector3.up, target.transform.position - transform.position, out var hit)
+                    var canSeePlayer = Physics.Linecast(transform.position + Vector3.up, target.transform.position + Vector3.up, out var hit)
                         && hit.collider.TryGetComponent(out Character character)
                         && character.IsPlayer;
                     
