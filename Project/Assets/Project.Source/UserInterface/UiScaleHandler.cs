@@ -16,13 +16,13 @@ namespace Project.Source.UserInterface
 
         private void Update()
         {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.KeypadPlus))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.KeypadPlus) || UnityEngine.Input.GetKeyDown(KeyCode.Plus) || UnityEngine.Input.GetKeyDown(KeyCode.Equals))
             {
                 PlayerPrefs.SetInt(ScaleName, 2);
                 Scaler.scaleFactor = 2;
             }
 
-            if (UnityEngine.Input.GetKeyDown(KeyCode.KeypadMinus))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.KeypadMinus) || UnityEngine.Input.GetKeyDown(KeyCode.Minus))
             {
                 PlayerPrefs.SetInt(ScaleName, 1);
                 Scaler.scaleFactor = 1;
