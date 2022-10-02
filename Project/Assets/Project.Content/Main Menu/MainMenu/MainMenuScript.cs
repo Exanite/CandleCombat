@@ -8,6 +8,8 @@ public class MainMenuScript : MonoBehaviour
 {
     [SerializeField] private Animator animator = null;
 
+    public string MainSceneName = "Main";
+
     public void OnClickedPlay()
     {
         animator.SetTrigger("FadeOut");
@@ -20,7 +22,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void OnFadeComplete()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(MainSceneName);
     }
 
     
