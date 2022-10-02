@@ -8238,11 +8238,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2395249589239654378, guid: ed2bcae6e875154468291f3821d7cfbc,
         type: 3}
-      propertyPath: m_text
-      value: 00:00.000
-      objectReference: {fileID: 0}
-    - target: {fileID: 2395249589239654378, guid: ed2bcae6e875154468291f3821d7cfbc,
-        type: 3}
       propertyPath: m_HorizontalAlignment
       value: 2
       objectReference: {fileID: 0}
