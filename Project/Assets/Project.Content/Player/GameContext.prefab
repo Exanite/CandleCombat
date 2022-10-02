@@ -66,7 +66,7 @@ MonoBehaviour:
   AudioSource: {fileID: 0}
   CurrentHealth: 100
   MaxHealth: 100
-  HealthRegenPerSecond: 0
+  HealthRegenPerSecond: -2
   IsDead: 0
   Abilities:
   - {fileID: 11400000, guid: 3bbcf68d3010090499326e70efba97d9, type: 2}
