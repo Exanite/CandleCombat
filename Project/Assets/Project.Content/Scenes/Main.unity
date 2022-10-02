@@ -8443,6 +8443,11 @@ PrefabInstance:
       objectReference: {fileID: 428591600}
     - target: {fileID: 7965470926689174171, guid: 57615ce97bbc97e46a4674c14d33db8c,
         type: 3}
+      propertyPath: fireAudioScale
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 7965470926689174171, guid: 57615ce97bbc97e46a4674c14d33db8c,
+        type: 3}
       propertyPath: SelectedProjectile
       value: 0
       objectReference: {fileID: 0}
