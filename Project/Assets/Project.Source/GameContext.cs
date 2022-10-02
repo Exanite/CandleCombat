@@ -153,7 +153,7 @@ namespace Project.Source
         {
             IsDead = true;
             
-            Debug.Log("Character died");
+            // Debug.Log("Character died");
 
             StartCoroutine(Restart(5));
         }

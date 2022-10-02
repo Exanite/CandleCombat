@@ -44,7 +44,7 @@ public class LineProjectile : Projectile
         if (Physics.SphereCast(ray, radius, out RaycastHit hit, maxDistance))
         {
             endPosition = direction * hit.distance;
-            Debug.Log("Hit: " + hit.collider.gameObject);
+            // Debug.Log("Hit: " + hit.collider.gameObject);
 
             Character character = hit.collider.gameObject.GetComponent<Character>();
             if(character != null)
@@ -107,7 +107,7 @@ public class LineProjectile : Projectile
     
     private void Expire()
     {
-        Debug.Log("Destroy!");
+        // Debug.Log("Destroy!");
         
         if(spawned != null)
             Destroy(spawned);
