@@ -38,7 +38,7 @@ namespace Project.Source
         public List<Ability> Abilities = new List<Ability>();
 
         private AbilityInputActions abilityInputActions;
-        private GunController playerGunController;
+        public GunController PlayerGunController;
         
         //TODO: Move event??
         public event Action<Character> Possessed;
@@ -54,7 +54,7 @@ namespace Project.Source
 
             //TODO: Ensure component is on main camera with separate script w/ require component.
             AudioSource = MainCamera.GetComponent<AudioSource>();
-            playerGunController = GetComponent<GunController>();
+            PlayerGunController = GetComponent<GunController>();
         }
 
         private void Start()
