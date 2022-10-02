@@ -122,7 +122,6 @@ namespace Project.Source.Characters
                 if (Physics.Raycast(transform.position + Vector3.up, jumpDirection, out var hit, distance + CharacterRadius))
                 {
                     distance = Mathf.Clamp(hit.distance - CharacterRadius, 0, distance);
-                    Debug.Log("reducing distance");
                 }
 
                 transform.position += distance * jumpDirection;
