@@ -22,6 +22,7 @@ public class OrbProjectile : Projectile
     public override void Fire(Character characterFrom, Vector3 direction, Vector3 visualPosition)
     {
         owner = characterFrom;
+        transform.forward = direction;
         rb.velocity = direction * speed;
 
         if (retainCharacterVelocity)

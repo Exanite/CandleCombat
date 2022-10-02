@@ -154,7 +154,7 @@ MonoBehaviour:
   firePoint: {fileID: 734832255062589920}
   firePointVisual: {fileID: 4936708336607297399}
   projectilePrefabs:
-  - {fileID: 7209473686946063059, guid: e3c1a4ceceb71de49b40722066382d29, type: 3}
+  - {fileID: 6382536856981632727, guid: ed5b076e318cbdc4db9b413cbeb8dd4b, type: 3}
   GunHoldType: 0
   TimeToHolsterGun: 1
   ReloadOnSwitchTo: 0

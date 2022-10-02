@@ -259,9 +259,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1228328845391044785}
   retainCharacterVelocity: 0
-  damage: 1
-  timeToExpire: 3
-  speed: 10
+  damage: 5
+  timeToExpire: 1.5
+  speed: 40
   acceleration: 0.01
   FireManipulatorType: 0
   FlameManipulationDPS: 10
