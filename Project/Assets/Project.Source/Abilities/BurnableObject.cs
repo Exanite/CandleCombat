@@ -75,13 +75,27 @@ public class BurnableObject : MonoBehaviour, IBurn
 
     private void OnEnable()
     {
-        subscribedGameContext = GameContext.Instance;
-        subscribedGameContext.Possessed += HandlePossessed;
+        try
+        {
+            subscribedGameContext = GameContext.Instance;
+        }
+        catch (NullReferenceException)
+        {
+            // Blank
+        }
+
+        if (subscribedGameContext)
+        {
+            subscribedGameContext.Possessed += HandlePossessed;
+        }
     }
 
     private void OnDisable()
     {
-        subscribedGameContext.Possessed -= HandlePossessed;
+        if (subscribedGameContext)
+        {
+            subscribedGameContext.Possessed -= HandlePossessed;
+        }
     }
 
     private void Update()
