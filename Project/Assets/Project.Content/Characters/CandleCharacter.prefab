@@ -361,6 +361,8 @@ MonoBehaviour:
   MeshRenderer: {fileID: 5212907410817122171}
   Animator: {fileID: 5222602482561746104}
   GunController: {fileID: 5959308386990084697}
+  jumpLandingClip: {fileID: 8300000, guid: dd0b9f2fd88c22d4880c74f2fa866108, type: 3}
+  jumpLandingAudioScale: 0.002
   AttackRange: 10
   JumpDistance: 3
   JumpAnimationTrigger: Jump

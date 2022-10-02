@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class GunController : MonoBehaviour
 {
+    [Header("Settings")]
     public int EquippedGunIndex = 0;
     [SerializeField] private List<Gun> equippableGuns = new List<Gun>();
 

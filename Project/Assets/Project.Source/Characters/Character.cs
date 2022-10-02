@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Exanite.Core.Events;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
