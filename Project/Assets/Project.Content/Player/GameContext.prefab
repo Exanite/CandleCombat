@@ -187,6 +187,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Soul Flame
       objectReference: {fileID: 0}
+    - target: {fileID: 892416973879723404, guid: 4a51f4b49b527b6479674d028805f129,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 892416973879723407, guid: 4a51f4b49b527b6479674d028805f129,
         type: 3}
       propertyPath: m_RootOrder
@@ -339,6 +344,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pistol
       objectReference: {fileID: 0}
+    - target: {fileID: 4936708337404964590, guid: bfe72096eb983f14699dacd0bc5ab11f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4936708337404964591, guid: bfe72096eb983f14699dacd0bc5ab11f,
         type: 3}
       propertyPath: MaxAmmo
@@ -354,6 +364,17 @@ PrefabInstance:
       propertyPath: TimeBetweenShots
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 4936708337404964591, guid: bfe72096eb983f14699dacd0bc5ab11f,
+        type: 3}
+      propertyPath: projectilePrefabs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4936708337404964591, guid: bfe72096eb983f14699dacd0bc5ab11f,
+        type: 3}
+      propertyPath: projectilePrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 7684210110739778004, guid: dcd92216766d149498358a53e74f1418,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bfe72096eb983f14699dacd0bc5ab11f, type: 3}
 --- !u!4 &7965470926689174164 stripped

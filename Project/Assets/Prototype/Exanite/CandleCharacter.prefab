@@ -7,20 +7,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7526407496677910607, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
+    - target: {fileID: 144553679489320163, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.066
       objectReference: {fileID: 0}
-    - target: {fileID: 7526407496677910607, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
+    - target: {fileID: 144553679489320163, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.05
+      value: 1.341
       objectReference: {fileID: 0}
-    - target: {fileID: 7526407496677910607, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
+    - target: {fileID: 144553679489320163, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.24
+      value: 0.63
+      objectReference: {fileID: 0}
+    - target: {fileID: 4216779549500746406, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
+        type: 3}
+      propertyPath: m_Name
+      value: Gun Point
       objectReference: {fileID: 0}
     - target: {fileID: 8072702675715705161, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
         type: 3}

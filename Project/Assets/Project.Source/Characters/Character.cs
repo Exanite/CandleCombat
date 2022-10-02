@@ -14,7 +14,7 @@ namespace Project.Source.Characters
 
         public float HealthRegenPerSecond;
 
-        public Transform GunPosition;
+        public GunPosition GunPosition;
         public Rigidbody Rigidbody;
 
         public event Action<Character> Dead;

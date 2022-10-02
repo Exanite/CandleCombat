@@ -24,12 +24,22 @@ public class GunController : MonoBehaviour
         if (equippedGun == null || character == null) return;
         
         MoveGunToCharacterGunPoint(character);
+        
+        if (equippedGun.IsHolstered())
+            character.GunPosition.HandleHolster(equippedGun.GunHoldType);
+        else 
+            character.GunPosition.HandleDraw(equippedGun.GunHoldType);
+        
+        if(equippedGun.IsFiring())
+            character.GunPosition.HandleFire(equippedGun.GunHoldType);
+        else
+            character.GunPosition.HandleStopFiring(equippedGun.GunHoldType);
     }
     
     public void Fire()
     {
         if (equippedGun == null) return;
-        
+
         equippedGun.Fire(character);
     }
 
@@ -63,10 +73,13 @@ public class GunController : MonoBehaviour
 
     private void MoveGunToCharacterGunPoint(Character character)
     {
-        Transform eT = equippedGun.transform;
-        Transform cgT = character.GunPosition.transform;
-        eT.position = cgT.position;
-        eT.rotation = cgT.rotation;
+        Transform gun = equippedGun.transform;
+        Transform model = equippedGun.GetModel().transform;
+        GunPosition characterGun = character.GunPosition;
+        gun.position = characterGun.transform.position;
+        gun.rotation = characterGun.transform.rotation;
+        model.position = characterGun.GetAnimationPosition();
+        model.rotation = characterGun.GetAnimationRotation();
     }
 
     private void OnValidate()
