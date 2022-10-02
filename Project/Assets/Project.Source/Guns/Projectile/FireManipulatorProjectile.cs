@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using Project.Source.Characters;
 using UnityEngine;
 
 public enum FireManipulatorType
 {
     SetFire,
-    RemoveFire
+    RemoveFire,
 }
 
 public class FireManipulatorProjectile : OrbProjectile
@@ -16,17 +13,24 @@ public class FireManipulatorProjectile : OrbProjectile
     [Tooltip("Set fire -> Add flame DPS, Remove fire -> Remove flame DPS")]
     public int FlameManipulationDPS = 10;
 
-    protected override void HandleTrigger(Collider other)
+    protected override void OnCollide(RaycastHit hit)
     {
-        base.HandleTrigger(other);
+        base.OnCollide(hit);
 
-        IBurn burnable = other.GetComponent<IBurn>();
+        var burnable = hit.collider.GetComponent<IBurn>();
 
-        if (burnable == null) return;
-        
-        if(FireManipulatorType == FireManipulatorType.SetFire)
+        if (burnable == null)
+        {
+            return;
+        }
+
+        if (FireManipulatorType == FireManipulatorType.SetFire)
+        {
             burnable.AddFire(FlameManipulationDPS);
+        }
         else if (FireManipulatorType == FireManipulatorType.RemoveFire)
+        {
             burnable.RemoveFire(FlameManipulationDPS);
+        }
     }
 }

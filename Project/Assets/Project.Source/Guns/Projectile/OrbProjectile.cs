@@ -1,24 +1,32 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Project.Source.Characters;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class OrbProjectile : Projectile
 {
     [Header("Dependencies")]
-    [SerializeField] protected Rigidbody rb;
+    [SerializeField]
+    protected Rigidbody rb;
+    [SerializeField]
+    protected VisualEffect hitEffect;
 
     [Header("Settings")]
-    [SerializeField] protected bool retainCharacterVelocity = false;
-    [SerializeField] protected float damage = 1f;
-    [SerializeField] protected float timeToExpire = 1f;
-    [SerializeField] protected float speed = 1;
-    [SerializeField] protected float acceleration = 0.1f;
+    [SerializeField]
+    protected bool retainCharacterVelocity;
+    [SerializeField]
+    protected float damage = 1f;
+    [SerializeField]
+    protected float timeToExpire = 1f;
+    [SerializeField]
+    protected float speed = 1;
+    [SerializeField]
+    protected float acceleration = 0.1f;
+    [SerializeField]
+    protected float colliderRadius = 0.1f;
 
     protected Character owner;
-    protected float lifetime = 0;
-    
+    protected float lifetime;
+
     public override void Fire(Character characterFrom, Vector3 direction, Vector3 visualPosition)
     {
         owner = characterFrom;
@@ -26,15 +34,39 @@ public class OrbProjectile : Projectile
         rb.velocity = direction * speed;
 
         if (retainCharacterVelocity)
+        {
             rb.velocity += characterFrom.Rigidbody.velocity;
+        }
+    }
+
+    protected virtual void OnCollide(RaycastHit hit)
+    {
+        if (hitEffect)
+        {
+            Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal, Vector3.up));
+        }
+
+        var otherCharacter = hit.collider.GetComponent<Character>();
+        if (otherCharacter != null)
+        {
+            Hit(otherCharacter);
+        }
+
+        Debug.Log($"{name} Hit");
+
+        Destroy(gameObject);
     }
 
     public override void Hit(Character character)
     {
-        if (owner.IsPlayer == character.IsPlayer) return;
+        var isSameTeam = owner.IsPlayer == character.IsPlayer;
+        if (isSameTeam)
+        {
+            return;
+        }
 
         character.TakeDamage(damage);
-        
+
         Expire();
     }
 
@@ -42,33 +74,31 @@ public class OrbProjectile : Projectile
     {
         lifetime += Time.deltaTime;
 
-        if(lifetime > timeToExpire)
+        if (lifetime > timeToExpire)
+        {
             Expire();
-        
-        if (acceleration == 0) return;
+        }
+
+        var distance = Time.deltaTime * rb.velocity.magnitude;
+        if (Physics.SphereCast(transform.position, colliderRadius, rb.velocity.normalized, out var hit, distance))
+        {
+            OnCollide(hit);
+        }
+
+        if (acceleration == 0)
+        {
+            return;
+        }
 
         var velocity = rb.velocity;
-        velocity += new Vector3(velocity.x * acceleration,0, velocity.z * acceleration);
+        velocity += new Vector3(velocity.x * acceleration, 0, velocity.z * acceleration);
         rb.velocity = velocity;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        HandleTrigger(other);
-    }
-    
-    protected virtual void HandleTrigger(Collider other)
-    {
-        Character otherCharacter = other.gameObject.GetComponent<Character>();
-        
-        if(otherCharacter != null)
-            Hit(otherCharacter);
     }
 
     protected void Expire()
     {
         Debug.Log("Destroy!");
-        
+
         Destroy(gameObject);
     }
 }
