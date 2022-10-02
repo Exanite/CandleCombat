@@ -48,11 +48,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 6382536856981632726}
+  hitEffect: {fileID: 6673227024376584013, guid: 8dbd7d2401daebf45b916a7dd8b8566c,
+    type: 3}
   retainCharacterVelocity: 0
   damage: 1
   timeToExpire: 1.5
   speed: 100
   acceleration: 0
+  colliderRadius: 0.3617433
 --- !u!135 &6382536856981632745
 SphereCollider:
   m_ObjectHideFlags: 0
