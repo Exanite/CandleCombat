@@ -386,6 +386,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4936708337404964591, guid: bfe72096eb983f14699dacd0bc5ab11f,
         type: 3}
+      propertyPath: TimeToHolsterGun
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4936708337404964591, guid: bfe72096eb983f14699dacd0bc5ab11f,
+        type: 3}
       propertyPath: projectilePrefabs.Array.size
       value: 2
       objectReference: {fileID: 0}
