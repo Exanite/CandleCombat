@@ -58,6 +58,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 0
   MainCamera: {fileID: 0}
+  VirtualCamera: {fileID: 0}
   CurrentPlayer: {fileID: 0}
   waveManager: {fileID: 47807112758318592}
   PlayerWickPrefab: {fileID: 8536334166681188412, guid: 23cf517df9df38846ba2a81f7885ebbc,
@@ -72,6 +73,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3bbcf68d3010090499326e70efba97d9, type: 2}
   - {fileID: 11400000, guid: 4c69f3deede8592429001808c5a6daf5, type: 2}
   - {fileID: 11400000, guid: dab59f19e23b4a94e8d976e371dd891a, type: 2}
+  PlayerGunController: {fileID: 3495844000217364866}
 --- !u!114 &5578559470589387425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,6 +109,8 @@ MonoBehaviour:
   dodgeReference: {fileID: 5933847315574979479, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
   reloadReference: {fileID: 7209500551064937317, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+    type: 3}
+  quitReference: {fileID: 6777660083500653768, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
 --- !u!114 &4686590657947957126
 MonoBehaviour:

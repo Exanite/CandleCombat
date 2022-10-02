@@ -159,7 +159,7 @@ namespace Project.Source.Characters
             IsDead = true;
 
             Debug.Log($"{name} died");
-            
+
             foreach (var behaviour in DisableOnDeathBehaviours)
             {
                 behaviour.enabled = false;
@@ -180,6 +180,8 @@ namespace Project.Source.Characters
             Destroy(gameObject, OnDeathDestroyDelay);
 
             Dead?.Invoke(this);
+            
+            GameContext.Instance.ScreenShake();
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cinemachine;
 using Exanite.Drawing;
 using Project.Source.Abilities;
 using Project.Source.Characters;
@@ -19,6 +20,7 @@ namespace Project.Source
     {
         [Header("Dependencies")]
         public Camera MainCamera;
+        public CinemachineVirtualCamera VirtualCamera;
         public Character CurrentPlayer;
         [FormerlySerializedAs("EnemySpawnManager")]
         public WaveManager waveManager;
@@ -98,9 +100,29 @@ namespace Project.Source
             }
             
             CurrentPlayer = character;
-            CurrentPlayer.OnPossessed(); //Containt
+            CurrentPlayer.OnPossessed(); 
             
             Possessed?.Invoke(character);
+        }
+
+        public void ScreenShake()
+        {
+            StartCoroutine(ShakeScreen(0.1f, 1));
+        }
+
+        private IEnumerator ShakeScreen(float duration, float intensity)
+        {
+            var timer = 0f;
+            var channels = VirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            channels.m_AmplitudeGain = intensity;
+            
+            while (timer < duration)
+            {
+                timer += Time.deltaTime;
+                yield return null;
+            }
+
+            channels.m_AmplitudeGain = 0f;
         }
         
         private void CheckDeath()

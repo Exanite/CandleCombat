@@ -8118,6 +8118,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1841424735, guid: 331cb4b253ed5fc43835e99264b3fd0b, type: 3}
+      propertyPath: m_NoiseProfile
+      value: 
+      objectReference: {fileID: 11400000, guid: e9ce97b7a206dc64d90931ea044e0c72,
+        type: 2}
     - target: {fileID: 705308142393325286, guid: 331cb4b253ed5fc43835e99264b3fd0b,
         type: 3}
       propertyPath: m_RootOrder
@@ -8431,6 +8436,11 @@ PrefabInstance:
       propertyPath: CurrentPlayer
       value: 
       objectReference: {fileID: 66419338}
+    - target: {fileID: 2172941941509775111, guid: 57615ce97bbc97e46a4674c14d33db8c,
+        type: 3}
+      propertyPath: VirtualCamera
+      value: 
+      objectReference: {fileID: 428591600}
     - target: {fileID: 3935464503839000325, guid: 57615ce97bbc97e46a4674c14d33db8c,
         type: 3}
       propertyPath: text
