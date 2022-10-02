@@ -12,6 +12,7 @@ public class LineProjectile : Projectile
 
     [Header("Settings")]
     [SerializeField] private float damage = 1f;
+    [SerializeField] private float radius = 1f;
     [SerializeField] private float maxDistance = 10f;
     [SerializeField] private float timeToExpire = 1f;
     //[SerializeField] private float timeToFire;
@@ -29,8 +30,8 @@ public class LineProjectile : Projectile
         LineRenderer line = Instantiate(linePrefab, tPosition, Quaternion.Euler(direction));
         line.SetPosition(0, Vector3.zero);
 
-        RaycastHit hit;
-        if (Physics.Raycast(tPosition, direction, out hit))
+        Ray ray = new Ray(tPosition, direction);
+        if (Physics.SphereCast(ray, radius, out RaycastHit hit))
         {
             line.SetPosition(1, direction * hit.distance);
             Debug.Log("Hit: " + hit.collider.gameObject);
