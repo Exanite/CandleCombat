@@ -67,5 +67,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mug
       objectReference: {fileID: 0}
+    - target: {fileID: 4443564698195195088, guid: 2415158a148a2284ca41a379b113c90e,
+        type: 3}
+      propertyPath: m_Mass
+      value: 0.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2415158a148a2284ca41a379b113c90e, type: 3}
