@@ -117,7 +117,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'You have died
+  m_text: 'Be seeing you, Mr. Wick.
 
     <size=50%>Better luck next time</size>'
   m_isRightToLeft: 0
