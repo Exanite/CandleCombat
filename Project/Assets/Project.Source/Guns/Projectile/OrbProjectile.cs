@@ -27,15 +27,6 @@ public class OrbProjectile : Projectile
     protected Character owner;
     protected float lifetime;
 
-    private void Update()
-    {
-        var distance = Time.deltaTime * rb.velocity.magnitude;
-        if (hitEffect && Physics.SphereCast(transform.position, colliderRadius, rb.velocity.normalized, out var hit, distance))
-        {
-            Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal, Vector3.up));
-        }
-    }
-
     public override void Fire(Character characterFrom, Vector3 direction, Vector3 visualPosition)
     {
         owner = characterFrom;
@@ -46,6 +37,24 @@ public class OrbProjectile : Projectile
         {
             rb.velocity += characterFrom.Rigidbody.velocity;
         }
+    }
+
+    protected virtual void OnCollide(RaycastHit hit)
+    {
+        if (hitEffect)
+        {
+            Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal, Vector3.up));
+        }
+
+        var otherCharacter = hit.collider.GetComponent<Character>();
+        if (otherCharacter != null)
+        {
+            Hit(otherCharacter);
+        }
+
+        Debug.Log($"{name} Hit");
+
+        Destroy(gameObject);
     }
 
     public override void Hit(Character character)
@@ -70,6 +79,12 @@ public class OrbProjectile : Projectile
             Expire();
         }
 
+        var distance = Time.deltaTime * rb.velocity.magnitude;
+        if (Physics.SphereCast(transform.position, colliderRadius, rb.velocity.normalized, out var hit, distance))
+        {
+            OnCollide(hit);
+        }
+
         if (acceleration == 0)
         {
             return;
@@ -78,21 +93,6 @@ public class OrbProjectile : Projectile
         var velocity = rb.velocity;
         velocity += new Vector3(velocity.x * acceleration, 0, velocity.z * acceleration);
         rb.velocity = velocity;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        HandleTrigger(other);
-    }
-
-    protected virtual void HandleTrigger(Collider other)
-    {
-        var otherCharacter = other.gameObject.GetComponent<Character>();
-
-        if (otherCharacter != null)
-        {
-            Hit(otherCharacter);
-        }
     }
 
     protected void Expire()

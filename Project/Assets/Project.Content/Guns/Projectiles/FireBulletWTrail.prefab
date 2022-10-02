@@ -258,11 +258,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 1228328845391044785}
+  hitEffect: {fileID: 6673227024376584013, guid: 8dbd7d2401daebf45b916a7dd8b8566c,
+    type: 3}
   retainCharacterVelocity: 0
   damage: 5
   timeToExpire: 1.5
   speed: 40
   acceleration: 0.01
+  colliderRadius: 0.1
   FireManipulatorType: 0
   FlameManipulationDPS: 10
 --- !u!54 &1228328845391044785
