@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Exanite.Core.Events;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace Project.Source.Characters
 
         [Header("Dependencies")]
         public Rigidbody Rigidbody;
+        public DissolveShader DissolveShader;
         
         [Header("Configuration")]
         [SerializeField]
@@ -154,12 +156,16 @@ namespace Project.Source.Characters
             }
         }
 
-        protected virtual void OnDead()
+        private void OnDead()
+        {
+            StartCoroutine(OnDeadCoroutine());
+        }
+
+        private IEnumerator OnDeadCoroutine()
         {
             IsDead = true;
+            Dead?.Invoke(this);
 
-            Debug.Log($"{name} died");
-            
             foreach (var behaviour in DisableOnDeathBehaviours)
             {
                 behaviour.enabled = false;
@@ -176,10 +182,11 @@ namespace Project.Source.Characters
             {
                 Destroy(playerWick);
             }
-            
-            Destroy(gameObject, OnDeathDestroyDelay);
 
-            Dead?.Invoke(this);
+            yield return new WaitForSeconds(1);
+            
+            DissolveShader.StartDissolve();
+            Destroy(gameObject, OnDeathDestroyDelay);
         }
     }
 }
