@@ -429,12 +429,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6d0e8fedea4a1949b9994d7f48cc8e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentHealth: 3
+  currentHealth: 3
   MaxHealth: 3
   IsDead: 0
+  IsDodging: 0
+  IsInvulnerable: 0
   HealthRegenPerSecond: 0
   GunPosition: {fileID: 7526407496677910607}
   Rigidbody: {fileID: 657701656}
+  DisableOnDeathBehaviours: []
+  DisableOnDeathColliders:
+  - {fileID: -4140058397007785958}
+  OnDeathDestroyDelay: 3
 --- !u!4 &8882172673435702259 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b6f0b066183245f44a322985a716a76e,
