@@ -14,7 +14,7 @@ public class DissolveShader : MonoBehaviour
     private void Start()
     {
         material = smRenderer.material;
-        DissolveStart();
+        
     }
 
     private void Update()
@@ -22,7 +22,7 @@ public class DissolveShader : MonoBehaviour
        // material.SetFloat("_DissolveAmount", dissolveValue);
     }
 
-    private void DissolveStart()
+    public void DissolveStart()
     {
         StartCoroutine(Dissolve());
         

@@ -231,7 +231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smRenderer: {fileID: 539131617}
-  speed: 0.000001
+  duration: 2
 --- !u!137 &539131617 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 5074512353664290214, guid: b6f0b066183245f44a322985a716a76e,
@@ -473,7 +473,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smRenderer: {fileID: 1778315332}
-  speed: 0.000001
+  duration: 3
 --- !u!137 &1778315332 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 5074512353664290214, guid: b6f0b066183245f44a322985a716a76e,
