@@ -240,7 +240,7 @@ PrefabInstance:
     - target: {fileID: 1331324934942564950, guid: bfdf9bd4b3fe5d34d89c4bfff964dd57,
         type: 3}
       propertyPath: m_Name
-      value: Animation Anchor
+      value: Gun Point
       objectReference: {fileID: 0}
     - target: {fileID: 3097733957059300371, guid: bfdf9bd4b3fe5d34d89c4bfff964dd57,
         type: 3}
@@ -250,17 +250,17 @@ PrefabInstance:
     - target: {fileID: 3097733957059300371, guid: bfdf9bd4b3fe5d34d89c4bfff964dd57,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.066
       objectReference: {fileID: 0}
     - target: {fileID: 3097733957059300371, guid: bfdf9bd4b3fe5d34d89c4bfff964dd57,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.05
+      value: 1.341
       objectReference: {fileID: 0}
     - target: {fileID: 3097733957059300371, guid: bfdf9bd4b3fe5d34d89c4bfff964dd57,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.24
+      value: 0.63
       objectReference: {fileID: 0}
     - target: {fileID: 3097733957059300371, guid: bfdf9bd4b3fe5d34d89c4bfff964dd57,
         type: 3}
@@ -299,45 +299,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bfdf9bd4b3fe5d34d89c4bfff964dd57, type: 3}
---- !u!4 &144553679489320163 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3097733957059300371, guid: bfdf9bd4b3fe5d34d89c4bfff964dd57,
-    type: 3}
-  m_PrefabInstance: {fileID: 2953466701716424944}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1372546414686951847 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 4319112434022764887, guid: bfdf9bd4b3fe5d34d89c4bfff964dd57,
-    type: 3}
-  m_PrefabInstance: {fileID: 2953466701716424944}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2885297783405760887 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 69367489068259719, guid: bfdf9bd4b3fe5d34d89c4bfff964dd57,
-    type: 3}
-  m_PrefabInstance: {fileID: 2953466701716424944}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4216779549500746406 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1331324934942564950, guid: bfdf9bd4b3fe5d34d89c4bfff964dd57,
-    type: 3}
-  m_PrefabInstance: {fileID: 2953466701716424944}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2533665858266623608
+--- !u!114 &852783407833605768 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 2533665858266623608, guid: bfdf9bd4b3fe5d34d89c4bfff964dd57,
+    type: 3}
+  m_PrefabInstance: {fileID: 2953466701716424944}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4216779549500746406}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e692951d9f558924eb04bd2ae2abc667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GunPoint: {fileID: 144553679489320163}
-  animationPoint: {fileID: 2885297783405760887}
-  gunTypeAnimator: {fileID: 1372546414686951847}
 --- !u!1001 &8991834137676248088
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -509,9 +482,10 @@ MonoBehaviour:
   currentHealth: 3
   MaxHealth: 3
   IsDead: 0
+  IsDodging: 0
   IsInvulnerable: 0
   HealthRegenPerSecond: 0
-  GunPosition: {fileID: 2533665858266623608}
+  GunPosition: {fileID: 852783407833605768}
   Rigidbody: {fileID: 657701656}
   DisableOnDeathBehaviours: []
   DisableOnDeathColliders:
