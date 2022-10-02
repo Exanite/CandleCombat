@@ -9,12 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f8910ccb6f947359f549489b03cdadf, type: 3}
-  m_Name: BurningShot
+  m_Script: {fileID: 11500000, guid: 8efb5aa42fc947169cd553b7d13a7646, type: 3}
+  m_Name: Dash
   m_EditorClassIdentifier: 
-  Icon: {fileID: 21300000, guid: a33905d1da7b6c24ab74935e5ff33ac5, type: 3}
-  CooldownDuration: 2
-  HealthCost: 10
-  CurrentCooldown: 2
-  shotsUntilWornOff: 3
-  fireGunIndex: 1
+  Icon: {fileID: 21300000, guid: fe1feab83aefd1d42971ac0a15f64650, type: 3}
+  CooldownDuration: 1
+  HealthCost: 1
+  CurrentCooldown: 0
