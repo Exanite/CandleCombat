@@ -149,6 +149,12 @@ namespace Project.Source.Characters
             while (timer < duration)
             {
                 timer += Time.deltaTime;
+
+                if (!character)
+                {
+                    yield break;
+                }
+                
                 character.Rigidbody.AddForce(direction * CollisionForce, ForceMode.Acceleration);
 
                 yield return null;
