@@ -14,6 +14,10 @@ namespace Project.Source.Characters
         public Animator Animator;
         public GunController GunController;
 
+        [Header("Sounds")]
+        [SerializeField] private AudioClip jumpLandingClip;
+        [SerializeField] private AudioSource audioSource;
+        
         [Header("Attacks")]
         public float AttackRange = 1;
 
@@ -119,7 +123,6 @@ namespace Project.Source.Characters
                     else
                     {
                         //Firing logic
-
                         if (!GunController)
                         {
                             return;
