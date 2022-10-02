@@ -17,9 +17,9 @@ MonoBehaviour:
     position:
       serializedVersion: 2
       x: 205
-      y: -360
-      width: 1179
-      height: 2101
+      y: -359
+      width: 1178
+      height: 1971
     contents:
     - model: {fileID: 8926484042661614555}
       id: 0
@@ -159,9 +159,9 @@ MonoBehaviour:
   uiBounds:
     serializedVersion: 2
     x: 205
-    y: -360
-    width: 3991
-    height: 2125
+    y: -359
+    width: 3990
+    height: 2143
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1369,7 +1369,6 @@ MonoBehaviour:
   - {fileID: 8926484042661614589}
   - {fileID: 8926484042661614629}
   - {fileID: 8926484042661614591}
-  - {fileID: 8926484042661614593}
   m_UIPosition: {x: 934, y: 1008}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
@@ -1511,69 +1510,6 @@ MonoBehaviour:
     name: Size
     m_serializedType:
       m_SerializableType: UnityEngine.AnimationCurve, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  m_Direction: 0
-  m_LinkedSlots: []
---- !u!114 &8926484042661614593
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01ec2c1930009b04ea08905b47262415, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UIIgnoredErrors: []
-  m_Parent: {fileID: 8926484042661614585}
-  m_Children: []
-  m_UIPosition: {x: 0, y: 283}
-  m_UICollapsed: 0
-  m_UISuperCollapsed: 0
-  m_InputSlots:
-  - {fileID: 8926484042661614594}
-  m_OutputSlots: []
-  m_Disabled: 1
-  attribute: color
-  Composition: 0
-  AlphaComposition: 0
-  SampleMode: 0
-  Mode: 1
-  ColorMode: 3
-  channels: 6
---- !u!114 &8926484042661614594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76f778ff57c4e8145b9681fe3268d8e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UIIgnoredErrors: []
-  m_Parent: {fileID: 0}
-  m_Children: []
-  m_UIPosition: {x: 0, y: 0}
-  m_UICollapsed: 1
-  m_UISuperCollapsed: 0
-  m_MasterSlot: {fileID: 8926484042661614594}
-  m_MasterData:
-    m_Owner: {fileID: 8926484042661614593}
-    m_Value:
-      m_Type:
-        m_SerializableType: UnityEngine.Gradient, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"colorKeys":[{"color":{"r":14.819693565368653,"g":1.511467456817627,"b":0.0,"a":1.0},"time":0.0},{"color":{"r":1.0,"g":0.423997163772583,"b":0.0,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":0.0,"time":0.7441214323043823}],"gradientMode":0}'
-    m_Space: 2147483647
-  m_Property:
-    name: Color
-    m_serializedType:
-      m_SerializableType: UnityEngine.Gradient, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
   m_Direction: 0
   m_LinkedSlots: []
@@ -1776,9 +1712,9 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661614603}
       inputSlot: {fileID: 8926484042661615012}
-    position: {x: 230.4, y: 717.6}
+    position: {x: 230, y: 718}
     expandedSlots: []
-    expanded: 0
+    expanded: 1
   - m_Id: 1
     linkedSlots:
     - outputSlot: {fileID: 8926484042661614603}
@@ -2000,7 +1936,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661614609}
       inputSlot: {fileID: 8926484042661614617}
-    position: {x: 721.60004, y: 717.6}
+    position: {x: 722, y: 718}
     expandedSlots: []
     expanded: 0
   - m_Id: 1
@@ -2775,7 +2711,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661614656}
       inputSlot: {fileID: 8926484042661614557}
-    position: {x: 744.8, y: -168}
+    position: {x: 745, y: -168}
     expandedSlots: []
     expanded: 1
 --- !u!114 &8926484042661614656
@@ -2861,7 +2797,7 @@ MonoBehaviour:
       inputSlot: {fileID: 8926484042661614795}
     - outputSlot: {fileID: 8926484042661614658}
       inputSlot: {fileID: 8926484042661614575}
-    position: {x: 313.6, y: 242.40001}
+    position: {x: 314, y: 242}
     expandedSlots: []
     expanded: 1
 --- !u!114 &8926484042661614658
@@ -3046,7 +2982,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661614663}
       inputSlot: {fileID: 8926484042661614582}
-    position: {x: 679.2, y: 415.19998}
+    position: {x: 679, y: 415}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661614663
@@ -3128,7 +3064,7 @@ MonoBehaviour:
       inputSlot: {fileID: 8926484042661614668}
     - outputSlot: {fileID: 8926484042661614665}
       inputSlot: {fileID: 8926484042661614632}
-    position: {x: 566.4, y: 1176}
+    position: {x: 481, y: 1326}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661614665
@@ -3182,7 +3118,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 642, y: 1008}
+  m_UIPosition: {x: 690, y: 1202}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -6449,7 +6385,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 578, y: 300}
+  m_UIPosition: {x: 566, y: 328}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -11612,7 +11548,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 422, y: 679}
+  m_UIPosition: {x: 452, y: 726}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
