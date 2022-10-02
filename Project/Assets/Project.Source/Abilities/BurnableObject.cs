@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Project.Source;
+using Project.Source.Characters;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -23,7 +25,13 @@ public class BurnableObject : MonoBehaviour, IBurn
     [Header("Settings")]
     public int MaxHealth = 100;
 
+    [SerializeField] private string flameSizeAttribute = "FlamesSize";
+    [SerializeField] private string flameColorAttribute = "Color";
+
     [Header("Light Settings")]
+    public Color PossessColor = Color.blue;
+    public float PossessSwitchTime = 1f;
+    
     [Range(1, 14)]
     public float MaxFireSize = 6;
     [Range(1, 14)]
@@ -34,21 +42,38 @@ public class BurnableObject : MonoBehaviour, IBurn
     public AnimationCurve healthToIntensityCurve;
 
     private MeshRenderer meshRenderer;
-    
+
+    private Character currentCharacter;
     private float CurrentHealth = 0;
+    private float timeElapsedSinceDamaged = 0;
     private int currentFireDPS = 0;
     private bool isOnFire = false;
     private bool isFractured = false; 
+    
+    private float timeElapsedSincePossess = 0;
+    private Color originalLightColor;
+    private Color originalFireColor;
+    private bool wasPossessed = false;
 
-    private float timeElapsedSinceDamaged = 0;
     private Light spawnedLight;
     private VisualEffect spawnedFireVisualEffect;
     private GameObject spawnedFracturedObject;
-
+    
     private void Awake()
     {
         meshRenderer = GetComponent<MeshRenderer>();
         CurrentHealth = MaxHealth;
+        originalFireColor.a = 255;
+    }
+
+    private void OnEnable()
+    {
+        GameContext.Instance.Possessed += HandlePossessed;
+    }
+
+    private void OnDisable()
+    {
+        GameContext.Instance.Possessed -= HandlePossessed;
     }
 
     private void Update()
@@ -56,6 +81,7 @@ public class BurnableObject : MonoBehaviour, IBurn
         if (!isOnFire) return;
 
         timeElapsedSinceDamaged += Time.deltaTime;
+        timeElapsedSincePossess += Time.deltaTime;
         
         CurrentHealth -= currentFireDPS * Time.deltaTime;
 
@@ -67,6 +93,11 @@ public class BurnableObject : MonoBehaviour, IBurn
 
         if(CurrentHealth <= 0)
             Expire();
+
+        //if (wasPossessed && timeElapsedSincePossess > PossessSwitchTime)
+        //{
+        //    HandleReturnFromPossessed();
+        //}
     }
 
     public void AddFire(int fireDPS)
@@ -85,7 +116,7 @@ public class BurnableObject : MonoBehaviour, IBurn
             {
                 
                 spawnedFireVisualEffect = Instantiate(fireVisualEffect, transform.position, Quaternion.identity);
-                spawnedFireVisualEffect.SetFloat("FlamesSize", MaxFireSize);
+                spawnedFireVisualEffect.SetFloat(flameSizeAttribute, MaxFireSize);
             }
         }
         else
@@ -122,7 +153,7 @@ public class BurnableObject : MonoBehaviour, IBurn
         size = Mathf.Clamp(size, MinFireSize, MaxFireSize);
         
         if(fireVisualEffect != null)
-            fireVisualEffect.SetFloat("FlamesSize", size);
+            fireVisualEffect.SetFloat(flameSizeAttribute, size);
     }
     
     private void Fracture()
@@ -133,6 +164,40 @@ public class BurnableObject : MonoBehaviour, IBurn
         {
             spawnedFracturedObject = Instantiate(fracturedVersionPrefab, transform.position, transform.rotation);
             meshRenderer.enabled = false;
+        }
+    }
+
+    private void HandlePossessed(Character character)
+    {
+        wasPossessed = true;
+        
+        if (spawnedLight != null)
+        {
+            originalLightColor = spawnedLight.color;
+            spawnedLight.color = PossessColor;
+        }
+        
+        if (spawnedFireVisualEffect != null)
+        {
+            originalFireColor = spawnedFireVisualEffect.GetVector4(flameColorAttribute);
+            spawnedFireVisualEffect.SetVector4(flameColorAttribute, PossessColor);
+        }
+        
+        timeElapsedSincePossess = 0;
+    }
+
+    private void HandleReturnFromPossessed()
+    {
+        wasPossessed = false;
+        
+        if (spawnedLight != null)
+        {
+            spawnedLight.color = originalLightColor;
+        }
+
+        if (spawnedFireVisualEffect != null)
+        {
+            spawnedFireVisualEffect.SetVector4(flameColorAttribute, originalFireColor);
         }
     }
 

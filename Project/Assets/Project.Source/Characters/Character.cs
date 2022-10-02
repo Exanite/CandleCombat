@@ -47,7 +47,6 @@ namespace Project.Source.Characters
         }
 
         public event Action<Character> Dead;
-        public event Action<Character> Possessed;
         public event EventHandler<Character, float> TookDamage;
 
         private VisualEffect playerWick;
@@ -56,7 +55,7 @@ namespace Project.Source.Characters
         {
             if (IsPlayer)
             {
-                OnPossessed(this);
+                HandlePossessed(this);
             }
         }
 
@@ -100,11 +99,6 @@ namespace Project.Source.Characters
         public void OverwriteHealth(float value)
         {
             CurrentHealth = value;
-        }
-
-        public void Possess()
-        {
-            OnPossessed(this);
         }
 
         private void UpdateHealthDecay()
@@ -167,10 +161,9 @@ namespace Project.Source.Characters
             Dead?.Invoke(this);
         }
 
-        protected virtual void OnPossessed(Character obj)
+        protected virtual void HandlePossessed(Character obj)
         {
             if (obj != GameContext.Instance.CurrentPlayer) return;
-            Possessed?.Invoke(obj);
             
             int playerLayer = LayerMask.NameToLayer("Player");
             gameObject.layer = playerLayer;

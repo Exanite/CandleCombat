@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Exanite.Drawing;
@@ -34,6 +35,9 @@ namespace Project.Source
         public List<Ability> Abilities = new List<Ability>();
 
         private AbilityInputActions abilityInputActions;
+        
+        //TODO: Move event??
+        public event Action<Character> Possessed;
 
         protected override void Awake()
         {
@@ -43,6 +47,12 @@ namespace Project.Source
             abilityInputActions.PlayerAbilities.SetCallbacks(this);
 
             Abilities = Abilities.Select(asset => Instantiate(asset)).ToList();
+        }
+
+        private void Start()
+        {
+            if(CurrentPlayer != null)
+                Possess(CurrentPlayer);
         }
 
         protected override void OnEnable()
@@ -71,6 +81,19 @@ namespace Project.Source
             UpdateAbilityCooldowns();
         }
 
+        public void Possess(Character character)
+        {
+            if (CurrentPlayer != null)
+            {
+                CurrentPlayer.OverwriteHealth(-1);
+                CurrentHealth = Instance.MaxHealth;
+            }
+            
+            CurrentPlayer = character;
+            
+            Possessed?.Invoke(character);
+        }
+        
         private void CheckDeath()
         {
             if (CurrentHealth <= 0 || CurrentPlayer == null)
