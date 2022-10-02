@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Project.Source;
 using Project.Source.Characters;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public enum GunHoldType{
     OneHandGun,
@@ -23,6 +24,7 @@ public class Gun : MonoBehaviour
     public bool ReloadOnSwitchTo = false;
     public int SelectedProjectile = 0;
     public int Burst = 1;
+    public float BurstRadius = 1f;
     public float TimeBetweenShots = 1f;
     public int MaxAmmo = 1;
     public float ReloadTime = 2f;
@@ -66,7 +68,13 @@ public class Gun : MonoBehaviour
         {
             if (ammo == 0) return;
 
-            Projectile projectile = Instantiate(projectilePrefabs[SelectedProjectile], firePoint.position, Quaternion.Euler(firePoint.forward));
+            if (i > 0)
+            {
+                Vector2 randomVector = Random.insideUnitCircle * BurstRadius;
+                direction += new Vector3(randomVector.x, 0, 0);
+            }
+            
+            Projectile projectile = Instantiate(projectilePrefabs[SelectedProjectile], firePoint.position, Quaternion.Euler(direction));
             projectile.Fire(characterFrom, direction);
             
             ammo--;
