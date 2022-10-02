@@ -107,7 +107,12 @@ namespace Project.Source.Characters
 
                     var offset = targetPosition - currentPosition;
                     var distanceToTarget = offset.magnitude;
-                    if (distanceToTarget > AttackRange + 0.5f)
+                    
+                    var canSeePlayer = Physics.Linecast(transform.position + Vector3.up, target.transform.position - transform.position, out var hit)
+                        && hit.collider.TryGetComponent(out Character character)
+                        && character.IsPlayer;
+                    
+                    if (distanceToTarget > AttackRange + 0.5f || !canSeePlayer)
                     {
                         jumpCoroutine = StartCoroutine(JumpTowardsTarget());
                     }
@@ -121,7 +126,7 @@ namespace Project.Source.Characters
                         }
 
                         var directionToTarget = offset.normalized;
-                        transform.rotation = quaternion.LookRotation(directionToTarget, transform.up);
+                        transform.rotation = Quaternion.LookRotation(directionToTarget, transform.up);
                         GunController.Fire();
                     }
                 }
