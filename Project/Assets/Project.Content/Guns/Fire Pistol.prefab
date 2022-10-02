@@ -157,7 +157,7 @@ MonoBehaviour:
   projectilePrefabs:
   - {fileID: 7209473686946063059, guid: e3c1a4ceceb71de49b40722066382d29, type: 3}
   fireAudioClip: {fileID: 8300000, guid: 3581942034e21514381dd3c9d45265c3, type: 3}
-  fireAudioScale: 0.731
+  fireAudioScale: 0.05
   audioSource: {fileID: 4813533812991842476}
   GunHoldType: 0
   TimeToHolsterGun: 2

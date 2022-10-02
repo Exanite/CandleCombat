@@ -26,7 +26,6 @@ public class Gun : MonoBehaviour
     [SerializeField] private AudioClip fireAudioClip;
     [Range(0, 1)]
     [SerializeField] private float fireAudioScale; 
-    [SerializeField] private AudioSource audioSource;
     
     [Header("Settings")]
     public GunHoldType GunHoldType = GunHoldType.OneHandGun;
@@ -90,8 +89,8 @@ public class Gun : MonoBehaviour
             ammo--;
             OnShoot?.Invoke();
 
-            if(fireAudioClip != null && audioSource != null)
-                audioSource.PlayOneShot(fireAudioClip, fireAudioScale);
+            if (fireAudioClip != null)
+                GameContext.Instance.AudioSource.PlayOneShot(fireAudioClip, fireAudioScale);
         }
 
         elapsedTimeSinceShot -= TimeBetweenShots;

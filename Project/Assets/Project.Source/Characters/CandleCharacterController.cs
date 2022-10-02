@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 namespace Project.Source.Characters
 {
+    [RequireComponent(typeof(AudioSource))]
     public class CandleCharacterController : MonoBehaviour
     {
         [Header("Dependencies")]
@@ -16,7 +17,9 @@ namespace Project.Source.Characters
 
         [Header("Sounds")]
         [SerializeField] private AudioClip jumpLandingClip;
-        [SerializeField] private AudioSource audioSource;
+        [Range(0, 1)]
+        [SerializeField] private float jumpLandingAudioScale;
+        private AudioSource audioSource;
         
         [Header("Attacks")]
         public float AttackRange = 1;
@@ -66,6 +69,7 @@ namespace Project.Source.Characters
 
         private void Awake()
         {
+            audioSource = GetComponent <AudioSource>();
             path = new NavMeshPath();
         }
 
@@ -245,6 +249,9 @@ namespace Project.Source.Characters
                 yield return null;
             }
 
+            if(jumpLandingClip != null)
+                audioSource.PlayOneShot(jumpLandingClip, jumpLandingAudioScale);
+            
             isJumping = false;
         }
 

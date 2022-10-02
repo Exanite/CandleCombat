@@ -24,6 +24,7 @@ namespace Project.Source
         public WaveManager waveManager;
         public VisualEffect PlayerWickPrefab;
         public DrawingService DrawingService;
+        public AudioSource AudioSource;
 
         [Header("Health")]
         public float CurrentHealth = 100;
@@ -49,6 +50,9 @@ namespace Project.Source
             abilityInputActions.PlayerAbilities.SetCallbacks(this);
 
             Abilities = Abilities.Select(asset => Instantiate(asset)).ToList();
+
+            //TODO: Ensure component is on main camera with separate script w/ require component.
+            AudioSource = MainCamera.GetComponent<AudioSource>();
         }
 
         private void Start()
