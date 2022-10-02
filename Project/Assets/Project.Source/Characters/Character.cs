@@ -150,6 +150,8 @@ namespace Project.Source.Characters
         protected virtual void OnPossessed(Character obj)
         {
             Possessed?.Invoke(obj);
+            
+            Rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
     }
 }

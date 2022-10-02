@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 namespace Project.Source.Characters
@@ -25,6 +26,7 @@ namespace Project.Source.Characters
 
         public float JumpSpreadDistance = 1f;
         public float JumpLookAheadTime = 1f;
+        public float JumpLookAheadMaxDistance = 5f;
 
         public float CharacterRadius = 0.25f;
 
@@ -42,6 +44,16 @@ namespace Project.Source.Characters
 
         private float smoothedHealthRatio;
         private float smoothedHealthRatioVelocity;
+
+        private Vector3 smoothedVelocityVelocity;
+
+        private NavMeshPath path;
+        private readonly Vector3[] pathBuffer = new Vector3[8];
+
+        private void Awake()
+        {
+            path = new NavMeshPath();
+        }
 
         private void Start()
         {
@@ -72,15 +84,17 @@ namespace Project.Source.Characters
 
             if (!Character.IsPlayer)
             {
+                Character.Rigidbody.velocity = Vector3.SmoothDamp(Character.Rigidbody.velocity, Vector3.zero, ref smoothedVelocityVelocity, 0.5f);
+                
                 target = GameContext.Instance.CurrentPlayer;
 
-                Vector3 currentPosition = transform.position;
-                Vector3 targetPosition = target.transform.position;
-                
+                var currentPosition = transform.position;
+                var targetPosition = target.transform.position;
+
                 if (target && !isJumping)
                 {
                     var offset = targetPosition - currentPosition;
-                    float distanceToTarget = offset.magnitude;
+                    var distanceToTarget = offset.magnitude;
                     if (distanceToTarget > AttackRange + 0.5f)
                     {
                         jumpCoroutine = StartCoroutine(JumpTowardsTarget());
@@ -88,11 +102,14 @@ namespace Project.Source.Characters
                     else
                     {
                         //Firing logic
-                        
-                        if (!GunController) return;
 
-                        Vector3 directionToTarget = offset.normalized;
-                        transform.rotation = quaternion.LookRotation(directionToTarget,  transform.up);
+                        if (!GunController)
+                        {
+                            return;
+                        }
+
+                        var directionToTarget = offset.normalized;
+                        transform.rotation = quaternion.LookRotation(directionToTarget, transform.up);
                         GunController.Fire();
                     }
                 }
@@ -121,7 +138,7 @@ namespace Project.Source.Characters
         {
             if (GunController != null)
             {
-                GunController.Cleanup();   
+                GunController.Cleanup();
                 Destroy(GunController);
             }
         }
@@ -161,12 +178,62 @@ namespace Project.Source.Characters
             isJumping = false;
         }
 
+        private void OnRenderObject()
+        {
+            var resultCount = path.GetCornersNonAlloc(pathBuffer);
+            if (resultCount > 1)
+            {
+                using (var handle = GameContext.Instance.DrawingService.BeginDrawing())
+                {
+                    handle.Topology = MeshTopology.Lines;
+                    handle.Color = Color.cyan;
+
+                    for (var i = 1; i < resultCount; i++)
+                    {
+                        handle.AddVertex(pathBuffer[i - 1]);
+                        handle.AddVertex(pathBuffer[i]);
+                    }
+
+                    handle.DrawSphere(pathBuffer[1], Quaternion.identity, Vector3.one);
+                }
+            }
+        }
+
         private Vector3 SelectJumpPosition()
         {
             var targetPosition = target.transform.position + target.Rigidbody.velocity * JumpLookAheadTime;
+
+            var filter = new NavMeshQueryFilter
+            {
+                areaMask = ~0,
+            };
+
+            if (NavMesh.CalculatePath(transform.position, targetPosition, filter, path))
+            {
+                var resultCount = path.GetCornersNonAlloc(pathBuffer);
+                if (resultCount > 1)
+                {
+                    void SetTargetPosition(Vector3 cornerPosition)
+                    {
+                        var directionFromSelf = (cornerPosition - transform.position).normalized;
+                        targetPosition = cornerPosition + directionFromSelf * 2f;
+                    }
+                    
+                    SetTargetPosition(pathBuffer[1]);
+                    for (var i = 2; i < resultCount; i++)
+                    {
+                        if (!Physics.Raycast(transform.position, pathBuffer[i]))
+                        {
+                            SetTargetPosition(pathBuffer[i]);
+                        }
+                    }
+                }
+            }
+
             var offset = targetPosition - transform.position;
 
-            var targetJumpPosition = transform.position + Vector3.ClampMagnitude(offset, Mathf.Min(JumpDistance, offset.magnitude - AttackRange));
+            var maxJumpDistance = Mathf.Min(JumpDistance, JumpLookAheadMaxDistance);
+            var targetJumpPosition = transform.position + Vector3.ClampMagnitude(offset, maxJumpDistance);
 
             var angleRadians = Random.Range(0, 2 * Mathf.PI);
             var distance = Random.Range(0, JumpSpreadDistance);
