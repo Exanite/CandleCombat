@@ -10,6 +10,8 @@ namespace Project.Source.Characters
 {
     public class Character : MonoBehaviour
     {
+        public static HashSet<Character> ActiveCharacters = new HashSet<Character>();
+        
         public bool IsPlayer => this == GameContext.Instance.CurrentPlayer;
 
         [Header("Dependencies")]
@@ -58,6 +60,16 @@ namespace Project.Source.Characters
             }
         }
 
+        private void OnEnable()
+        {
+            ActiveCharacters.Add(this);
+        }
+
+        private void OnDisable()
+        {
+            ActiveCharacters.Remove(this);
+        }
+
         private void Update()
         {
             if (IsDead)
@@ -74,6 +86,11 @@ namespace Project.Source.Characters
         public void TakeDamage(float damageAmount)
         {
             CurrentHealth -= damageAmount;
+
+            if (IsPlayer)
+            {
+                GameContext.Instance.CurrentHealth -= damageAmount;
+            }
             
             TookDamage?.Invoke(this, damageAmount);
         }
