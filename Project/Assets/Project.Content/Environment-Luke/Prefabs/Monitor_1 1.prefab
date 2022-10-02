@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 6421834844374670141}
   - component: {fileID: 7976204042061911192}
   - component: {fileID: 5284371737405972562}
+  - component: {fileID: 6376703381421118131}
+  - component: {fileID: 7103620005461157611}
   m_Layer: 0
   m_Name: Monitor_1 1
   m_TagString: Untagged
@@ -84,3 +86,32 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6376703381421118131
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5932683718863733127}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.8660652, y: 0.618388, z: 0.27339935}
+  m_Center: {x: 0.0000014305115, y: 0.31163713, z: 0.054703865}
+--- !u!54 &7103620005461157611
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5932683718863733127}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

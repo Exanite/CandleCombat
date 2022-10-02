@@ -44,7 +44,7 @@ public class LineProjectile : Projectile
             endPosition = direction * maxDistance;
         }
         
-        CreateVisual(tPosition, direction, endPosition);
+        CreateVisual(tPosition, endPosition, hit.distance, direction);
     }
 
     public override void Hit(Character character)
@@ -63,7 +63,7 @@ public class LineProjectile : Projectile
             Expire();
     }
 
-    public virtual void CreateVisual(Vector3 startPosition, Vector3 direction, Vector3 endPosition)
+    public virtual void CreateVisual(Vector3 startPosition, Vector3 endPosition, float distance, Vector3 direction)
     {
         LineRenderer line = Instantiate(linePrefab, startPosition, Quaternion.Euler(direction));
         line.SetPosition(0, Vector3.zero);

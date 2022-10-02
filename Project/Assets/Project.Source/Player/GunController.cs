@@ -22,7 +22,13 @@ public class GunController : MonoBehaviour
         SwitchGun(EquippedGunIndex);
 
         if (equippedGun == null || character == null) return;
-        
+
+        if (character.IsDead)
+        {
+            Cleanup();
+            return;
+        }
+
         MoveGunToCharacterGunPoint(character);
         
         if (equippedGun.IsHolstered())
@@ -80,6 +86,14 @@ public class GunController : MonoBehaviour
         gun.rotation = characterGun.transform.rotation;
         model.position = characterGun.GetAnimationPosition();
         model.rotation = characterGun.GetAnimationRotation();
+    }
+
+    private void Cleanup()
+    {
+        foreach (var gun in equippableGuns)
+        {
+            gun.gameObject.SetActive(false);
+        }
     }
 
     private void OnValidate()

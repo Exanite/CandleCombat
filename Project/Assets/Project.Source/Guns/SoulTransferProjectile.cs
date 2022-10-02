@@ -22,11 +22,10 @@ public class SoulTransferProjectile : LineProjectile
         GameContext.Instance.CurrentHealth = GameContext.Instance.MaxHealth;
     }
     
-    public override void CreateVisual(Vector3 startPosition, Vector3 direction, Vector3 endPosition)
+    public override void CreateVisual(Vector3 startPosition, Vector3 endPosition, float distance, Vector3 direction)
     {
         var vfx = Instantiate(vfxPrefab, startPosition, Quaternion.identity);
         vfx.transform.up = direction;
-        float distance = (endPosition - startPosition).magnitude;
         vfx.SetVector3(playerVelocityAttribute, new Vector3(0, -distance,0));
 
         spawned = vfx.gameObject;
