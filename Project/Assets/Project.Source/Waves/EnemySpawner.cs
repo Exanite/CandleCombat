@@ -9,22 +9,32 @@ namespace Project.Source.Waves
         private WaveManager WaveManager => GameContext.Instance.waveManager;
         private float spawnCooldown;
 
+        public bool IsCoolingDown => spawnCooldown > 0;
+
         private void Update()
         {
             spawnCooldown -= Time.deltaTime;
-            if (spawnCooldown < 0)
+        }
+
+        public bool TrySpawn()
+        {
+            if (!IsCoolingDown)
             {
                 var entry = WaveManager.GetRandomEntry();
                 if (entry == null)
                 {
                     Debug.LogWarning("Failed to get a random enemy");
 
-                    return;
+                    return false;
                 }
-                
+
                 Instantiate(entry.EnemyPrefab, transform.position, Quaternion.identity);
                 spawnCooldown = SpawnCooldownTime;
+
+                return true;
             }
+
+            return false;
         }
     }
 }

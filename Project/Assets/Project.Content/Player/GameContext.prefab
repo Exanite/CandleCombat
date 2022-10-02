@@ -199,6 +199,14 @@ MonoBehaviour:
   - EnemyPrefab: {fileID: 2250288973554215811, guid: 197f7da89cb16a44d950eed8c635c82c,
       type: 3}
     Weight: 1
+  MaxEnemies: 10
+  MinSpawnRange: 10
+  MaxSpawnRange: 30
+  GlobalSpawnCooldownTime: 2
+  ActiveCharacterCount: 0
+  ActiveEnemyCount: 0
+  Spawners: []
+  ActiveSpawners: []
 --- !u!1001 &2234828237317207764
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,11 +1,76 @@
 using System.Collections.Generic;
+using System.Linq;
+using Project.Source.Characters;
 using UnityEngine;
 
 namespace Project.Source.Waves
 {
     public class WaveManager : MonoBehaviour
     {
+        [Header("Entries")]
         public List<EnemySpawnEntry> EnemySpawnEntries = new List<EnemySpawnEntry>();
+
+        [Header("Configuration")]
+        public int MaxEnemies = 64;
+        public float MinSpawnRange = 20f;
+        public float MaxSpawnRange = 50f;
+        public float GlobalSpawnCooldownTime = 0.1f;
+        
+        [Header("Runtime")]
+        public int ActiveCharacterCount;
+        public int ActiveEnemyCount;
+        
+        public List<EnemySpawner> Spawners = new List<EnemySpawner>();
+        public List<EnemySpawner> ActiveSpawners = new List<EnemySpawner>();
+
+        private float spawnCooldown;
+
+        private void Start()
+        {
+            Spawners = FindObjectsOfType<EnemySpawner>().ToList();
+        }
+
+        private void Update()
+        {
+            spawnCooldown -= Time.deltaTime;
+            
+            ActiveCharacterCount = Character.ActiveCharacters.Count;
+            ActiveEnemyCount = 0;
+            
+            foreach (var character in Character.ActiveCharacters)
+            {
+                if (!character.IsPlayer)
+                {
+                    ActiveEnemyCount++;
+                }
+            }
+            
+            if (spawnCooldown < 0 && ActiveEnemyCount < MaxEnemies)
+            { 
+                UpdateActiveSpawners();
+                if (ActiveSpawners.Count > 0)
+                {
+                    ActiveSpawners[Random.Range(0, ActiveSpawners.Count)].TrySpawn();
+                }
+            }
+        }
+
+        private void UpdateActiveSpawners()
+        {
+            ActiveSpawners.Clear();
+
+            var playerPosition = GameContext.Instance.CurrentPlayer.transform.position;
+
+            foreach (var spawner in Spawners)
+            {
+                var spawnerDistance = (spawner.transform.position - playerPosition).magnitude;
+
+                if (spawnerDistance > MinSpawnRange && spawnerDistance < MaxSpawnRange && !spawner.IsCoolingDown)
+                {
+                    ActiveSpawners.Add(spawner);
+                }
+            }
+        }
 
         public EnemySpawnEntry GetRandomEntry()
         {
