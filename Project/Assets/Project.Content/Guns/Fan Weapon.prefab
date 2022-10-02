@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   model: {fileID: 9092588769550119743}
   firePoint: {fileID: 4882429894212927895}
+  firePointVisual: {fileID: 4882429894212927895}
   projectilePrefabs:
   - {fileID: 7684210110739778004, guid: dcd92216766d149498358a53e74f1418, type: 3}
   GunHoldType: 1

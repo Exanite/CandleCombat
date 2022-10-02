@@ -46,8 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   linePrefab: {fileID: 2679890241875917706, guid: 5acbaf86d1f53ad4abc608810e85dc69,
     type: 3}
-  startPositionOffset: -2
+  projectileVisualForward: 2
+  startPositionOffset: 0
   damage: 1
-  radius: 1
+  radius: 1.5
   maxDistance: 10
   timeToExpire: 0.01

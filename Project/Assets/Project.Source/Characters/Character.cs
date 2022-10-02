@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Exanite.Core.Events;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
@@ -9,6 +10,8 @@ namespace Project.Source.Characters
 {
     public class Character : MonoBehaviour
     {
+        public static HashSet<Character> ActiveCharacters = new HashSet<Character>();
+        
         public bool IsPlayer => this == GameContext.Instance.CurrentPlayer;
 
         [Header("Dependencies")]
@@ -57,10 +60,22 @@ namespace Project.Source.Characters
             }
         }
 
+        private void OnEnable()
+        {
+            ActiveCharacters.Add(this);
+        }
+
+        private void OnDisable()
+        {
+            ActiveCharacters.Remove(this);
+        }
+
         private void Update()
         {
             if (IsDead)
             {
+                Rigidbody.velocity = Vector3.zero;
+                
                 return;
             }
 
@@ -73,6 +88,11 @@ namespace Project.Source.Characters
         public void TakeDamage(float damageAmount)
         {
             CurrentHealth -= damageAmount;
+
+            if (IsPlayer)
+            {
+                GameContext.Instance.CurrentHealth -= damageAmount;
+            }
             
             TookDamage?.Invoke(this, damageAmount);
         }
@@ -149,8 +169,11 @@ namespace Project.Source.Characters
 
         protected virtual void OnPossessed(Character obj)
         {
+            if (obj != GameContext.Instance.CurrentPlayer) return;
             Possessed?.Invoke(obj);
             
+            int playerLayer = LayerMask.NameToLayer("Player");
+            gameObject.layer = playerLayer;
             Rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
     }

@@ -144,7 +144,7 @@ PrefabInstance:
     - target: {fileID: 8072702675715705161, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
         type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8072702675715705161, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
         type: 3}
@@ -260,10 +260,16 @@ MonoBehaviour:
   JumpAnimationTrigger: Jump
   JumpLeftGroundTime: 0.349
   JumpLandedTime: 0.983
-  JumpSpreadDistance: 1
+  JumpSpreadDistance: 0
   JumpLookAheadTime: 1
-  CharacterRadius: 0.3
+  JumpLookAheadMaxDistance: 5
+  JumpSpeed: 1
+  JumpSpeedAnimatorFloat: JumpSpeed
+  CharacterRadius: 0.25
   IsDeadAnimationBool: IsDead
+  CollisionDamageAmount: 10
+  CollisionForce: 200
+  CollisionForceDuration: 0.1
   HealthRatioAnimationFloat: HealthRatio
   HealthRatioSmoothTime: 0.25
 --- !u!4 &698344705162859830 stripped

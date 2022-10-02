@@ -16,6 +16,7 @@ public class Gun : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private Transform model;
     [SerializeField] private Transform firePoint;
+    [SerializeField] private Transform firePointVisual;
     [SerializeField] private List<Projectile> projectilePrefabs = new List<Projectile>();
 
     [Header("Settings")]
@@ -75,7 +76,7 @@ public class Gun : MonoBehaviour
             }
             
             Projectile projectile = Instantiate(projectilePrefabs[SelectedProjectile], firePoint.position, Quaternion.Euler(direction));
-            projectile.Fire(characterFrom, direction);
+            projectile.Fire(characterFrom, direction, firePointVisual.position);
             
             ammo--;
         }

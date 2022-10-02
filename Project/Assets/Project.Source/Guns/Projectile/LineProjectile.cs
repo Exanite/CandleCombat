@@ -5,12 +5,20 @@ using Project.Source;
 using Project.Source.Characters;
 using UnityEngine;
 
+public enum ForwardType
+{
+    RedX,
+    GreenY,
+    BlueZ
+}
+
 public class LineProjectile : Projectile
 {
     [Header("Dependencies")]
     [SerializeField] private LineRenderer linePrefab;
 
     [Header("Settings")]
+    [SerializeField] private ForwardType projectileVisualForward = ForwardType.BlueZ; 
     [SerializeField] private float startPositionOffset = -1f;
     [SerializeField] private float damage = 1f;
     [SerializeField] private float radius = 1f;
@@ -24,16 +32,16 @@ public class LineProjectile : Projectile
     private float lifetime = 0;
     private bool fired;
     
-    public override void Fire(Character characterFrom, Vector3 direction)
+    public override void Fire(Character characterFrom, Vector3 direction, Vector3 visualPosition)
     {
         owner = characterFrom;
-        Vector3 startPosition = transform.position + (transform.forward * startPositionOffset);
+
+        Vector3 startPosition = transform.position;
         Vector3 endPosition = Vector3.zero;
 
-        int layerMask = GetLayerToHit(characterFrom);
-
         Ray ray = new Ray(startPosition, direction);
-        if (Physics.SphereCast(ray, radius, out RaycastHit hit, maxDistance, layerMask, QueryTriggerInteraction.Ignore) && hit.distance <= maxDistance)
+
+        if (Physics.SphereCast(ray, radius, out RaycastHit hit, maxDistance))
         {
             endPosition = direction * hit.distance;
             Debug.Log("Hit: " + hit.collider.gameObject);
@@ -47,7 +55,7 @@ public class LineProjectile : Projectile
             endPosition = direction * maxDistance;
         }
         
-        CreateVisual(transform.position, endPosition, hit.distance, direction);
+        CreateVisual(visualPosition, endPosition, hit.distance, direction);
     }
 
     public override void Hit(Character character)
@@ -77,16 +85,24 @@ public class LineProjectile : Projectile
 
     private int GetLayerToHit(Character character)
     {
+        /*
         int playerLayer = LayerMask.NameToLayer("Player");
         int enemyLayer = LayerMask.NameToLayer("Enemy");
         
         int layerMask;
         if (character.IsPlayer)
-            layerMask =~ playerLayer;
+            layerMask = ~playerLayer;
         else
-            layerMask =~ enemyLayer;
+            layerMask = ~enemyLayer;
+        */
+        return 0;
+    }
 
-        return layerMask;
+    private Vector3 GetStartOffsetVector()
+    {
+        Vector3 offsetDirection = Vector3.zero;
+        
+        return transform.forward * startPositionOffset;
     }
     
     private void Expire()

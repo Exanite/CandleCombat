@@ -13,8 +13,7 @@ public class SoulTransferProjectile : LineProjectile
     
     public override void Hit(Character character)
     {
-        if (character.IsDead)
-            return;
+        if (character.IsDead) return;
 
         GameContext.Instance.CurrentPlayer.OverwriteHealth(-1);
         GameContext.Instance.CurrentPlayer = character;
