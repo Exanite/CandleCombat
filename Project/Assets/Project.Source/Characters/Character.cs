@@ -161,7 +161,7 @@ namespace Project.Source.Characters
             Dead?.Invoke(this);
         }
 
-        protected virtual void HandlePossessed(Character obj)
+        private void HandlePossessed(Character obj)
         {
             if (obj != GameContext.Instance.CurrentPlayer) return;
             

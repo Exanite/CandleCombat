@@ -190,6 +190,11 @@ namespace Project.Source.Characters
 
         private void OnPossessed(Character character)
         {
+            if (Character != character)
+            {
+                return;
+            }
+            
             if (GunController != null)
             {
                 GunController.Cleanup();
