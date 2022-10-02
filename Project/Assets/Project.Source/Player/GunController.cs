@@ -101,6 +101,12 @@ public class GunController : MonoBehaviour
         return equippedGun.MaxAmmo;
     }
 
+    public void ReloadEquippedGun()
+    {
+        if (equippedGun == null) return;
+        equippedGun.StartReload();
+    }
+
     public Gun GetEquippedGun()
     {
         return equippedGun;

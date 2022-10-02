@@ -46,7 +46,7 @@ public class Gun : MonoBehaviour
 
     private void Awake()
     {
-        Reload();
+        Reloaded();
     }
     
     private void Update()
@@ -58,7 +58,7 @@ public class Gun : MonoBehaviour
         
         if (isReloading && elapsedReloadTime >= ReloadTime)
         {
-            Reload();
+            Reloaded();
         }
         else if(ammo == 0)
         {
@@ -106,7 +106,7 @@ public class Gun : MonoBehaviour
     public void OnSwitch()
     {
         if(ReloadOnSwitchTo)
-            Reload();
+            Reloaded();
     }
 
     public bool IsFiring()
@@ -130,7 +130,15 @@ public class Gun : MonoBehaviour
         return ammo;
     }
 
-    private void Reload()
+    public void StartReload()
+    {
+        if (isReloading) return;
+        
+        ammo = 0;
+        isReloading = true;
+    }
+
+    private void Reloaded()
     {
         OnReload?.Invoke();
         
