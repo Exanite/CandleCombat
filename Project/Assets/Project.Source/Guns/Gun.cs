@@ -6,7 +6,8 @@ using Project.Source.Characters;
 using UnityEngine;
 
 public enum GunHoldType{
-    OneHand
+    OneHandGun,
+    OneHandFan
 }
 
 public class Gun : MonoBehaviour
@@ -17,7 +18,7 @@ public class Gun : MonoBehaviour
     [SerializeField] private List<Projectile> projectilePrefabs = new List<Projectile>();
 
     [Header("Settings")]
-    public GunHoldType GunHoldType = GunHoldType.OneHand;
+    public GunHoldType GunHoldType = GunHoldType.OneHandGun;
     public float TimeToHolsterGun = 4f;
     public bool ReloadOnSwitchTo = false;
     public int SelectedProjectile = 0;

@@ -18,7 +18,7 @@ public class LineProjectile : Projectile
     //[SerializeField] private float timeToFire;
     //[SerializeField] private float hitDelay;
 
-    GameObject spawned;
+    protected GameObject spawned;
     private Character owner;
     private float lifetime = 0;
     private bool fired;
@@ -27,13 +27,12 @@ public class LineProjectile : Projectile
     {
         owner = characterFrom;
         var tPosition = transform.position;
-        LineRenderer line = Instantiate(linePrefab, tPosition, Quaternion.Euler(direction));
-        line.SetPosition(0, Vector3.zero);
+        Vector3 endPosition = Vector3.zero;
 
         Ray ray = new Ray(tPosition, direction);
-        if (Physics.SphereCast(ray, radius, out RaycastHit hit))
+        if (Physics.SphereCast(ray, radius, out RaycastHit hit) && hit.distance <= maxDistance)
         {
-            line.SetPosition(1, direction * hit.distance);
+            endPosition = direction * hit.distance;
             Debug.Log("Hit: " + hit.collider.gameObject);
 
             Character character = hit.collider.gameObject.GetComponent<Character>();
@@ -42,10 +41,10 @@ public class LineProjectile : Projectile
         }
         else
         {
-            line.SetPosition(1, direction * maxDistance);
+            endPosition = direction * maxDistance;
         }
         
-        spawned = line.gameObject;
+        CreateVisual(tPosition, direction, endPosition);
     }
 
     public override void Hit(Character character)
@@ -62,6 +61,15 @@ public class LineProjectile : Projectile
 
         if(lifetime > timeToExpire)
             Expire();
+    }
+
+    public virtual void CreateVisual(Vector3 startPosition, Vector3 direction, Vector3 endPosition)
+    {
+        LineRenderer line = Instantiate(linePrefab, startPosition, Quaternion.Euler(direction));
+        line.SetPosition(0, Vector3.zero);
+        line.SetPosition(1, endPosition);
+        
+        spawned = line.gameObject;
     }
 
     private void Expire()

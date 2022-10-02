@@ -409,14 +409,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6d0e8fedea4a1949b9994d7f48cc8e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Rigidbody: {fileID: 209372987}
   currentHealth: 100
   MaxHealth: 100
+  HealthRegenPerSecond: 0
+  GunPosition: {fileID: 968440432}
+  PlayerWickPosition: {fileID: 0}
+  WickVelocityVfxString: Player Velocity
   IsDead: 0
   IsDodging: 0
   IsInvulnerable: 0
-  HealthRegenPerSecond: 0
-  GunPosition: {fileID: 968440432}
-  Rigidbody: {fileID: 209372987}
   DisableOnDeathBehaviours: []
   DisableOnDeathColliders: []
   OnDeathDestroyDelay: 3
