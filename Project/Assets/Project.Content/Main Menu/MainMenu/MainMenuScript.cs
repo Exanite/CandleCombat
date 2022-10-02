@@ -20,7 +20,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void OnFadeComplete()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 
     
