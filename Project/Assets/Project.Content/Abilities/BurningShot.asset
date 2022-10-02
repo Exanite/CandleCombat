@@ -16,3 +16,5 @@ MonoBehaviour:
   CooldownDuration: 2
   HealthCost: 10
   CurrentCooldown: 2
+  shotsUntilWornOff: 3
+  fireGunIndex: 1
