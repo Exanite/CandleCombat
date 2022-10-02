@@ -72,13 +72,13 @@ namespace Project.Source.Characters
         private void OnEnable()
         {
             Character.Dead += OnDead;
-            Character.Possessed += OnPossessed;
+            GameContext.Instance.Possessed += OnPossessed;
         }
 
         private void OnDisable()
         {
             Character.Dead -= OnDead;
-            Character.Possessed -= OnPossessed;
+            GameContext.Instance.Possessed -= OnPossessed;
         }
 
         private void Update()

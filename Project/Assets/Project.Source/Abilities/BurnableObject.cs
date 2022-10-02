@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Project.Source;
+using Project.Source.Characters;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public interface IBurn
 {
@@ -14,34 +17,63 @@ public class BurnableObject : MonoBehaviour, IBurn
 {
     [Header("Dependencies")]
     [SerializeField] private Light lightObjectPrefab;
+    [SerializeField] private VisualEffect fireVisualEffect;
 
     [Header("Optional")]
     [SerializeField] private GameObject fracturedVersionPrefab;
     
     [Header("Settings")]
     public int MaxHealth = 100;
-    
+
+    [SerializeField] private string flameSizeAttribute = "FlamesSize";
+    [SerializeField] private string flameColorAttribute = "Color";
+
     [Header("Light Settings")]
+    public Color PossessColor = Color.blue;
+    public float PossessSwitchTime = 1f;
+    
+    [Range(1, 14)]
+    public float MaxFireSize = 6;
+    [Range(1, 14)]
+    public int MinFireSize = 2;
     public int LightStartingHeight = 6;
     public int MinIntensity = 80;
     public int MaxIntensity = 170;
     public AnimationCurve healthToIntensityCurve;
 
     private MeshRenderer meshRenderer;
-    
-    private int CurrentHealth = 0;
+
+    private Character currentCharacter;
+    private float CurrentHealth = 0;
+    private float timeElapsedSinceDamaged = 0;
     private int currentFireDPS = 0;
     private bool isOnFire = false;
     private bool isFractured = false; 
+    
+    private float timeElapsedSincePossess = 0;
+    private Color originalLightColor;
+    private Color originalFireColor;
+    private bool wasPossessed = false;
 
-    private float timeElapsedSinceDamaged = 0;
     private Light spawnedLight;
+    private VisualEffect spawnedFireVisualEffect;
     private GameObject spawnedFracturedObject;
-
+    
     private void Awake()
     {
         meshRenderer = GetComponent<MeshRenderer>();
         CurrentHealth = MaxHealth;
+        originalFireColor.a = 255;
+    }
+
+    private void OnEnable()
+    {
+        GameContext.Instance.Possessed += HandlePossessed;
+    }
+
+    private void OnDisable()
+    {
+        GameContext.Instance.Possessed -= HandlePossessed;
     }
 
     private void Update()
@@ -49,32 +81,43 @@ public class BurnableObject : MonoBehaviour, IBurn
         if (!isOnFire) return;
 
         timeElapsedSinceDamaged += Time.deltaTime;
-
-        if (timeElapsedSinceDamaged > 1)
-        {
-            CurrentHealth -= currentFireDPS;
-            timeElapsedSinceDamaged--;
-        }
+        timeElapsedSincePossess += Time.deltaTime;
+        
+        CurrentHealth -= currentFireDPS * Time.deltaTime;
 
         if(spawnedLight != null)
             UpdateLightIntensity();
 
-        if (CurrentHealth != MaxHealth && !isFractured)
+        if (CurrentHealth <= MaxHealth && !isFractured)
             Fracture();
 
         if(CurrentHealth <= 0)
             Expire();
+
+        //if (wasPossessed && timeElapsedSincePossess > PossessSwitchTime)
+        //{
+        //    HandleReturnFromPossessed();
+        //}
     }
 
-    public void AddFire(int fireDOT)
+    public void AddFire(int fireDPS)
     {
-        currentFireDPS = fireDOT;
+        if (isOnFire || fireDPS < currentFireDPS) return;
+        
+        currentFireDPS = fireDPS;
         isOnFire = true;
 
         if (spawnedLight == null)
         {
-            Vector3 spawnPosition = transform.position + (transform.up * LightStartingHeight);
-            spawnedLight = Instantiate(lightObjectPrefab, spawnPosition, Quaternion.identity);
+            Vector3 highSpawnPosition = transform.position + (transform.up * LightStartingHeight);
+            spawnedLight = Instantiate(lightObjectPrefab, highSpawnPosition, Quaternion.identity);
+
+            if (fireVisualEffect != null)
+            {
+                
+                spawnedFireVisualEffect = Instantiate(fireVisualEffect, transform.position, Quaternion.identity);
+                spawnedFireVisualEffect.SetFloat(flameSizeAttribute, MaxFireSize);
+            }
         }
         else
             spawnedLight.gameObject.SetActive(true);
@@ -98,11 +141,19 @@ public class BurnableObject : MonoBehaviour, IBurn
 
     private void UpdateLightIntensity()
     {
-        float healthPercent = (float)CurrentHealth/MaxHealth;
+        float healthPercent = 1 - (float)CurrentHealth/MaxHealth;
         float intensity = healthToIntensityCurve.Evaluate(healthPercent) * MaxIntensity;
         intensity = Mathf.Clamp(intensity, MinIntensity, MaxIntensity);
+        
+        Debug.Log("Intensite: " + intensity);
 
         spawnedLight.intensity = intensity;
+
+        float size = healthToIntensityCurve.Evaluate(healthPercent) * MaxFireSize;
+        size = Mathf.Clamp(size, MinFireSize, MaxFireSize);
+        
+        if(fireVisualEffect != null)
+            fireVisualEffect.SetFloat(flameSizeAttribute, size);
     }
     
     private void Fracture()
@@ -116,13 +167,50 @@ public class BurnableObject : MonoBehaviour, IBurn
         }
     }
 
+    private void HandlePossessed(Character character)
+    {
+        wasPossessed = true;
+        
+        if (spawnedLight != null)
+        {
+            originalLightColor = spawnedLight.color;
+            spawnedLight.color = PossessColor;
+        }
+        
+        if (spawnedFireVisualEffect != null)
+        {
+            originalFireColor = spawnedFireVisualEffect.GetVector4(flameColorAttribute);
+            spawnedFireVisualEffect.SetVector4(flameColorAttribute, PossessColor);
+        }
+        
+        timeElapsedSincePossess = 0;
+    }
+
+    private void HandleReturnFromPossessed()
+    {
+        wasPossessed = false;
+        
+        if (spawnedLight != null)
+        {
+            spawnedLight.color = originalLightColor;
+        }
+
+        if (spawnedFireVisualEffect != null)
+        {
+            spawnedFireVisualEffect.SetVector4(flameColorAttribute, originalFireColor);
+        }
+    }
+
     private void Expire()
     {
         if (spawnedLight != null) 
-            Destroy(spawnedLight);
+            Destroy(spawnedLight.gameObject);
         
         if(spawnedFracturedObject != null)
-            Destroy(spawnedFracturedObject);
+            Destroy(spawnedFracturedObject.gameObject);
+        
+        if(spawnedFireVisualEffect != null)
+            Destroy(spawnedFireVisualEffect.gameObject);
         
         Destroy(gameObject);
     }

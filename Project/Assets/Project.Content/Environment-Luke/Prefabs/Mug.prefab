@@ -65,7 +65,7 @@ PrefabInstance:
     - target: {fileID: 2273777515768004501, guid: 2415158a148a2284ca41a379b113c90e,
         type: 3}
       propertyPath: m_Name
-      value: Mug_1
+      value: Mug
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2415158a148a2284ca41a379b113c90e, type: 3}
