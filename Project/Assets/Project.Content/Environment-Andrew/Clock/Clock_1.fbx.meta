@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 427757ec1a2b50f439ba31858ab64c50
+guid: 10c9ee0357512ce458a3b9951d68f913
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -7,12 +7,17 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: PrimaryCubicle
-    second: {fileID: 2100000, guid: de6f052a2034cd8418531786ae69f1ae, type: 2}
+      name: Black
+    second: {fileID: 2100000, guid: 59707ce2051855a44bd1cb5f5a2bf992, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: SecondaryCubicle
+      name: Glass
+    second: {fileID: 2100000, guid: e3ff12c84f087674c85a2d5f3e3194e1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: White
     second: {fileID: 2100000, guid: 655e88ba9e57618438cc35cd4642fe71, type: 2}
   materials:
     materialImportMode: 2

@@ -32,7 +32,7 @@ public class OrbProjectile : Projectile
     {
         if (owner.IsPlayer == character.IsPlayer) return;
 
-        character.CurrentHealth -= damage;
+        character.TakeDamage(damage);
         
         Expire();
     }

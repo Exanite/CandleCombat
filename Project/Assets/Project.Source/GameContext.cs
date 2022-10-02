@@ -3,8 +3,10 @@ using System.Linq;
 using Project.Source.Abilities;
 using Project.Source.Characters;
 using Project.Source.Input;
+using Project.Source.Waves;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace Project.Source
 {
@@ -12,6 +14,8 @@ namespace Project.Source
     {
         public Camera MainCamera;
         public Character CurrentPlayer;
+        [FormerlySerializedAs("EnemySpawnManager")]
+        public WaveManager waveManager;
 
         public float CurrentHealth = 100;
         public float MaxHealth = 100;
@@ -55,16 +59,28 @@ namespace Project.Source
             
             UpdateHealthDecay();
             CheckDeath();
+            SyncHealth();
 
             UpdateAbilityCooldowns();
         }
 
         private void CheckDeath()
         {
-            if (CurrentHealth <= 0)
+            if (CurrentHealth <= 0 || CurrentPlayer == null)
             {
                 OnDead();
             }
+        }
+
+        private void SyncHealth()
+        {
+            if (!CurrentPlayer)
+            {
+                return;
+            }
+
+            CurrentPlayer.OverwriteHealth(CurrentHealth);
+            CurrentPlayer.MaxHealth = MaxHealth;
         }
 
         private void UpdateHealthDecay()
@@ -87,7 +103,7 @@ namespace Project.Source
             }
         }
 
-        public void OnExecuteAbility(int index)
+        private void ExecuteAbility(int index)
         {
             if (IsDead)
             {
@@ -120,7 +136,7 @@ namespace Project.Source
         {
             if (context.performed)
             {
-                OnExecuteAbility(0);
+                ExecuteAbility(0);
             }
         }
 
@@ -128,7 +144,7 @@ namespace Project.Source
         {
             if (context.performed)
             {
-                OnExecuteAbility(1);
+                ExecuteAbility(1);
             }
         }
     }

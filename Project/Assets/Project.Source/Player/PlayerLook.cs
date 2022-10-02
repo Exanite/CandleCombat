@@ -49,17 +49,19 @@ public class PlayerLook : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (character == null) return;
+        if (character == null)
+        {
+            return;
+        }
         
         Vector3 endPosition = PointerToWorldPosition(pointerPosition);
         endObject.position = ClampEndPosition(character.transform.position, endPosition, maxRadius);
 
-        Transform cT = character.transform;
-
-        Quaternion rotationTowardsEnd = Quaternion.LookRotation(GetXZDirection(cT.position, endObject.position));
-        cT.rotation = rotationTowardsEnd;
-        //if (character.GunPosition != null)
-        //    character.GunPosition.rotation = rotationTowardsEnd;
+        if (!character.IsDead)
+        {
+            Quaternion rotationTowardsEnd = Quaternion.LookRotation(GetXZDirection(character.transform.position, endObject.position));
+            character.transform.rotation = rotationTowardsEnd;
+        }
     }
     
     public void SetCharacter(Character newCharacter)

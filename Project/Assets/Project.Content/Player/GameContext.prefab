@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 412501272478291803}
   - component: {fileID: 3495844000217364866}
   - component: {fileID: 7421392470636029689}
+  - component: {fileID: 47807112758318592}
   m_Layer: 0
   m_Name: GameContext
   m_TagString: Untagged
@@ -55,6 +56,7 @@ MonoBehaviour:
   dontDestroyOnLoad: 0
   MainCamera: {fileID: 0}
   CurrentPlayer: {fileID: 0}
+  waveManager: {fileID: 47807112758318592}
   CurrentHealth: 100
   MaxHealth: 100
   HealthRegenPerSecond: -5
@@ -175,6 +177,22 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &47807112758318592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2172941941509775108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 090be892eecd4943a2c41d4e084bb971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnemySpawnEntries:
+  - EnemyPrefab: {fileID: 2250288973554215811, guid: 197f7da89cb16a44d950eed8c635c82c,
+      type: 3}
+    Weight: 1
 --- !u!1001 &2251507297843713833
 PrefabInstance:
   m_ObjectHideFlags: 0
