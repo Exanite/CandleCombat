@@ -4417,6 +4417,70 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1042192499 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2172941941509775108, guid: 57615ce97bbc97e46a4674c14d33db8c,
+    type: 3}
+  m_PrefabInstance: {fileID: 2172941941883464709}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1042192509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042192499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ede73f62b5d3456396c28e26ae5a5330, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Mixer: {fileID: 24100000, guid: a020abe5a9701ba45987a9e1d113ec48, type: 2}
+  NormalSnapshot: {fileID: 6084484047096898470, guid: a020abe5a9701ba45987a9e1d113ec48,
+    type: 2}
+  LowHpSnapshot: {fileID: 24500006, guid: a020abe5a9701ba45987a9e1d113ec48, type: 2}
+  Curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5655265
+      value: 0.15898843
+      inSlope: 1.2681497
+      outSlope: 1.2681497
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.7468783
+      value: 0.7593415
+      inSlope: 2.322799
+      outSlope: 2.322799
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.20546754
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -0.09340239
+      outSlope: -0.09340239
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!43 &1043941314
 Mesh:
   m_ObjectHideFlags: 0
