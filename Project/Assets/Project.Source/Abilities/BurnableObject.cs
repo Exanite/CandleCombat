@@ -77,6 +77,13 @@ public class BurnableObject : MonoBehaviour, IBurn
         audioSource.enabled = false;
     }
 
+    private void Start()
+    {
+        SpawnLight();
+        SpawnFire();
+        SpawnFracture();
+    }
+
     private void OnEnable()
     {
         try
@@ -132,39 +139,24 @@ public class BurnableObject : MonoBehaviour, IBurn
         
         currentFireDPS = fireDPS;
         isOnFire = true;
-
-        if (spawnedLight == null)
-        {
-            Vector3 highSpawnPosition = transform.position + (transform.up * LightStartingHeight);
-            spawnedLight = Instantiate(lightObjectPrefab, highSpawnPosition, Quaternion.identity);
-
-            if (fireVisualEffect != null)
-            {
-                spawnedFireVisualEffect = Instantiate(fireVisualEffect, transform.position, Quaternion.identity);
-                spawnedFireVisualEffect.SetFloat(flameSizeAttribute, MaxFireSize);
-            }
-        }
-        else
-            spawnedLight.gameObject.SetActive(true);
-
+        
+        spawnedLight.gameObject.SetActive(true);
+        spawnedFireVisualEffect.gameObject.SetActive(true);
         audioSource.enabled = true;
     }
 
     public void RemoveFire(int fireDPSRemoved)
     {
         isOnFire = false;
-
-        if (spawnedLight != null)
-        {
-            currentFireDPS -= fireDPSRemoved;
+        
+        currentFireDPS -= fireDPSRemoved;
             
-            if (currentFireDPS <= 0)
-            {
-                currentFireDPS = 0;
-                spawnedLight.gameObject.SetActive(false);
-
-                audioSource.enabled = false;
-            }
+        if (currentFireDPS <= 0)
+        {
+            currentFireDPS = 0;
+            spawnedLight.gameObject.SetActive(false);
+            fireVisualEffect.gameObject.SetActive(false);
+            audioSource.enabled = false;
         }
     }
 
@@ -206,16 +198,12 @@ public class BurnableObject : MonoBehaviour, IBurn
         
         if (spawnedLight != null)
         {
-            originalLightColor = spawnedLight.color;
             spawnedLight.color = PossessLightColor;
-
-            originalLightColorTemperature = spawnedLight.colorTemperature; 
             spawnedLight.colorTemperature = 4500f; //TODO: Remove magic number. 
         }
         
         if (spawnedFireVisualEffect != null)
         {
-            originalFireColor = spawnedFireVisualEffect.GetVector4(flameColorAttribute);
             spawnedFireVisualEffect.SetVector4(flameColorAttribute, PossessColor);
         }
         
@@ -241,6 +229,38 @@ public class BurnableObject : MonoBehaviour, IBurn
         }
     }
 
+    private void SpawnLight()
+    {
+        if (lightObjectPrefab != null)
+        {
+            Vector3 highSpawnPosition = transform.position + (transform.up * LightStartingHeight);
+            spawnedLight = Instantiate(lightObjectPrefab, highSpawnPosition, Quaternion.identity);
+            spawnedLight.gameObject.SetActive(false);
+            originalLightColor = spawnedLight.color;
+            originalLightColorTemperature = spawnedLight.colorTemperature;
+        }
+    }
+    
+    private void SpawnFire()
+    {
+        if (fireVisualEffect != null)
+        {
+            spawnedFireVisualEffect = Instantiate(fireVisualEffect, transform.position, Quaternion.identity);
+            spawnedFireVisualEffect.gameObject.SetActive(false);
+            spawnedFireVisualEffect.SetFloat(flameSizeAttribute, MaxFireSize);
+            originalFireColor = spawnedFireVisualEffect.GetVector4(flameColorAttribute);
+        }
+    }
+
+    private void SpawnFracture()
+    {
+        if (fracturedVersionPrefab != null && spawnedFracturedObject == null)
+        {
+            spawnedFracturedObject = Instantiate(fracturedVersionPrefab, transform.position, transform.rotation);
+            spawnedFracturedObject.gameObject.SetActive(false);
+        }
+    }
+    
     private void Expire()
     {
         if (spawnedLight != null) 
