@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float movementSpeed;
     [SerializeField] private float movementSmoothTime = 0.05f;
-    [SerializeField] private float moveTiltDegrees = 30f;
+    // [SerializeField] private float moveTiltDegrees = 30f;
     [SerializeField] private float dodgeSpeed = 50f;
     [SerializeField] private float dodgeTime = 0.2f;
     [SerializeField] private float timeBetweenDodge = 2f;
