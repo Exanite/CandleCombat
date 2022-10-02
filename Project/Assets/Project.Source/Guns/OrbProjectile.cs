@@ -19,7 +19,7 @@ public class OrbProjectile : Projectile
     private Character owner;
     private float lifetime = 0;
     
-    public override void Fire(Character characterFrom, Vector3 direction)
+    public override void Fire(Character characterFrom, Vector3 direction, Vector3 visualPosition)
     {
         owner = characterFrom;
         rb.velocity = direction * speed;

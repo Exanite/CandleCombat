@@ -144,7 +144,7 @@ PrefabInstance:
     - target: {fileID: 8072702675715705161, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
         type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8072702675715705161, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
         type: 3}
@@ -262,6 +262,7 @@ MonoBehaviour:
   JumpLandedTime: 0.983
   JumpSpreadDistance: 1
   JumpLookAheadTime: 1
+  JumpLookAheadMaxDistance: 5
   CharacterRadius: 0.3
   IsDeadAnimationBool: IsDead
   HealthRatioAnimationFloat: HealthRatio

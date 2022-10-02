@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Exanite.Core.Events;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
@@ -149,8 +150,11 @@ namespace Project.Source.Characters
 
         protected virtual void OnPossessed(Character obj)
         {
+            if (obj != GameContext.Instance.CurrentPlayer) return;
             Possessed?.Invoke(obj);
             
+            int playerLayer = LayerMask.NameToLayer("Player");
+            gameObject.layer = playerLayer;
             Rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
     }
