@@ -9,6 +9,8 @@ namespace Project.Source.Characters
 {
     public class Character : MonoBehaviour
     {
+        public static HashSet<Character> ActiveCharacters = new HashSet<Character>();
+        
         public bool IsPlayer => this == GameContext.Instance.CurrentPlayer;
 
         [Header("Dependencies")]
@@ -55,6 +57,16 @@ namespace Project.Source.Characters
             {
                 OnPossessed(this);
             }
+        }
+
+        private void OnEnable()
+        {
+            ActiveCharacters.Add(this);
+        }
+
+        private void OnDisable()
+        {
+            ActiveCharacters.Remove(this);
         }
 
         private void Update()
