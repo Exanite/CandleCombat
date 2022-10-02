@@ -23,7 +23,10 @@ namespace Project.Source.Characters
         [Header("Configuration")]
         public float HealthRegenPerSecond;
         public GunPosition GunPosition;
+        
+        [Header("Wick")]
         public Transform PlayerWickPosition;
+        public string WickVelocityVfxString = "Player Velocity";
         
         [Header("Runtime")]
         public bool IsDead;
@@ -86,8 +89,7 @@ namespace Project.Source.Characters
                 }
 
                 playerWick.transform.position = PlayerWickPosition.transform.position;
-
-                // Todo Set wick velocity
+                playerWick.SetVector3(WickVelocityVfxString, Rigidbody.velocity * 5);
             }
             else
             {
