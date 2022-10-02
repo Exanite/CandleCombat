@@ -57,6 +57,8 @@ MonoBehaviour:
   MainCamera: {fileID: 0}
   CurrentPlayer: {fileID: 0}
   waveManager: {fileID: 47807112758318592}
+  PlayerWickPrefab: {fileID: 8536334166681188412, guid: 23cf517df9df38846ba2a81f7885ebbc,
+    type: 3}
   CurrentHealth: 100
   MaxHealth: 100
   HealthRegenPerSecond: -5
