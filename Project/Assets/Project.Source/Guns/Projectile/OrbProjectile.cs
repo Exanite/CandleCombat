@@ -7,17 +7,17 @@ using UnityEngine;
 public class OrbProjectile : Projectile
 {
     [Header("Dependencies")]
-    [SerializeField] private Rigidbody rb;
+    [SerializeField] protected Rigidbody rb;
 
     [Header("Settings")]
-    [SerializeField] private bool retainCharacterVelocity = false;
-    [SerializeField] private float damage = 1f;
-    [SerializeField] private float timeToExpire = 1f;
-    [SerializeField] private float speed = 1;
-    [SerializeField] private float acceleration = 0.1f;
+    [SerializeField] protected bool retainCharacterVelocity = false;
+    [SerializeField] protected float damage = 1f;
+    [SerializeField] protected float timeToExpire = 1f;
+    [SerializeField] protected float speed = 1;
+    [SerializeField] protected float acceleration = 0.1f;
 
-    private Character owner;
-    private float lifetime = 0;
+    protected Character owner;
+    protected float lifetime = 0;
     
     public override void Fire(Character characterFrom, Vector3 direction, Vector3 visualPosition)
     {
@@ -53,13 +53,18 @@ public class OrbProjectile : Projectile
 
     private void OnTriggerEnter(Collider other)
     {
+        HandleTrigger(other);
+    }
+    
+    protected virtual void HandleTrigger(Collider other)
+    {
         Character otherCharacter = other.gameObject.GetComponent<Character>();
         
         if(otherCharacter != null)
             Hit(otherCharacter);
     }
 
-    private void Expire()
+    protected void Expire()
     {
         Debug.Log("Destroy!");
         
