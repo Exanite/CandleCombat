@@ -9,18 +9,15 @@ namespace Project.Source
     public class Timer : MonoBehaviour
     {
         public TMP_Text text;
-        // Start is called before the first frame update
-        void Start()
-        {
 
-        }
+        private float timer;
 
-        // Update is called once per frame
         void Update()
         {
             if (GameContext.Instance.CurrentHealth > 0)
             {
-                text.text = Time.time.ToString("#.00");
+                timer += Time.deltaTime;
+                text.text = timer.ToString("#.00");
             }
 
         }
