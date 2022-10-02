@@ -17,7 +17,7 @@ namespace Project.Source.Abilities
                 return;
             }
 
-            // TODO: Don't reach into directly.
+            // TODO: Don't reach into Ability directly.
             var gunController = GameContext.Instance.gameObject.GetComponent<GunController>();
             int previousGun = gunController.EquippedGunIndex;
             gunController.SwitchGun(soulGunIndex);

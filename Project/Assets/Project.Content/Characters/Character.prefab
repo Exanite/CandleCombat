@@ -516,8 +516,8 @@ MonoBehaviour:
   HealthRegenPerSecond: 0
   GunPosition: {fileID: 852783407833605768}
   PlayerWickPosition: {fileID: 2793208382292039038}
+  WickVelocityVfxString: Player Velocity
   IsDead: 0
-  IsDodging: 0
   IsInvulnerable: 0
   DisableOnDeathBehaviours: []
   DisableOnDeathColliders:

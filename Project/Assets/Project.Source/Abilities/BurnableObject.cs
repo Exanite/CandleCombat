@@ -32,7 +32,7 @@ public class BurnableObject : MonoBehaviour, IBurn
     [ColorUsage(true, true)]
     public Color PossessColor = new Vector4(0,4.7311759f,22.0403557f,1);
     public Color PossessLightColor = new Vector4(0,4.7311759f,22.0403557f, 1);
-    public float PossessSwitchTime = 1f;
+    public float PossessSwitchTime = 0.5f;
     
     [Range(1, 14)]
     public float MaxFireSize = 6;

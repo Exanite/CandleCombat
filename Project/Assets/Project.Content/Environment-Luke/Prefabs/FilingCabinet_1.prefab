@@ -56,7 +56,8 @@ MonoBehaviour:
   flameSizeAttribute: FlamesSize
   flameColorAttribute: Color
   PossessColor: {r: 0, g: 4.731176, b: 22.040356, a: 1}
-  PossessSwitchTime: 1
+  PossessLightColor: {r: 0, g: 0, b: 1, a: 1}
+  PossessSwitchTime: 0.4
   MaxFireSize: 6
   MinFireSize: 2
   LightStartingHeight: 6

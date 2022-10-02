@@ -102,6 +102,8 @@ MonoBehaviour:
     type: 3}
   pointerReference: {fileID: 8361749311868396992, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
+  dodgeReference: {fileID: 5933847315574979479, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+    type: 3}
 --- !u!114 &4686590657947957126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,6 +138,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 5
   movementSmoothTime: 0.05
+  moveTiltDegrees: 1
+  dodgeSpeed: 0
 --- !u!114 &3495844000217364866
 MonoBehaviour:
   m_ObjectHideFlags: 0
