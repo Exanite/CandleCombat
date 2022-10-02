@@ -85,6 +85,12 @@ public class Gun : MonoBehaviour
         elapsedTimeSinceHolstered = 0;
     }
 
+    public void SwitchAmmo(int index)
+    {
+        if (index >= 0 && index < projectilePrefabs.Count)
+            SelectedProjectile = index;
+    }
+
     public void OnSwitch()
     {
         if(ReloadOnSwitchTo)

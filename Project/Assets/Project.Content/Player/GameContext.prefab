@@ -64,7 +64,7 @@ MonoBehaviour:
   DrawingService: {fileID: 6465885308093522785}
   CurrentHealth: 100
   MaxHealth: 100
-  HealthRegenPerSecond: -5
+  HealthRegenPerSecond: 0
   IsDead: 0
   Abilities:
   - {fileID: 11400000, guid: 3bbcf68d3010090499326e70efba97d9, type: 2}
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca263d8ea1b6c224eb4be23de4bb2718, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 20
+  movementSpeed: 5
   movementSmoothTime: 0.05
 --- !u!114 &3495844000217364866
 MonoBehaviour:
@@ -199,6 +199,9 @@ MonoBehaviour:
   - EnemyPrefab: {fileID: 2250288973554215811, guid: 197f7da89cb16a44d950eed8c635c82c,
       type: 3}
     Weight: 1
+  - EnemyPrefab: {fileID: 4323087709732024568, guid: c4fdfa5528b5a0841927bbe704e8be3e,
+      type: 3}
+    Weight: 0.5
   MaxEnemies: 10
   MinSpawnRange: 10
   MaxSpawnRange: 30
@@ -592,9 +595,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4936708337404964591, guid: bfe72096eb983f14699dacd0bc5ab11f,
         type: 3}
+      propertyPath: projectilePrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 7209473686946063059, guid: e3c1a4ceceb71de49b40722066382d29,
+        type: 3}
+    - target: {fileID: 4936708337404964591, guid: bfe72096eb983f14699dacd0bc5ab11f,
+        type: 3}
       propertyPath: projectilePrefabs.Array.data[1]
       value: 
-      objectReference: {fileID: 7684210110739778004, guid: dcd92216766d149498358a53e74f1418,
+      objectReference: {fileID: 4056577536999462432, guid: b51d2d33836961841a60a4b1665d7c20,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bfe72096eb983f14699dacd0bc5ab11f, type: 3}

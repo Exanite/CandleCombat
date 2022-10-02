@@ -7,7 +7,15 @@ namespace Project.Source.Abilities
     {
         public override void Execute()
         {
-            Debug.Log("BurningShotAbility");
+            var player = GameContext.Instance.CurrentPlayer;
+            if (player == null)
+            {
+                return;
+            }
+
+            // TODO: Don't reach into directly.
+            var gunController = GameContext.Instance.gameObject.GetComponent<GunController>();
+            gunController.SwitchAmmo(1);
         }
     }
 }

@@ -77,6 +77,13 @@ public class GunController : MonoBehaviour
         }
     }
 
+    public void SwitchAmmo(int ammoIndex)
+    {
+        if (equippedGun == null) return;
+
+        equippedGun.SwitchAmmo(ammoIndex);
+    }
+
     private void MoveGunToCharacterGunPoint(Character character)
     {
         Transform gun = equippedGun.transform;
