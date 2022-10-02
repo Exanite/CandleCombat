@@ -287,6 +287,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5959308386990084697, guid: 197f7da89cb16a44d950eed8c635c82c,
+        type: 3}
+      propertyPath: EquippedGunIndex
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8991834137252470452, guid: 197f7da89cb16a44d950eed8c635c82c,
         type: 3}
       propertyPath: Target
@@ -417,7 +422,6 @@ MonoBehaviour:
   PlayerWickPosition: {fileID: 0}
   WickVelocityVfxString: Player Velocity
   IsDead: 0
-  IsDodging: 0
   IsInvulnerable: 0
   DisableOnDeathBehaviours: []
   DisableOnDeathColliders: []
@@ -1175,6 +1179,16 @@ PrefabInstance:
     - target: {fileID: 698344705162859830, guid: 197f7da89cb16a44d950eed8c635c82c,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5959308386990084697, guid: 197f7da89cb16a44d950eed8c635c82c,
+        type: 3}
+      propertyPath: EquippedGunIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5959308386990084697, guid: 197f7da89cb16a44d950eed8c635c82c,
+        type: 3}
+      propertyPath: equippableGuns.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8991834137252470452, guid: 197f7da89cb16a44d950eed8c635c82c,

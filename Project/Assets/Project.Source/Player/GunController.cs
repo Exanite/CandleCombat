@@ -88,7 +88,7 @@ public class GunController : MonoBehaviour
         model.rotation = characterGun.GetAnimationRotation();
     }
 
-    private void Cleanup()
+    public void Cleanup()
     {
         foreach (var gun in equippableGuns)
         {

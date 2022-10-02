@@ -30,7 +30,6 @@ namespace Project.Source.Characters
         
         [Header("Runtime")]
         public bool IsDead;
-        public bool IsDodging;
         public bool IsInvulnerable;
         
         [Header("On Death")]
@@ -45,9 +44,18 @@ namespace Project.Source.Characters
         }
 
         public event Action<Character> Dead;
+        public event Action<Character> Possessed;
         public event EventHandler<Character, float> TookDamage;
 
         private VisualEffect playerWick;
+
+        private void Start()
+        {
+            if (IsPlayer)
+            {
+                OnPossessed(this);
+            }
+        }
 
         private void Update()
         {
@@ -72,6 +80,11 @@ namespace Project.Source.Characters
         public void OverwriteHealth(float value)
         {
             CurrentHealth = value;
+        }
+
+        public void Possess()
+        {
+            OnPossessed(this);
         }
 
         private void UpdateHealthDecay()
@@ -132,6 +145,11 @@ namespace Project.Source.Characters
             Destroy(gameObject, OnDeathDestroyDelay);
 
             Dead?.Invoke(this);
+        }
+
+        protected virtual void OnPossessed(Character obj)
+        {
+            Possessed?.Invoke(obj);
         }
     }
 }
