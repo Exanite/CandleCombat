@@ -28,6 +28,9 @@ namespace Project.Source.Characters
         public float JumpLookAheadTime = 1f;
         public float JumpLookAheadMaxDistance = 5f;
 
+        public float JumpSpeed = 1;
+        public string JumpSpeedAnimatorFloat = "JumpSpeed";
+
         public float CharacterRadius = 0.25f;
 
         [Header("Death")]
@@ -93,7 +96,7 @@ namespace Project.Source.Characters
 
                 target = GameContext.Instance.CurrentPlayer;
 
-                if (target && !isJumping)
+                if (target && !isJumping && !Animator.GetCurrentAnimatorStateInfo(0).IsName("Jumping"))
                 {
                     var currentPosition = transform.position;
                     var targetPosition = target.transform.position;
@@ -183,8 +186,9 @@ namespace Project.Source.Characters
         {
             isJumping = true;
             Animator.SetTrigger(JumpAnimationTrigger);
+            Animator.SetFloat(JumpSpeedAnimatorFloat, JumpSpeed);
 
-            yield return new WaitForSeconds(JumpLeftGroundTime);
+            yield return new WaitForSeconds(JumpLeftGroundTime / JumpSpeed);
 
             var timer = 0f;
             var airTime = JumpLandedTime - JumpLeftGroundTime;
@@ -198,9 +202,9 @@ namespace Project.Source.Characters
 
             while (timer < airTime)
             {
-                timer += Time.deltaTime;
+                timer += Time.deltaTime * JumpSpeed;
 
-                var distance = Time.deltaTime * jumpDistance;
+                var distance = Time.deltaTime * jumpDistance * JumpSpeed;
                 if (Physics.Raycast(transform.position + Vector3.up, jumpDirection, out var hit, distance + CharacterRadius))
                 {
                     distance = Mathf.Clamp(hit.distance - CharacterRadius, 0, distance);
