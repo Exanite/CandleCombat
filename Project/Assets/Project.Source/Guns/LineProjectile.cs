@@ -11,6 +11,7 @@ public class LineProjectile : Projectile
     [SerializeField] private LineRenderer linePrefab;
 
     [Header("Settings")]
+    [SerializeField] private float startPositionOffset = -1f;
     [SerializeField] private float damage = 1f;
     [SerializeField] private float radius = 1f;
     [SerializeField] private float maxDistance = 10f;
@@ -26,12 +27,12 @@ public class LineProjectile : Projectile
     public override void Fire(Character characterFrom, Vector3 direction)
     {
         owner = characterFrom;
-        var tPosition = transform.position;
+        Vector3 startPosition = transform.position + (transform.forward * startPositionOffset);
         Vector3 endPosition = Vector3.zero;
 
         int layerMask = GetLayerToHit(characterFrom);
 
-        Ray ray = new Ray(tPosition, direction);
+        Ray ray = new Ray(startPosition, direction);
         if (Physics.SphereCast(ray, radius, out RaycastHit hit, maxDistance, layerMask, QueryTriggerInteraction.Ignore) && hit.distance <= maxDistance)
         {
             endPosition = direction * hit.distance;
@@ -46,7 +47,7 @@ public class LineProjectile : Projectile
             endPosition = direction * maxDistance;
         }
         
-        CreateVisual(tPosition, endPosition, hit.distance, direction);
+        CreateVisual(transform.position, endPosition, hit.distance, direction);
     }
 
     public override void Hit(Character character)
