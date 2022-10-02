@@ -11,6 +11,7 @@ public class LineProjectile : Projectile
     [SerializeField] private LineRenderer linePrefab;
 
     [Header("Settings")]
+    [SerializeField] private float startPositionOffset = -1f;
     [SerializeField] private float damage = 1f;
     [SerializeField] private float radius = 1f;
     [SerializeField] private float maxDistance = 10f;
@@ -22,15 +23,17 @@ public class LineProjectile : Projectile
     private Character owner;
     private float lifetime = 0;
     private bool fired;
-
+    
     public override void Fire(Character characterFrom, Vector3 direction)
     {
         owner = characterFrom;
-        var tPosition = transform.position;
+        Vector3 startPosition = transform.position + (transform.forward * startPositionOffset);
         Vector3 endPosition = Vector3.zero;
 
-        Ray ray = new Ray(tPosition, direction);
-        if (Physics.SphereCast(ray, radius, out RaycastHit hit) && hit.distance <= maxDistance)
+        int layerMask = GetLayerToHit(characterFrom);
+
+        Ray ray = new Ray(startPosition, direction);
+        if (Physics.SphereCast(ray, radius, out RaycastHit hit, maxDistance, layerMask, QueryTriggerInteraction.Ignore) && hit.distance <= maxDistance)
         {
             endPosition = direction * hit.distance;
             Debug.Log("Hit: " + hit.collider.gameObject);
@@ -44,7 +47,7 @@ public class LineProjectile : Projectile
             endPosition = direction * maxDistance;
         }
         
-        CreateVisual(tPosition, endPosition, hit.distance, direction);
+        CreateVisual(transform.position, endPosition, hit.distance, direction);
     }
 
     public override void Hit(Character character)
@@ -72,6 +75,20 @@ public class LineProjectile : Projectile
         spawned = line.gameObject;
     }
 
+    private int GetLayerToHit(Character character)
+    {
+        int playerLayer = LayerMask.NameToLayer("Player");
+        int enemyLayer = LayerMask.NameToLayer("Enemy");
+        
+        int layerMask;
+        if (character.IsPlayer)
+            layerMask =~ playerLayer;
+        else
+            layerMask =~ enemyLayer;
+
+        return layerMask;
+    }
+    
     private void Expire()
     {
         Debug.Log("Destroy!");

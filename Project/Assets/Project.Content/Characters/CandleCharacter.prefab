@@ -141,6 +141,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: CandleCharacter
       objectReference: {fileID: 0}
+    - target: {fileID: 8072702675715705161, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8072702675715705161, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 8882172673435702259, guid: 500c2eddb2a4dcc4b936df6da57d21fa,
         type: 3}
       propertyPath: m_RootOrder
