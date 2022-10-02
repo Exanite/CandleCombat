@@ -23,6 +23,8 @@ namespace Project.Source.Characters
         public float JumpSpreadDistance = 1f;
         public float JumpLookAheadTime = 1f;
 
+        public float CharacterRadius = 0.25f;
+
         [Header("Death")]
         public string IsDeadAnimationBool = "IsDead";
 
@@ -103,24 +105,30 @@ namespace Project.Source.Characters
             yield return new WaitForSeconds(JumpLeftGroundTime);
 
             var timer = 0f;
+            var airTime = JumpLandedTime - JumpLeftGroundTime;
+
             var startPosition = transform.position;
             var targetPosition = SelectJumpPosition();
 
-            var airTime = JumpLandedTime - JumpLeftGroundTime;
+            var jumpOffset = targetPosition - startPosition;
+            var jumpDistance = jumpOffset.magnitude;
+            var jumpDirection = jumpOffset.normalized;
 
             while (timer < airTime)
             {
                 timer += Time.deltaTime;
 
-                var ratio = timer / airTime;
-                var position = Vector3.Lerp(startPosition, targetPosition, ratio);
+                var distance = Time.deltaTime * jumpDistance;
+                if (Physics.Raycast(transform.position + Vector3.up, jumpDirection, out var hit, distance + CharacterRadius))
+                {
+                    distance = Mathf.Clamp(hit.distance - CharacterRadius, 0, distance);
+                }
 
-                transform.position = new Vector3(position.x, transform.position.y, position.z);
+                transform.position += distance * jumpDirection;
 
                 yield return null;
             }
 
-            transform.position = targetPosition;
             isJumping = false;
         }
 
@@ -128,7 +136,7 @@ namespace Project.Source.Characters
         {
             var targetPosition = target.transform.position + target.Rigidbody.velocity * JumpLookAheadTime;
             var offset = targetPosition - transform.position;
-            
+
             var targetJumpPosition = transform.position + Vector3.ClampMagnitude(offset, Mathf.Min(JumpDistance, offset.magnitude - AttackRange));
 
             var angleRadians = Random.Range(0, 2 * Mathf.PI);

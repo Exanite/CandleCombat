@@ -112,6 +112,7 @@ MonoBehaviour:
   JumpLandedTime: 0.983
   JumpSpreadDistance: 1
   JumpLookAheadTime: 1
+  CharacterRadius: 0.3
   IsDeadAnimationBool: IsDead
   HealthRatioAnimationFloat: HealthRatio
   HealthRatioSmoothTime: 0.25
