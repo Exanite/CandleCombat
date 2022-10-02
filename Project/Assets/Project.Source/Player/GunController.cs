@@ -101,6 +101,12 @@ public class GunController : MonoBehaviour
         return equippedGun.MaxAmmo;
     }
 
+    public bool IsReloading()
+    {
+        if (equippedGun == null) return false;
+        return equippedGun.IsReloading();
+    }
+    
     public void ReloadEquippedGun()
     {
         if (equippedGun == null) return;

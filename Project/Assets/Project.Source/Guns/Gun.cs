@@ -138,6 +138,11 @@ public class Gun : MonoBehaviour
         isReloading = true;
     }
 
+    public bool IsReloading()
+    {
+        return isReloading;
+    }
+
     private void Reloaded()
     {
         OnReload?.Invoke();
