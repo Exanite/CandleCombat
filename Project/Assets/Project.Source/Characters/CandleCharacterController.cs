@@ -196,6 +196,13 @@ namespace Project.Source.Characters
 
             yield return new WaitForSeconds(JumpLeftGroundTime / JumpSpeed);
 
+            if (!target)
+            {
+                isJumping = false;
+                
+                yield break;
+            }
+
             var timer = 0f;
             var airTime = JumpLandedTime - JumpLeftGroundTime;
 
