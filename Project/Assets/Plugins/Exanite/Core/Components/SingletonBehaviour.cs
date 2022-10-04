@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Project.Source
+namespace Exanite.Core.Components
 {
     [DefaultExecutionOrder(-100)]
     public class SingletonBehaviour<T> : MonoBehaviour where T : SingletonBehaviour<T>
