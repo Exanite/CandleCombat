@@ -1,25 +1,28 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LoadSceneButton : MonoBehaviour
+namespace Project.Source.UserInterface
 {
-    [SerializeField]
-    private Animator animator;
-
-    public string MainSceneName = "Main";
-
-    public void OnClickedPlay()
+    public class LoadSceneButton : MonoBehaviour
     {
-        animator.SetTrigger("FadeOut");
-    }
+        [SerializeField]
+        private Animator animator;
 
-    public void OnClickedQuit()
-    {
-        Application.Quit();
-    }
+        public string MainSceneName = "Main";
 
-    public void OnFadeComplete()
-    {
-        SceneManager.LoadScene(MainSceneName);
+        public void OnClickedPlay()
+        {
+            animator.SetTrigger("FadeOut");
+        }
+
+        public void OnClickedQuit()
+        {
+            Application.Quit();
+        }
+
+        public void OnFadeComplete()
+        {
+            SceneManager.LoadScene(MainSceneName);
+        }
     }
 }

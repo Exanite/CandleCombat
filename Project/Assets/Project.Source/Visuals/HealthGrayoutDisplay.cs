@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Project.Source.UserInterface
+namespace Project.Source.Visuals
 {
     public class HealthGrayoutDisplay : MonoBehaviour
     {

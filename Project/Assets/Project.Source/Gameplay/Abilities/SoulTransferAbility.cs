@@ -1,6 +1,7 @@
+using Project.Source.Gameplay.Player;
 using UnityEngine;
 
-namespace Project.Source.Abilities
+namespace Project.Source.Gameplay.Abilities
 {
     [CreateAssetMenu(menuName = "Project/Abilities/SoulTransfer")]
     public class SoulTransferAbility : Ability

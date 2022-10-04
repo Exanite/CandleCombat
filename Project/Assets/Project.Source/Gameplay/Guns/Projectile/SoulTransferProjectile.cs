@@ -1,29 +1,31 @@
-using Project.Source;
-using Project.Source.Characters;
+using Project.Source.Gameplay.Characters;
 using UnityEngine;
 using UnityEngine.VFX;
 using UnityEngine.VFX.Utility;
 
-public class SoulTransferProjectile : LineProjectile
+namespace Project.Source.Gameplay.Guns.Projectile
 {
-    [Header("Soul Transfer Specific")]
-    [SerializeField] private VisualEffect vfxPrefab;
-
-    private static readonly ExposedProperty playerVelocityAttribute = "Player Velocity";
-    
-    public override void Hit(Character character)
+    public class SoulTransferProjectile : LineProjectile
     {
-        if (character.IsDead) return;
+        [Header("Soul Transfer Specific")]
+        [SerializeField] private VisualEffect vfxPrefab;
 
-        GameContext.Instance.Possess(character);
-    }
+        private static readonly ExposedProperty playerVelocityAttribute = "Player Velocity";
     
-    public override void CreateVisual(Vector3 startPosition, Vector3 endPosition, float distance, Vector3 direction)
-    {
-        var vfx = Instantiate(vfxPrefab, startPosition, Quaternion.identity);
-        vfx.transform.up = direction;
-        vfx.SetVector3(playerVelocityAttribute, new Vector3(0, -distance,0));
+        public override void Hit(Character character)
+        {
+            if (character.IsDead) return;
 
-        spawned = vfx.gameObject;
+            GameContext.Instance.Possess(character);
+        }
+    
+        public override void CreateVisual(Vector3 startPosition, Vector3 endPosition, float distance, Vector3 direction)
+        {
+            var vfx = Instantiate(vfxPrefab, startPosition, Quaternion.identity);
+            vfx.transform.up = direction;
+            vfx.SetVector3(playerVelocityAttribute, new Vector3(0, -distance,0));
+
+            spawned = vfx.gameObject;
+        }
     }
 }

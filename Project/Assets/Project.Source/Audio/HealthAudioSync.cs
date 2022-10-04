@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace Project.Source
+namespace Project.Source.Audio
 {
     public class HealthAudioSync : MonoBehaviour
     {

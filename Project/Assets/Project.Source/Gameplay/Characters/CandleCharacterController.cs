@@ -1,10 +1,10 @@
 using System.Collections;
-using Unity.Mathematics;
+using Project.Source.Gameplay.Player;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
-namespace Project.Source.Characters
+namespace Project.Source.Gameplay.Characters
 {
     [RequireComponent(typeof(AudioSource))]
     public class CandleCharacterController : MonoBehaviour

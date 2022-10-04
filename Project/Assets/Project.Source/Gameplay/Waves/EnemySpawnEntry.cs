@@ -1,7 +1,7 @@
 using System;
-using Project.Source.Characters;
+using Project.Source.Gameplay.Characters;
 
-namespace Project.Source.Waves
+namespace Project.Source.Gameplay.Waves
 {
     [Serializable]
     public class EnemySpawnEntry

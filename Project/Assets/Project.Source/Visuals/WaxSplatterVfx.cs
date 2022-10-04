@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Project.Source.Vfx
+namespace Project.Source.Visuals
 {
     public class WaxSplatterVfx : MonoBehaviour
     {

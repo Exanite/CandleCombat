@@ -2,11 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Exanite.Core.Events;
+using Project.Source.Gameplay.Guns;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
+using Object = UnityEngine.Object;
 
-namespace Project.Source.Characters
+namespace Project.Source.Gameplay.Characters
 {
     public class Character : MonoBehaviour
     {

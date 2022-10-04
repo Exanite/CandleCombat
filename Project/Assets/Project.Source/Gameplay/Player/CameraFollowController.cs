@@ -1,24 +1,23 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Cinemachine;
-using Project.Source;
-using Project.Source.Characters;
+using Project.Source.Gameplay.Characters;
 using UnityEngine;
 
-public class CameraFollowController : MonoBehaviour
+namespace Project.Source.Gameplay.Player
 {
-    [Header("Dependencies")]
-    [SerializeField] private CinemachineVirtualCamera virtualCamera;
-    [SerializeField] private PlayerLook playerLook;
-
-    private void Update()
+    public class CameraFollowController : MonoBehaviour
     {
-        Character character = GameContext.Instance.CurrentPlayer;
+        [Header("Dependencies")]
+        [SerializeField] private CinemachineVirtualCamera virtualCamera;
+        [SerializeField] private PlayerLook playerLook;
 
-        if (character == null || playerLook.LookAt == null) return;
+        private void Update()
+        {
+            Character character = GameContext.Instance.CurrentPlayer;
 
-        virtualCamera.Follow = playerLook.LookAt;
-        virtualCamera.LookAt = character.transform;
+            if (character == null || playerLook.LookAt == null) return;
+
+            virtualCamera.Follow = playerLook.LookAt;
+            virtualCamera.LookAt = character.transform;
+        }
     }
 }

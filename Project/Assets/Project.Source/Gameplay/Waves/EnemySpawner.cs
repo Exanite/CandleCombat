@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Project.Source.Waves
+namespace Project.Source.Gameplay.Waves
 {
     public class EnemySpawner : MonoBehaviour
     {

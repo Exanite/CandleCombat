@@ -1,36 +1,40 @@
+using Project.Source.Gameplay.Abilities;
 using UnityEngine;
 
-public enum FireManipulatorType
+namespace Project.Source.Gameplay.Guns.Projectile
 {
-    SetFire,
-    RemoveFire,
-}
-
-public class FireManipulatorProjectile : OrbProjectile
-{
-    [Header("Fire Manipulator Projectile Settings")]
-    public FireManipulatorType FireManipulatorType;
-    [Tooltip("Set fire -> Add flame DPS, Remove fire -> Remove flame DPS")]
-    public int FlameManipulationDPS = 10;
-
-    protected override void OnCollide(RaycastHit hit)
+    public enum FireManipulatorType
     {
-        base.OnCollide(hit);
+        SetFire,
+        RemoveFire,
+    }
 
-        var burnable = hit.collider.GetComponent<IBurn>();
+    public class FireManipulatorProjectile : OrbProjectile
+    {
+        [Header("Fire Manipulator Projectile Settings")]
+        public FireManipulatorType FireManipulatorType;
+        [Tooltip("Set fire -> Add flame DPS, Remove fire -> Remove flame DPS")]
+        public int FlameManipulationDPS = 10;
 
-        if (burnable == null)
+        protected override void OnCollide(RaycastHit hit)
         {
-            return;
-        }
+            base.OnCollide(hit);
 
-        if (FireManipulatorType == FireManipulatorType.SetFire)
-        {
-            burnable.AddFire(FlameManipulationDPS);
-        }
-        else if (FireManipulatorType == FireManipulatorType.RemoveFire)
-        {
-            burnable.RemoveFire(FlameManipulationDPS);
+            var burnable = hit.collider.GetComponent<IBurn>();
+
+            if (burnable == null)
+            {
+                return;
+            }
+
+            if (FireManipulatorType == FireManipulatorType.SetFire)
+            {
+                burnable.AddFire(FlameManipulationDPS);
+            }
+            else if (FireManipulatorType == FireManipulatorType.RemoveFire)
+            {
+                burnable.RemoveFire(FlameManipulationDPS);
+            }
         }
     }
 }

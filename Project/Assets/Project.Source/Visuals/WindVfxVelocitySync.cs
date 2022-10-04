@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.VFX;
 
-namespace Project.Source.Vfx
+namespace Project.Source.Visuals
 {
     public class WindVfxVelocitySync : MonoBehaviour
     {

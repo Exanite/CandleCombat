@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using Project.Source.Characters;
+using Project.Source.Gameplay.Characters;
 using UnityEngine;
 
-namespace Project.Source.Waves
+namespace Project.Source.Gameplay.Waves
 {
     public class WaveManager : MonoBehaviour
     {

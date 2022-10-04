@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Project.Source.Abilities
+namespace Project.Source.Gameplay.Abilities
 {
     public abstract class Ability : ScriptableObject
     {
