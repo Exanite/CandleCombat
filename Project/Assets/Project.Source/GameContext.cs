@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
 using Exanite.Drawing;
+using Exanite.Core.Components;
 using Project.Source.Abilities;
 using Project.Source.Characters;
 using Project.Source.Input;
