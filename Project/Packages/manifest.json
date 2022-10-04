@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
+    "com.neuecc.unirx": "https://github.com/neuecc/UniRx.git?path=Assets/Plugins/UniRx/Scripts",
+    "com.unidi.unidi": "https://github.com/Exanite/UniDi.git",
     "com.unity.cinemachine": "2.8.9",
     "com.unity.collab-proxy": "1.17.2",
     "com.unity.ide.rider": "3.0.15",
