@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4630926314040181508}
   m_Layer: 0
-  m_Name: Animation Anchor_1
+  m_Name: AnimationAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

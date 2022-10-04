@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5415174367118024091}
   - component: {fileID: 5415174367118024090}
   m_Layer: 0
-  m_Name: Loot At Target
+  m_Name: LookAtTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
