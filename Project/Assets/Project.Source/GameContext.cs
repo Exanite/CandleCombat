@@ -43,6 +43,8 @@ namespace Project.Source
         private AbilityInputActions abilityInputActions;
         public GunController PlayerGunController;
 
+        public HashSet<Character> ActiveCharacters = new HashSet<Character>();
+        
         //TODO: Move event??
         public event Action<Character> Possessed;
 

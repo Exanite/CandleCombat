@@ -7,14 +7,11 @@ using UniDi;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
-using Object = UnityEngine.Object;
 
 namespace Project.Source.Gameplay.Characters
 {
     public class Character : MonoBehaviour
     {
-        public static HashSet<Character> ActiveCharacters = new HashSet<Character>();
-        
         [Header("Dependencies")]
         public Rigidbody Rigidbody;
         public DissolveShader DissolveShader;
@@ -77,12 +74,12 @@ namespace Project.Source.Gameplay.Characters
 
         private void OnEnable()
         {
-            ActiveCharacters.Add(this);
+            gameContext.ActiveCharacters.Add(this);
         }
 
         private void OnDisable()
         {
-            ActiveCharacters.Remove(this);
+            gameContext.ActiveCharacters.Remove(this);
         }
 
         private void Update()

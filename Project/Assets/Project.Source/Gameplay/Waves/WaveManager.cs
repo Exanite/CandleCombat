@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Project.Source.Gameplay.Characters;
 using UniDi;
 using UnityEngine;
 
@@ -16,11 +15,11 @@ namespace Project.Source.Gameplay.Waves
         public float MinSpawnRange = 20f;
         public float MaxSpawnRange = 50f;
         public float GlobalSpawnCooldownTime = 0.1f;
-        
+
         [Header("Runtime")]
         public int ActiveCharacterCount;
         public int ActiveEnemyCount;
-        
+
         public List<EnemySpawner> Spawners = new List<EnemySpawner>();
         public List<EnemySpawner> ActiveSpawners = new List<EnemySpawner>();
 
@@ -37,20 +36,20 @@ namespace Project.Source.Gameplay.Waves
         private void Update()
         {
             spawnCooldown -= Time.deltaTime;
-            
-            ActiveCharacterCount = Character.ActiveCharacters.Count;
+
+            ActiveCharacterCount = gameContext.ActiveCharacters.Count;
             ActiveEnemyCount = 0;
-            
-            foreach (var character in Character.ActiveCharacters)
+
+            foreach (var character in gameContext.ActiveCharacters)
             {
                 if (!character.IsPlayer)
                 {
                     ActiveEnemyCount++;
                 }
             }
-            
+
             if (spawnCooldown < 0 && ActiveEnemyCount < MaxEnemies)
-            { 
+            {
                 UpdateActiveSpawners();
                 if (ActiveSpawners.Count > 0)
                 {
@@ -65,12 +64,13 @@ namespace Project.Source.Gameplay.Waves
         {
             ActiveSpawners.Clear();
 
-            Character player = gameContext.CurrentPlayer;
+            var player = gameContext.CurrentPlayer;
+            if (player == null)
+            {
+                return;
+            }
 
-            if (player == null) return;
-            
             var playerPosition = player.transform.position;
-
             foreach (var spawner in Spawners)
             {
                 var spawnerDistance = (spawner.transform.position - playerPosition).magnitude;
