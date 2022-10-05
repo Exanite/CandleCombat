@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using Cysharp.Threading.Tasks;
 using Exanite.Drawing;
 using Project.Source.Gameplay.Abilities;
 using Project.Source.Gameplay.Characters;
 using Project.Source.Gameplay.Player;
 using Project.Source.Gameplay.Waves;
 using Project.Source.Input;
+using Project.Source.SceneManagement;
+using UniDi;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -45,6 +48,15 @@ namespace Project.Source
 
         //TODO: Move event??
         public event Action<Character> Possessed;
+
+        [InjectOptional(Id = SceneLoader.ParentSceneId)]
+        private Scene parentScene;
+
+        [Inject]
+        private Scene selfScene;
+        
+        [Inject]
+        private SceneLoader sceneLoader;
 
         private void Awake()
         {
@@ -154,7 +166,15 @@ namespace Project.Source
         {
             yield return new WaitForSeconds(delay);
 
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            if (parentScene.IsValid())
+            {
+                sceneLoader.UnloadScene(selfScene).Forget();
+                sceneLoader.LoadAdditiveScene(gameObject.scene.name, parentScene).Forget();
+            }
+            else
+            {
+                sceneLoader.LoadSingleScene(gameObject.scene.name).Forget();
+            }
         }
 
         private void UpdateAbilityCooldowns()

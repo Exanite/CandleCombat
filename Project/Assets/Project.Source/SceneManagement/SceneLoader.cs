@@ -15,6 +15,8 @@ namespace Project.Source.SceneManagement
     /// </summary>
     public class SceneLoader : MonoBehaviour
     {
+        public const string ParentSceneId = "ParentScene";
+        
         private bool isLoading;
 
         private SceneContextRegistry sceneContextRegistry;
@@ -91,6 +93,11 @@ namespace Project.Source.SceneManagement
             await UniTask.WaitWhile(() => isLoading);
             isLoading = true;
 
+            bindings += container =>
+            {
+                container.Bind<Scene>().WithId(ParentSceneId).To<Scene>().FromInstance(parent.gameObject.scene);
+            };
+            
             PrepareForSceneLoad(parent, bindings, bindingsLate);
 
             try
