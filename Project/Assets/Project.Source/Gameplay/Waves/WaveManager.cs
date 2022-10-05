@@ -25,6 +25,8 @@ namespace Project.Source.Gameplay.Waves
 
         private float spawnCooldown;
 
+        private GameContext gameContext;
+
         private void Start()
         {
             Spawners = FindObjectsOfType<EnemySpawner>().ToList();
@@ -61,7 +63,7 @@ namespace Project.Source.Gameplay.Waves
         {
             ActiveSpawners.Clear();
 
-            Character player = GameContext.Instance.CurrentPlayer;
+            Character player = gameContext.CurrentPlayer;
 
             if (player == null) return;
             

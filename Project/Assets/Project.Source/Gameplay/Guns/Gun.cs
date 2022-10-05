@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Project.Source.Gameplay.Characters;
+using UniDi;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -43,6 +44,9 @@ namespace Project.Source.Gameplay.Guns {
         private float elapsedReloadTime = 0f;
         private int ammo = 0;
         private bool isReloading = false;
+
+        [Inject]
+        private GameContext gameContext;
 
         private void Awake()
         {
@@ -90,7 +94,7 @@ namespace Project.Source.Gameplay.Guns {
                 OnShoot?.Invoke();
 
                 if (fireAudioClip != null)
-                    GameContext.Instance.AudioSource.PlayOneShot(fireAudioClip, fireAudioScale);
+                    gameContext.AudioSource.PlayOneShot(fireAudioClip, fireAudioScale);
             }
 
             elapsedTimeSinceShot -= TimeBetweenShots;

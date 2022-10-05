@@ -1,4 +1,5 @@
 using TMPro;
+using UniDi;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,10 +13,13 @@ namespace Project.Source.UserInterface
         public TMP_Text KeyText;
         public Image IconImage;
         public Image CooldownImage;
+        
+        [Inject]
+        private GameContext gameContext;
 
         private void Update()
         {
-            var ability = GameContext.Instance.Abilities[AbilityIndex];
+            var ability = gameContext.Abilities[AbilityIndex];
             if (ability == null)
             {
                 return;

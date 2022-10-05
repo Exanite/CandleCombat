@@ -1,11 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Project.Source.Gameplay.Characters;
+using UniDi;
 using UnityEngine;
 using UnityEngine.VFX;
 
-namespace Project.Source.Gameplay.Abilities {
+namespace Project.Source.Gameplay.Abilities
+{
     public interface IBurn
     {
         public void AddFire(int fireDPS);
@@ -16,26 +15,31 @@ namespace Project.Source.Gameplay.Abilities {
     public class BurnableObject : MonoBehaviour, IBurn
     {
         [Header("Dependencies")]
-        [SerializeField] private Light lightObjectPrefab;
-        [SerializeField] private VisualEffect fireVisualEffect;
+        [SerializeField]
+        private Light lightObjectPrefab;
+        [SerializeField]
+        private VisualEffect fireVisualEffect;
 
         [Header("Optional")]
-        [SerializeField] private GameObject fracturedVersionPrefab;
+        [SerializeField]
+        private GameObject fracturedVersionPrefab;
         [Tooltip("Audio is only enabled and disabled.")]
         private AudioSource audioSource;
-    
+
         [Header("Settings")]
         public int MaxHealth = 100;
 
-        [SerializeField] private string flameSizeAttribute = "FlamesSize";
-        [SerializeField] private string flameColorAttribute = "Color";
+        [SerializeField]
+        private string flameSizeAttribute = "FlamesSize";
+        [SerializeField]
+        private string flameColorAttribute = "Color";
 
         [Header("Light Settings")]
         [ColorUsage(true, true)]
-        public Color PossessColor = new Vector4(0,4.7311759f,22.0403557f,1);
-        public Color PossessLightColor = new Vector4(0,4.7311759f,22.0403557f, 1);
+        public Color PossessColor = new Vector4(0, 4.7311759f, 22.0403557f, 1);
+        public Color PossessLightColor = new Vector4(0, 4.7311759f, 22.0403557f, 1);
         public float PossessSwitchTime = 0.5f;
-    
+
         [Range(1, 14)]
         public float MaxFireSize = 6;
         [Range(1, 14)]
@@ -50,8 +54,8 @@ namespace Project.Source.Gameplay.Abilities {
         private float CurrentHealth = 0;
         private int currentFireDPS = 0;
         private bool isOnFire = false;
-        private bool isFractured = false; 
-    
+        private bool isFractured = false;
+
         private float timeElapsedSincePossess = 0;
         private Color originalLightColor = Color.white;
         private float originalLightColorTemperature;
@@ -64,11 +68,12 @@ namespace Project.Source.Gameplay.Abilities {
 
         private int possesses = 0;
 
-        private GameContext subscribedGameContext;
-    
+        [InjectOptional]
+        private GameContext gameContext;
+
         private void Awake()
         {
-            audioSource = GetComponent <AudioSource>();
+            audioSource = GetComponent<AudioSource>();
             meshRenderer = GetComponent<MeshRenderer>();
             CurrentHealth = MaxHealth;
             originalFireColor.a = 255;
@@ -84,45 +89,45 @@ namespace Project.Source.Gameplay.Abilities {
 
         private void OnEnable()
         {
-            try
+            if (gameContext)
             {
-                subscribedGameContext = GameContext.Instance;
-            }
-            catch (NullReferenceException)
-            {
-                // Blank
-            }
-
-            if (subscribedGameContext)
-            {
-                subscribedGameContext.Possessed += HandlePossessed;
+                gameContext.Possessed += HandlePossessed;
             }
         }
 
         private void OnDisable()
         {
-            if (subscribedGameContext)
+            if (gameContext)
             {
-                subscribedGameContext.Possessed -= HandlePossessed;
+                gameContext.Possessed += HandlePossessed;
             }
         }
 
         private void Update()
         {
-            if (!isOnFire) return;
+            if (!isOnFire)
+            {
+                return;
+            }
 
             timeElapsedSincePossess += Time.deltaTime;
-        
+
             CurrentHealth -= currentFireDPS * Time.deltaTime;
 
-            if(spawnedLight != null)
+            if (spawnedLight != null)
+            {
                 UpdateLightIntensity();
+            }
 
             if (CurrentHealth <= MaxHealth && !isFractured)
+            {
                 Fracture();
+            }
 
-            if(CurrentHealth <= 0)
+            if (CurrentHealth <= 0)
+            {
                 Expire();
+            }
 
             if (timeElapsedSincePossess >= PossessSwitchTime)
             {
@@ -132,11 +137,14 @@ namespace Project.Source.Gameplay.Abilities {
 
         public void AddFire(int fireDPS)
         {
-            if (isOnFire || fireDPS < currentFireDPS) return;
-        
+            if (isOnFire || fireDPS < currentFireDPS)
+            {
+                return;
+            }
+
             currentFireDPS = fireDPS;
             isOnFire = true;
-        
+
             spawnedLight.gameObject.SetActive(true);
             spawnedFireVisualEffect.gameObject.SetActive(true);
             audioSource.enabled = true;
@@ -145,9 +153,9 @@ namespace Project.Source.Gameplay.Abilities {
         public void RemoveFire(int fireDPSRemoved)
         {
             isOnFire = false;
-        
+
             currentFireDPS -= fireDPSRemoved;
-            
+
             if (currentFireDPS <= 0)
             {
                 currentFireDPS = 0;
@@ -159,21 +167,23 @@ namespace Project.Source.Gameplay.Abilities {
 
         private void UpdateLightIntensity()
         {
-            float healthPercent = 1 - (float)CurrentHealth/MaxHealth;
-            float intensity = healthToIntensityCurve.Evaluate(healthPercent) * MaxIntensity;
+            var healthPercent = 1 - CurrentHealth / MaxHealth;
+            var intensity = healthToIntensityCurve.Evaluate(healthPercent) * MaxIntensity;
             intensity = Mathf.Clamp(intensity, MinIntensity, MaxIntensity);
-        
+
             // Debug.Log("Intensity: " + intensity);
 
             spawnedLight.intensity = intensity;
 
-            float size = healthToIntensityCurve.Evaluate(healthPercent) * MaxFireSize;
+            var size = healthToIntensityCurve.Evaluate(healthPercent) * MaxFireSize;
             size = Mathf.Clamp(size, MinFireSize, MaxFireSize);
-        
-            if(fireVisualEffect != null)
+
+            if (fireVisualEffect != null)
+            {
                 fireVisualEffect.SetFloat(flameSizeAttribute, size);
+            }
         }
-    
+
         private void Fracture()
         {
             isFractured = true;
@@ -188,25 +198,25 @@ namespace Project.Source.Gameplay.Abilities {
         private void HandlePossessed(Character character)
         {
             wasPossessed = true;
-        
+
             if (spawnedLight != null)
             {
                 spawnedLight.color = PossessLightColor;
                 spawnedLight.colorTemperature = 4500f; //TODO: Remove magic number. 
             }
-        
+
             if (spawnedFireVisualEffect != null)
             {
                 spawnedFireVisualEffect.SetVector4(flameColorAttribute, PossessColor);
             }
-        
+
             timeElapsedSincePossess = 0;
         }
 
         private void HandleReturnFromPossessed()
         {
             wasPossessed = false;
-        
+
             if (spawnedLight != null)
             {
                 spawnedLight.color = originalLightColor;
@@ -225,14 +235,14 @@ namespace Project.Source.Gameplay.Abilities {
         {
             if (lightObjectPrefab != null)
             {
-                Vector3 highSpawnPosition = transform.position + (transform.up * LightStartingHeight);
+                var highSpawnPosition = transform.position + transform.up * LightStartingHeight;
                 spawnedLight = Instantiate(lightObjectPrefab, highSpawnPosition, Quaternion.identity);
                 spawnedLight.gameObject.SetActive(false);
                 originalLightColor = spawnedLight.color;
                 originalLightColorTemperature = spawnedLight.colorTemperature;
             }
         }
-    
+
         private void SpawnFire()
         {
             if (fireVisualEffect != null)
@@ -252,18 +262,24 @@ namespace Project.Source.Gameplay.Abilities {
                 spawnedFracturedObject.gameObject.SetActive(false);
             }
         }
-    
+
         private void Expire()
         {
-            if (spawnedLight != null) 
+            if (spawnedLight != null)
+            {
                 Destroy(spawnedLight.gameObject);
-        
-            if(spawnedFracturedObject != null)
+            }
+
+            if (spawnedFracturedObject != null)
+            {
                 Destroy(spawnedFracturedObject.gameObject);
-        
-            if(spawnedFireVisualEffect != null)
+            }
+
+            if (spawnedFireVisualEffect != null)
+            {
                 Destroy(spawnedFireVisualEffect.gameObject);
-        
+            }
+
             Destroy(gameObject);
         }
     }

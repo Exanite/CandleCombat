@@ -1,5 +1,6 @@
 using System.Collections;
 using Project.Source.Gameplay.Player;
+using UniDi;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -64,9 +65,10 @@ namespace Project.Source.Gameplay.Characters
 
         private NavMeshPath path;
         private readonly Vector3[] pathBuffer = new Vector3[8];
-        
-        private GameContext subscribedGameContext;
 
+        [Inject]
+        private GameContext gameContext;
+        
         private void Awake()
         {
             audioSource = GetComponent <AudioSource>();
@@ -81,16 +83,14 @@ namespace Project.Source.Gameplay.Characters
 
         private void OnEnable()
         {
-            subscribedGameContext = GameContext.Instance;
-            
             Character.Dead += OnDead;
-            subscribedGameContext.Possessed += OnPossessed;
+            gameContext.Possessed += OnPossessed;
         }
 
         private void OnDisable()
         {
             Character.Dead -= OnDead;
-            subscribedGameContext.Possessed -= OnPossessed;
+            gameContext.Possessed -= OnPossessed;
         }
 
         private void Update()
@@ -106,7 +106,7 @@ namespace Project.Source.Gameplay.Characters
             {
                 Character.Rigidbody.velocity = Vector3.SmoothDamp(Character.Rigidbody.velocity, Vector3.zero, ref smoothedVelocityVelocity, 0.5f);
 
-                target = GameContext.Instance.CurrentPlayer;
+                target = gameContext.CurrentPlayer;
 
                 if (target && !isJumping && !Animator.GetCurrentAnimatorStateInfo(0).IsName("Jumping"))
                 {

@@ -1,3 +1,4 @@
+using UniDi;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -14,6 +15,9 @@ namespace Project.Source.Audio
         private AudioMixerSnapshot[] snapshots;
         private float[] snapshotWeights;
 
+        [Inject]
+        private GameContext gameContext;
+
         private void Start()
         {
             snapshots = new AudioMixerSnapshot[] { NormalSnapshot, LowHpSnapshot };
@@ -22,7 +26,7 @@ namespace Project.Source.Audio
 
         private void Update()
         {
-            var healthRatio = Mathf.Clamp01(GameContext.Instance.CurrentHealth / GameContext.Instance.MaxHealth);
+            var healthRatio = Mathf.Clamp01(gameContext.CurrentHealth / gameContext.MaxHealth);
             var inverseHealthRatio = 1 - healthRatio;
 
             snapshotWeights[0] = Mathf.Clamp01(1 - Curve.Evaluate(inverseHealthRatio));

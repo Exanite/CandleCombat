@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
-using Exanite.Core.Components;
 using Exanite.Drawing;
 using Project.Source.Gameplay.Abilities;
 using Project.Source.Gameplay.Characters;
@@ -17,7 +16,7 @@ using UnityEngine.VFX;
 
 namespace Project.Source
 {
-    public class GameContext : SingletonBehaviour<GameContext>, AbilityInputActions.IPlayerAbilitiesActions
+    public class GameContext : MonoBehaviour, AbilityInputActions.IPlayerAbilitiesActions
     {
         [Header("Dependencies")]
         public Camera MainCamera;
@@ -47,10 +46,8 @@ namespace Project.Source
         //TODO: Move event??
         public event Action<Character> Possessed;
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
-
             abilityInputActions = new AbilityInputActions();
             abilityInputActions.PlayerAbilities.SetCallbacks(this);
         }
@@ -63,10 +60,8 @@ namespace Project.Source
             }
         }
 
-        protected override void OnEnable()
+        private void OnEnable()
         {
-            base.OnEnable();
-
             abilityInputActions.Enable();
         }
 
@@ -94,7 +89,7 @@ namespace Project.Source
             if (CurrentPlayer != null)
             {
                 CurrentPlayer.OverwriteHealth(-1);
-                CurrentHealth = Instance.MaxHealth;
+                CurrentHealth = MaxHealth;
             }
 
             CurrentPlayer = character;

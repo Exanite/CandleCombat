@@ -1,3 +1,4 @@
+using UniDi;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,11 +8,13 @@ namespace Project.Source.UserInterface
     {
         public Image Image;
 
+        [Inject]
+        private GameContext gameContext;
+
         private void Update()
         {
-            var healthRatio = GameContext.Instance.CurrentHealth / GameContext.Instance.MaxHealth;
-            healthRatio = Mathf.Clamp01(healthRatio);
-            
+            var healthRatio = Mathf.Clamp01(gameContext.CurrentHealth / gameContext.MaxHealth);
+
             Image.fillAmount = healthRatio;
         }
     }

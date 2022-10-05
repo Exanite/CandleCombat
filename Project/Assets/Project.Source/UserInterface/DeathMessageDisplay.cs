@@ -1,3 +1,4 @@
+using UniDi;
 using UnityEngine;
 
 namespace Project.Source.UserInterface
@@ -6,9 +7,12 @@ namespace Project.Source.UserInterface
     {
         public GameObject Target;
 
+        [Inject]
+        private GameContext gameContext;
+
         private void Update()
         {
-            var isDead = GameContext.Instance.IsDead;
+            var isDead = gameContext.IsDead;
 
             Target.SetActive(isDead);
         }

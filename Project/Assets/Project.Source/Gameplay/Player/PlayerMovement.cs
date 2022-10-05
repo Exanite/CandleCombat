@@ -1,4 +1,5 @@
 using Project.Source.Gameplay.Characters;
+using UniDi;
 using UnityEngine;
 
 namespace Project.Source.Gameplay.Player
@@ -25,9 +26,12 @@ namespace Project.Source.Gameplay.Player
         // Not a typo
         private Vector3 smoothedVelocityVelocity;
 
+        [Inject]
+        private GameContext gameContext;
+
         private void Update()
         {
-            var ability = GameContext.Instance.Abilities[DodgeAbilityIndex];
+            var ability = gameContext.Abilities[DodgeAbilityIndex];
             ability.CooldownDuration = timeBetweenDodge;
             ability.CurrentCooldown = timeBetweenDodge - elapsedTimeSinceDodge;
             ability.HealthCost = 0;

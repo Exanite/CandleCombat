@@ -1,5 +1,5 @@
 using Cinemachine;
-using Project.Source.Gameplay.Characters;
+using UniDi;
 using UnityEngine;
 
 namespace Project.Source.Gameplay.Player
@@ -7,14 +7,21 @@ namespace Project.Source.Gameplay.Player
     public class CameraFollowController : MonoBehaviour
     {
         [Header("Dependencies")]
-        [SerializeField] private CinemachineVirtualCamera virtualCamera;
-        [SerializeField] private PlayerLook playerLook;
+        [SerializeField]
+        private CinemachineVirtualCamera virtualCamera;
+        [SerializeField]
+        private PlayerLook playerLook;
+
+        [Inject]
+        private GameContext gameContext;
 
         private void Update()
         {
-            Character character = GameContext.Instance.CurrentPlayer;
-
-            if (character == null || playerLook.LookAt == null) return;
+            var character = gameContext.CurrentPlayer;
+            if (character == null || playerLook.LookAt == null)
+            {
+                return;
+            }
 
             virtualCamera.Follow = playerLook.LookAt;
             virtualCamera.LookAt = character.transform;

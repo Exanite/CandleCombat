@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Exanite.Core.Events;
 using Project.Source.Gameplay.Guns;
+using UniDi;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
@@ -14,8 +15,6 @@ namespace Project.Source.Gameplay.Characters
     {
         public static HashSet<Character> ActiveCharacters = new HashSet<Character>();
         
-        public bool IsPlayer => this == GameContext.Instance.CurrentPlayer;
-
         [Header("Dependencies")]
         public Rigidbody Rigidbody;
         public DissolveShader DissolveShader;
@@ -43,7 +42,14 @@ namespace Project.Source.Gameplay.Characters
         public List<Behaviour> DisableOnDeathBehaviours = new List<Behaviour>();
         public List<Collider> DisableOnDeathColliders = new List<Collider>();
         public float OnDeathDestroyDelay = 3f;
+        
+        private VisualEffect playerWick;
 
+        [Inject]
+        private GameContext gameContext;
+
+        public bool IsPlayer => this == gameContext.CurrentPlayer;
+        
         public float CurrentHealth
         {
             get => currentHealth;
@@ -52,9 +58,7 @@ namespace Project.Source.Gameplay.Characters
 
         public event Action<Character> Dead;
         public event EventHandler<Character, float> TookDamage;
-
-        private VisualEffect playerWick;
-
+        
         private void Start()
         {
             if (IsPlayer)
@@ -99,7 +103,7 @@ namespace Project.Source.Gameplay.Characters
 
             if (IsPlayer)
             {
-                GameContext.Instance.CurrentHealth -= damageAmount;
+                gameContext.CurrentHealth -= damageAmount;
             }
             
             TookDamage?.Invoke(this, damageAmount);
@@ -137,7 +141,7 @@ namespace Project.Source.Gameplay.Characters
             {
                 if (!playerWick)
                 {
-                    playerWick = Instantiate(GameContext.Instance.PlayerWickPrefab);
+                    playerWick = Instantiate(gameContext.PlayerWickPrefab);
                 }
 
                 playerWick.transform.position = PlayerWickPosition.transform.position;

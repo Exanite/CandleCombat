@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using UniDi;
 using UnityEngine;
 
 namespace Project.Source.UserInterface
@@ -10,9 +11,12 @@ namespace Project.Source.UserInterface
 
         private float timer;
 
-        void Update()
+        [Inject]
+        private GameContext gameContext;
+
+        private void Update()
         {
-            if (GameContext.Instance.CurrentHealth > 0)
+            if (gameContext.CurrentHealth > 0)
             {
                 timer += Time.deltaTime;
                 text.text = TimeSpan.FromSeconds(timer).ToString(@"mm\:ss\.fff");

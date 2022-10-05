@@ -1,3 +1,4 @@
+using UniDi;
 using UnityEngine;
 
 namespace Project.Source.Gameplay.Waves
@@ -6,10 +7,14 @@ namespace Project.Source.Gameplay.Waves
     {
         public float SpawnCooldownTime = 5f;
 
-        private WaveManager WaveManager => GameContext.Instance.WaveManager;
         private float spawnCooldown;
 
+        [Inject]
+        private GameContext gameContext;
+
         public bool IsCoolingDown => spawnCooldown > 0;
+        
+        private WaveManager WaveManager => gameContext.WaveManager;
 
         private void Update()
         {

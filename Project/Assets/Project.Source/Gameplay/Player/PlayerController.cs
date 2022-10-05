@@ -1,4 +1,5 @@
 using Project.Source.Gameplay.Characters;
+using UniDi;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -22,6 +23,9 @@ namespace Project.Source.Gameplay.Player
         
         private Plane Plane => new Plane(Vector3.up, Vector3.zero);
 
+        [Inject]
+        private GameContext gameContext;
+
         private void Awake()
         {
             playerMovement = GetComponent<PlayerMovement>();
@@ -31,7 +35,7 @@ namespace Project.Source.Gameplay.Player
 
         private void Update()
         {
-            Character character = GameContext.Instance.CurrentPlayer;
+            Character character = gameContext.CurrentPlayer;
 
             if (character == null) return;
         

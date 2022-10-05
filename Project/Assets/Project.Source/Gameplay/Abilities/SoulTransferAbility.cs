@@ -6,17 +6,19 @@ namespace Project.Source.Gameplay.Abilities
     public class SoulTransferAbility : Ability
     {
         [SerializeField] private int soulGunIndex = 2;
+
+        private GameContext gameContext;
         
         public override void Execute()
         {
-            var player = GameContext.Instance.CurrentPlayer;
+            var player = gameContext.CurrentPlayer;
             if (player == null)
             {
                 return;
             }
 
             // TODO: Don't reach into Ability directly.
-            var gunController = GameContext.Instance.gameObject.GetComponent<GunController>();
+            var gunController = gameContext.gameObject.GetComponent<GunController>();
             int previousGun = gunController.EquippedGunIndex;
             gunController.SwitchGun(soulGunIndex);
             gunController.Fire();

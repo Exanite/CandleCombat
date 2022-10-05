@@ -1,5 +1,6 @@
 using Project.Source.Gameplay.Guns;
 using Project.Source.Gameplay.Player;
+using UniDi;
 using UnityEngine;
 
 namespace Project.Source.Gameplay.Abilities
@@ -16,17 +17,20 @@ namespace Project.Source.Gameplay.Abilities
         private int currentReloads;
         private int currentShots;
         private int previousGun;
+
+        [Inject]
+        private GameContext gameContext;
         
         public override void Execute()
         {
-            var player = GameContext.Instance.CurrentPlayer;
+            var player = gameContext.CurrentPlayer;
             if (player == null)
             {
                 return;
             }
 
             // TODO: Don't reach into directly
-            var gunController = GameContext.Instance.gameObject.GetComponent<GunController>();
+            var gunController = gameContext.gameObject.GetComponent<GunController>();
             previousGun = gunController.EquippedGunIndex;
             gunController.SwitchGun(fireGunIndex);
             Gun gun = gunController.GetEquippedGun();
