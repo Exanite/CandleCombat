@@ -26,7 +26,7 @@ namespace Project.Source.SceneManagement
         {
             this.sceneContextRegistry = sceneContextRegistry;
         }
-
+        
         /// <summary>
         ///     Loads the <see cref="Scene"/> using the provided
         ///     <see cref="Scene"/> as its parent
@@ -117,6 +117,8 @@ namespace Project.Source.SceneManagement
             {
                 // Prevent dead lock
                 isLoading = false;
+                
+                Cleanup();
             }
         }
 
@@ -166,6 +168,8 @@ namespace Project.Source.SceneManagement
             {
                 // Prevent dead lock
                 isLoading = false;
+                
+                Cleanup();
             }
         }
 
@@ -195,6 +199,14 @@ namespace Project.Source.SceneManagement
 
             SceneContext.ExtraBindingsInstallMethod = bindings;
             SceneContext.ExtraBindingsLateInstallMethod = bindingsLate;
+        }
+
+        private void Cleanup()
+        {
+            SceneContext.ParentContainers = null;
+
+            SceneContext.ExtraBindingsInstallMethod = null;
+            SceneContext.ExtraBindingsLateInstallMethod = null;
         }
     }
 }
