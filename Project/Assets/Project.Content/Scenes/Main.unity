@@ -3527,7 +3527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2be07f7e0884d29a0475f0782a97f2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requireLocalPhysicsScene: 1
+  requireLocalPhysicsScene: 0
 --- !u!4 &753104259
 Transform:
   m_ObjectHideFlags: 0
