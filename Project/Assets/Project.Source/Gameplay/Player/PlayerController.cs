@@ -20,7 +20,7 @@ namespace Project.Source.Gameplay.Player
         private PlayerLook playerLook;
         private GunController gunController;
         
-        private Plane Plane => new Plane(Vector3.up, Vector3.zero);
+        private Plane Plane => new Plane(Vector3.up, Vector3.up);
 
         [Inject]
         private GameContext gameContext;
