@@ -1,13 +1,14 @@
 using Project.Source.Gameplay.Characters;
 using UniDi;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.VFX;
 
 namespace Project.Source.Gameplay.Abilities
 {
     public interface IBurn
     {
-        public void AddFire(int fireDPS);
+        public void AddFire(int fireDps);
         public void RemoveFire(int fireDPSRemoved);
     }
 
@@ -15,29 +16,24 @@ namespace Project.Source.Gameplay.Abilities
     public class BurnableObject : MonoBehaviour, IBurn
     {
         [Header("Dependencies")]
-        [SerializeField]
-        private Light lightObjectPrefab;
-        [SerializeField]
-        private VisualEffect fireVisualEffect;
+        [SerializeField] private Light lightObjectPrefab;
+        [FormerlySerializedAs("fireVisualEffect")]
+        [SerializeField] private VisualEffect fireVisualEffectPrefab;
 
         [Header("Optional")]
-        [SerializeField]
-        private GameObject fracturedVersionPrefab;
+        [SerializeField] private GameObject fracturedVersionPrefab;
         [Tooltip("Audio is only enabled and disabled.")]
         private AudioSource audioSource;
 
         [Header("Settings")]
         public int MaxHealth = 100;
 
-        [SerializeField]
-        private string flameSizeAttribute = "FlamesSize";
-        [SerializeField]
-        private string flameColorAttribute = "Color";
+        [SerializeField] private string flameSizeAttribute = "FlamesSize";
+        [SerializeField] private string flameColorAttribute = "Color";
 
         [Header("Light Settings")]
-        [ColorUsage(true, true)]
-        public Color PossessColor = new Vector4(0, 4.7311759f, 22.0403557f, 1);
-        public Color PossessLightColor = new Vector4(0, 4.7311759f, 22.0403557f, 1);
+        [ColorUsage(true, true)] public Color PossessColor = new Vector4(0, 4.7311759f, 22.0403557f, 1);
+        [ColorUsage(true, true)] public Color PossessLightColor = new Vector4(0, 4.7311759f, 22.0403557f, 1);
         public float PossessSwitchTime = 0.5f;
 
         [Range(1, 14)]
@@ -63,13 +59,16 @@ namespace Project.Source.Gameplay.Abilities
         private bool wasPossessed = false;
 
         private Light spawnedLight;
-        private VisualEffect spawnedFireVisualEffect;
+        private VisualEffect fireVisualEffect;
         private GameObject spawnedFracturedObject;
 
         private int possesses = 0;
 
         [InjectOptional]
         private GameContext gameContext;
+
+        [Inject]
+        private IInstantiator instantiator;
 
         private void Awake()
         {
@@ -135,18 +134,18 @@ namespace Project.Source.Gameplay.Abilities
             }
         }
 
-        public void AddFire(int fireDPS)
+        public void AddFire(int fireDps)
         {
-            if (isOnFire || fireDPS < currentFireDPS)
+            if (isOnFire || fireDps < currentFireDPS)
             {
                 return;
             }
 
-            currentFireDPS = fireDPS;
+            currentFireDPS = fireDps;
             isOnFire = true;
 
             spawnedLight.gameObject.SetActive(true);
-            spawnedFireVisualEffect.gameObject.SetActive(true);
+            fireVisualEffect.gameObject.SetActive(true);
             audioSource.enabled = true;
         }
 
@@ -160,7 +159,7 @@ namespace Project.Source.Gameplay.Abilities
             {
                 currentFireDPS = 0;
                 spawnedLight.gameObject.SetActive(false);
-                fireVisualEffect.gameObject.SetActive(false);
+                fireVisualEffectPrefab.gameObject.SetActive(false);
                 audioSource.enabled = false;
             }
         }
@@ -178,9 +177,9 @@ namespace Project.Source.Gameplay.Abilities
             var size = healthToIntensityCurve.Evaluate(healthPercent) * MaxFireSize;
             size = Mathf.Clamp(size, MinFireSize, MaxFireSize);
 
-            if (fireVisualEffect != null)
+            if (fireVisualEffectPrefab != null)
             {
-                fireVisualEffect.SetFloat(flameSizeAttribute, size);
+                fireVisualEffectPrefab.SetFloat(flameSizeAttribute, size);
             }
         }
 
@@ -190,7 +189,7 @@ namespace Project.Source.Gameplay.Abilities
 
             if (fracturedVersionPrefab != null && spawnedFracturedObject == null)
             {
-                spawnedFracturedObject = Instantiate(fracturedVersionPrefab, transform.position, transform.rotation);
+                spawnedFracturedObject = instantiator.InstantiatePrefab(fracturedVersionPrefab, transform.position, transform.rotation, null);
                 meshRenderer.enabled = false;
             }
         }
@@ -205,9 +204,9 @@ namespace Project.Source.Gameplay.Abilities
                 spawnedLight.colorTemperature = 4500f; //TODO: Remove magic number. 
             }
 
-            if (spawnedFireVisualEffect != null)
+            if (fireVisualEffect != null)
             {
-                spawnedFireVisualEffect.SetVector4(flameColorAttribute, PossessColor);
+                fireVisualEffect.SetVector4(flameColorAttribute, PossessColor);
             }
 
             timeElapsedSincePossess = 0;
@@ -223,9 +222,9 @@ namespace Project.Source.Gameplay.Abilities
                 spawnedLight.colorTemperature = originalLightColorTemperature;
             }
 
-            if (spawnedFireVisualEffect != null)
+            if (fireVisualEffect != null)
             {
-                spawnedFireVisualEffect.SetVector4(flameColorAttribute, originalFireColor);
+                fireVisualEffect.SetVector4(flameColorAttribute, originalFireColor);
             }
 
             timeElapsedSincePossess = PossessSwitchTime;
@@ -236,7 +235,7 @@ namespace Project.Source.Gameplay.Abilities
             if (lightObjectPrefab != null)
             {
                 var highSpawnPosition = transform.position + transform.up * LightStartingHeight;
-                spawnedLight = Instantiate(lightObjectPrefab, highSpawnPosition, Quaternion.identity);
+                spawnedLight = instantiator.InstantiatePrefabForComponent<Light>(lightObjectPrefab, highSpawnPosition, Quaternion.identity, null);
                 spawnedLight.gameObject.SetActive(false);
                 originalLightColor = spawnedLight.color;
                 originalLightColorTemperature = spawnedLight.colorTemperature;
@@ -245,20 +244,23 @@ namespace Project.Source.Gameplay.Abilities
 
         private void SpawnFire()
         {
-            if (fireVisualEffect != null)
+            if (fireVisualEffectPrefab == null)
             {
-                spawnedFireVisualEffect = Instantiate(fireVisualEffect, transform.position, Quaternion.identity);
-                spawnedFireVisualEffect.gameObject.SetActive(false);
-                spawnedFireVisualEffect.SetFloat(flameSizeAttribute, MaxFireSize);
-                originalFireColor = spawnedFireVisualEffect.GetVector4(flameColorAttribute);
+                return;
             }
+            
+            fireVisualEffect = instantiator.InstantiatePrefabForComponent<VisualEffect>(fireVisualEffectPrefab, transform.position, Quaternion.identity, null);
+            fireVisualEffect.gameObject.SetActive(false);
+            fireVisualEffect.SetFloat(flameSizeAttribute, MaxFireSize);
+            originalFireColor = fireVisualEffect.GetVector4(flameColorAttribute);
         }
 
         private void SpawnFracture()
         {
             if (fracturedVersionPrefab != null && spawnedFracturedObject == null)
             {
-                spawnedFracturedObject = Instantiate(fracturedVersionPrefab, transform.position, transform.rotation);
+                spawnedFracturedObject =
+                    instantiator.InstantiatePrefab(fracturedVersionPrefab, transform.position, transform.rotation, null);
                 spawnedFracturedObject.gameObject.SetActive(false);
             }
         }
@@ -275,9 +277,9 @@ namespace Project.Source.Gameplay.Abilities
                 Destroy(spawnedFracturedObject.gameObject);
             }
 
-            if (spawnedFireVisualEffect != null)
+            if (fireVisualEffect != null)
             {
-                Destroy(spawnedFireVisualEffect.gameObject);
+                Destroy(fireVisualEffect.gameObject);
             }
 
             Destroy(gameObject);

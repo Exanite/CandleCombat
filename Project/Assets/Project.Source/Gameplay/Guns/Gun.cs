@@ -1,22 +1,23 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Project.Source.Gameplay.Characters;
 using UniDi;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Project.Source.Gameplay.Guns {
-    public enum GunHoldType{
+namespace Project.Source.Gameplay.Guns
+{
+    public enum GunHoldType
+    {
         OneHandGun,
-        OneHandFan
+        OneHandFan,
     }
 
     public class Gun : MonoBehaviour
     {
         public Action OnShoot;
         public Action OnReload;
-    
+
         [Header("Dependencies")]
         [SerializeField] private Transform model;
         [SerializeField] private Transform firePoint;
@@ -26,8 +27,8 @@ namespace Project.Source.Gameplay.Guns {
         [Header("Sounds")]
         [SerializeField] private AudioClip fireAudioClip;
         [Range(0, 1)]
-        [SerializeField] private float fireAudioScale; 
-    
+        [SerializeField] private float fireAudioScale;
+
         [Header("Settings")]
         public GunHoldType GunHoldType = GunHoldType.OneHandGun;
         public float TimeToHolsterGun = 4f;
@@ -48,23 +49,26 @@ namespace Project.Source.Gameplay.Guns {
         [Inject]
         private GameContext gameContext;
 
+        [Inject]
+        private IInstantiator instantiator;
+
         private void Awake()
         {
             Reloaded();
         }
-    
+
         private void Update()
         {
             elapsedTimeSinceShot += Time.deltaTime;
             elapsedTimeSinceShot = Mathf.Clamp(elapsedTimeSinceShot, 0, TimeBetweenShots);
             elapsedTimeSinceHolstered += Time.deltaTime;
             elapsedTimeSinceHolstered = Mathf.Clamp(elapsedTimeSinceHolstered, 0, TimeToHolsterGun);
-        
+
             if (isReloading && elapsedReloadTime >= ReloadTime)
             {
                 Reloaded();
             }
-            else if(ammo == 0)
+            else if (ammo == 0)
             {
                 isReloading = true;
                 elapsedReloadTime += Time.deltaTime;
@@ -73,28 +77,37 @@ namespace Project.Source.Gameplay.Guns {
 
         public void Fire(Character characterFrom)
         {
-            if (elapsedTimeSinceShot < TimeBetweenShots || isReloading) return;
-
-            Vector3 direction = firePoint.forward;
-        
-            for (int i = 0; i < Burst; i++)
+            if (elapsedTimeSinceShot < TimeBetweenShots || isReloading)
             {
-                if (ammo <= 0) continue;
+                return;
+            }
+
+            var direction = firePoint.forward;
+
+            for (var i = 0; i < Burst; i++)
+            {
+                if (ammo <= 0)
+                {
+                    continue;
+                }
 
                 if (i > 0)
                 {
-                    Vector2 randomVector = Random.insideUnitCircle * BurstRadius;
+                    var randomVector = Random.insideUnitCircle * BurstRadius;
                     direction += new Vector3(randomVector.x, 0, 0);
                 }
-            
-                Projectile.Projectile projectile = Instantiate(projectilePrefabs[SelectedProjectile], firePoint.position, Quaternion.Euler(direction));
+
+                var projectile = instantiator.InstantiatePrefabForComponent<Projectile.Projectile>(projectilePrefabs[SelectedProjectile],
+                    firePoint.position, Quaternion.Euler(direction), null);
                 projectile.Fire(characterFrom, direction, firePointVisual.position);
-            
+
                 ammo--;
                 OnShoot?.Invoke();
 
                 if (fireAudioClip != null)
+                {
                     gameContext.AudioSource.PlayOneShot(fireAudioClip, fireAudioScale);
+                }
             }
 
             elapsedTimeSinceShot -= TimeBetweenShots;
@@ -104,13 +117,17 @@ namespace Project.Source.Gameplay.Guns {
         public void SwitchAmmo(int index)
         {
             if (index >= 0 && index < projectilePrefabs.Count)
+            {
                 SelectedProjectile = index;
+            }
         }
 
         public void OnSwitch()
         {
-            if(ReloadOnSwitchTo)
+            if (ReloadOnSwitchTo)
+            {
                 Reloaded();
+            }
         }
 
         public bool IsFiring()
@@ -136,8 +153,11 @@ namespace Project.Source.Gameplay.Guns {
 
         public void StartReload()
         {
-            if (isReloading) return;
-        
+            if (isReloading)
+            {
+                return;
+            }
+
             ammo = 0;
             isReloading = true;
         }
@@ -150,7 +170,7 @@ namespace Project.Source.Gameplay.Guns {
         private void Reloaded()
         {
             OnReload?.Invoke();
-        
+
             ammo = MaxAmmo;
             isReloading = false;
             elapsedReloadTime = 0;
@@ -161,7 +181,7 @@ namespace Project.Source.Gameplay.Guns {
         private void OnValidate()
         {
             SelectedProjectile = Mathf.Clamp(SelectedProjectile, 0, projectilePrefabs.Count - 1);
-            MaxAmmo = Mathf.Clamp(MaxAmmo, Burst, 100); //Arbitrary max
+            MaxAmmo = Mathf.Clamp(MaxAmmo, Burst, 100); // Arbitrary max
         }
     }
 }

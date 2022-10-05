@@ -47,6 +47,9 @@ namespace Project.Source.Gameplay.Characters
 
         [Inject]
         private GameContext gameContext;
+        
+        [Inject]
+        private IInstantiator instantiator;
 
         public bool IsPlayer => this == gameContext.CurrentPlayer;
         
@@ -141,7 +144,7 @@ namespace Project.Source.Gameplay.Characters
             {
                 if (!playerWick)
                 {
-                    playerWick = Instantiate(gameContext.PlayerWickPrefab);
+                    playerWick = instantiator.InstantiatePrefabForComponent<VisualEffect>(gameContext.PlayerWickPrefab);
                 }
 
                 playerWick.transform.position = PlayerWickPosition.transform.position;

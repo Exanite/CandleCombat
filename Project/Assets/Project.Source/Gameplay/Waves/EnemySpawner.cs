@@ -1,3 +1,4 @@
+using Project.Source.Gameplay.Characters;
 using UniDi;
 using UnityEngine;
 
@@ -11,6 +12,9 @@ namespace Project.Source.Gameplay.Waves
 
         [Inject]
         private GameContext gameContext;
+
+        [Inject]
+        private IInstantiator instantiator;
 
         public bool IsCoolingDown => spawnCooldown > 0;
         
@@ -33,7 +37,8 @@ namespace Project.Source.Gameplay.Waves
                     return false;
                 }
 
-                Instantiate(entry.EnemyPrefab, transform.position, Quaternion.identity);
+                instantiator.InstantiatePrefabForComponent<Character>(entry.EnemyPrefab, transform.position, Quaternion.identity, null);
+                
                 spawnCooldown = SpawnCooldownTime;
 
                 return true;

@@ -1,4 +1,5 @@
 using Project.Source.Gameplay.Characters;
+using UniDi;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -7,27 +8,22 @@ namespace Project.Source.Gameplay.Guns.Projectile
     public class OrbProjectile : Projectile
     {
         [Header("Dependencies")]
-        [SerializeField]
-        protected Rigidbody rb;
-        [SerializeField]
-        protected VisualEffect hitEffect;
+        [SerializeField] protected Rigidbody rb;
+        [SerializeField] protected VisualEffect hitEffect;
 
         [Header("Settings")]
-        [SerializeField]
-        protected bool retainCharacterVelocity;
-        [SerializeField]
-        protected float damage = 1f;
-        [SerializeField]
-        protected float timeToExpire = 1f;
-        [SerializeField]
-        protected float speed = 1;
-        [SerializeField]
-        protected float acceleration = 0.1f;
-        [SerializeField]
-        protected float colliderRadius = 0.1f;
+        [SerializeField] protected bool retainCharacterVelocity;
+        [SerializeField] protected float damage = 1f;
+        [SerializeField] protected float timeToExpire = 1f;
+        [SerializeField] protected float speed = 1;
+        [SerializeField] protected float acceleration = 0.1f;
+        [SerializeField] protected float colliderRadius = 0.1f;
 
         protected Character owner;
         protected float lifetime;
+
+        [Inject]
+        private IInstantiator instantiator;
 
         public override void Fire(Character characterFrom, Vector3 direction, Vector3 visualPosition)
         {
@@ -46,7 +42,7 @@ namespace Project.Source.Gameplay.Guns.Projectile
         {
             if (hitEffect)
             {
-                Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal, Vector3.up));
+                instantiator.InstantiatePrefabForComponent<VisualEffect>(hitEffect, hit.point, Quaternion.LookRotation(hit.normal, Vector3.up), null);
             }
 
             var otherCharacter = hit.collider.GetComponent<Character>();
@@ -54,8 +50,6 @@ namespace Project.Source.Gameplay.Guns.Projectile
             {
                 Hit(otherCharacter);
             }
-
-            // Debug.Log($"{name} Hit");
 
             Destroy(gameObject);
         }
@@ -100,8 +94,6 @@ namespace Project.Source.Gameplay.Guns.Projectile
 
         protected void Expire()
         {
-            // Debug.Log("Destroy!");
-
             Destroy(gameObject);
         }
     }

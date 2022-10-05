@@ -1,5 +1,6 @@
 using Cinemachine;
 using Project.Source.Gameplay.Characters;
+using UniDi;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -33,11 +34,14 @@ namespace Project.Source.Gameplay.Player
         private Character character;
 
         private Vector3 targetPosition;
+        
+        [Inject]
+        private IInstantiator instantiator;
 
         private void Awake()
         {
-            targetGroup = Instantiate(targetGroupPrefab);
-            lookAtTarget = Instantiate(lookAtTargetPrefab);
+            targetGroup = instantiator.InstantiatePrefabForComponent<CinemachineTargetGroup>(targetGroupPrefab);
+            lookAtTarget = instantiator.InstantiatePrefabForComponent<Transform>(lookAtTargetPrefab);
             lookAtTarget.position = transform.position;
         }
 
