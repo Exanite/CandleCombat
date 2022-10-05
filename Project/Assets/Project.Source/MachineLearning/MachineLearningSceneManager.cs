@@ -1,4 +1,6 @@
+using UniDi;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Project.Source.MachineLearning
 {
@@ -8,6 +10,18 @@ namespace Project.Source.MachineLearning
 
         public int TargetInstanceCount = 10;
 
-        private void Start() {}
+        [Inject]
+        private SceneLoader sceneLoader;
+
+        [Inject]
+        private Scene scene;
+
+        private void Start()
+        {
+            for (var i = 0; i < TargetInstanceCount; i++)
+            {
+                sceneLoader.LoadAdditiveScene(InstanceSceneName, scene);
+            }
+        }
     }
 }

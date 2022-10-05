@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Project.Content/Scenes/Main.unity
     guid: bf787a2472b72a044af5b72a5d12b351
+  - enabled: 1
+    path: Assets/Project.Content/Scenes/MachineLearningController.unity
+    guid: b97097dec5b61ae44bc7fbc6d52ee66f
+  - enabled: 1
+    path: Assets/Project.Content/Scenes/MachineLearningInstance.unity
+    guid: aff4a445aaec3174b98cce1a2abd0b4c
   m_configObjects: {}

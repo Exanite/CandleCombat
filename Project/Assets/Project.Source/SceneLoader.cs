@@ -13,7 +13,7 @@ namespace Project.Source
     ///     <see cref="SceneManager"/> will bypass UniDi bindings and
     ///     container parenting
     /// </summary>
-    public class SceneLoader
+    public class SceneLoader : MonoBehaviour
     {
         private bool isLoading;
 
