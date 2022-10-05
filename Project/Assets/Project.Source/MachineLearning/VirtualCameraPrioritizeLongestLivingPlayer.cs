@@ -4,16 +4,19 @@ using UnityEngine;
 
 namespace Project.Source.MachineLearning
 {
-    public class VirtualCameraPrioritizeHighestHealthPlayer : MonoBehaviour
+    public class VirtualCameraPrioritizeLongestLivingPlayer : MonoBehaviour
     {
         public CinemachineVirtualCamera VirtualCamera;
+
+        private float timer;
 
         [Inject]
         private GameContext gameContext;
 
         private void Update()
         {
-            VirtualCamera.Priority = (int)(gameContext.CurrentHealth * 100);
+            timer += Time.deltaTime;
+            VirtualCamera.Priority = (int)timer;
         }
     }
 }

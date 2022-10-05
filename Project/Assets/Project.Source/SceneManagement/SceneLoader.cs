@@ -88,16 +88,16 @@ namespace Project.Source.SceneManagement
             {
                 throw new ArgumentException($"Failed to load scene. Specified scene '{sceneName}' does not exist.", nameof(sceneName));
             }
+            
+            bindings += container =>
+            {
+                container.Bind<Scene>().WithId(ParentSceneId).To<Scene>().FromInstance(parent.gameObject.scene);
+            };
 
             // Allow only one scene to load at a time
             await UniTask.WaitWhile(() => isLoading);
             isLoading = true;
 
-            bindings += container =>
-            {
-                container.Bind<Scene>().WithId(ParentSceneId).To<Scene>().FromInstance(parent.gameObject.scene);
-            };
-            
             PrepareForSceneLoad(parent, bindings, bindingsLate);
 
             try
