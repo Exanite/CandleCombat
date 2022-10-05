@@ -4,7 +4,7 @@ using UniDi;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Project.Source
+namespace Project.Source.SceneManagement
 {
     /// <summary>
     ///     Used to load scenes
