@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Project.Source.MachineLearning
 {
-    public class PrioritizeFirstActiveVirtualCamera : MonoBehaviour
+    public class VirtualCameraPrioritizeFirstActive : MonoBehaviour
     {
         public static int CurrentGlobalPriority;
 
