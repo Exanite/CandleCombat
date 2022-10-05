@@ -1,3 +1,4 @@
+using System;
 using Project.Source.Gameplay.Characters;
 using UniDi;
 using UnityEngine;
@@ -19,6 +20,16 @@ namespace Project.Source.Gameplay.Waves
         public bool IsCoolingDown => spawnCooldown > 0;
         
         private WaveManager WaveManager => gameContext.WaveManager;
+
+        private void OnEnable()
+        {
+            gameContext.WaveManager.AllSpawners.Add(this);
+        }
+
+        private void OnDisable()
+        {
+            gameContext.WaveManager.AllSpawners.Remove(this);
+        }
 
         private void Update()
         {

@@ -20,27 +20,22 @@ namespace Project.Source.Gameplay.Waves
         public int ActiveCharacterCount;
         public int ActiveEnemyCount;
 
-        public List<EnemySpawner> Spawners = new List<EnemySpawner>();
-        public List<EnemySpawner> ActiveSpawners = new List<EnemySpawner>();
+        public HashSet<EnemySpawner> AllSpawners { get; set; } = new HashSet<EnemySpawner>();
+        public List<EnemySpawner> SpawnersInRange { get; set; } = new List<EnemySpawner>();
 
         private float spawnCooldown;
 
         [Inject]
         private GameContext gameContext;
 
-        private void Start()
-        {
-            Spawners = FindObjectsOfType<EnemySpawner>().ToList();
-        }
-
         private void Update()
         {
             spawnCooldown -= Time.deltaTime;
 
-            ActiveCharacterCount = gameContext.ActiveCharacters.Count;
+            ActiveCharacterCount = gameContext.AllCharacters.Count;
             ActiveEnemyCount = 0;
 
-            foreach (var character in gameContext.ActiveCharacters)
+            foreach (var character in gameContext.AllCharacters)
             {
                 if (!character.IsPlayer)
                 {
@@ -51,9 +46,9 @@ namespace Project.Source.Gameplay.Waves
             if (spawnCooldown < 0 && ActiveEnemyCount < MaxEnemies)
             {
                 UpdateActiveSpawners();
-                if (ActiveSpawners.Count > 0)
+                if (SpawnersInRange.Count > 0)
                 {
-                    ActiveSpawners[Random.Range(0, ActiveSpawners.Count)].TrySpawn();
+                    SpawnersInRange[Random.Range(0, SpawnersInRange.Count)].TrySpawn();
                 }
 
                 spawnCooldown = GlobalSpawnCooldownTime;
@@ -62,7 +57,7 @@ namespace Project.Source.Gameplay.Waves
 
         private void UpdateActiveSpawners()
         {
-            ActiveSpawners.Clear();
+            SpawnersInRange.Clear();
 
             var player = gameContext.CurrentPlayer;
             if (player == null)
@@ -71,13 +66,13 @@ namespace Project.Source.Gameplay.Waves
             }
 
             var playerPosition = player.transform.position;
-            foreach (var spawner in Spawners)
+            foreach (var spawner in AllSpawners)
             {
                 var spawnerDistance = (spawner.transform.position - playerPosition).magnitude;
 
                 if (spawnerDistance > MinSpawnRange && spawnerDistance < MaxSpawnRange && !spawner.IsCoolingDown)
                 {
-                    ActiveSpawners.Add(spawner);
+                    SpawnersInRange.Add(spawner);
                 }
             }
         }

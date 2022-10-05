@@ -74,12 +74,12 @@ namespace Project.Source.Gameplay.Characters
 
         private void OnEnable()
         {
-            gameContext.ActiveCharacters.Add(this);
+            gameContext.AllCharacters.Add(this);
         }
 
         private void OnDisable()
         {
-            gameContext.ActiveCharacters.Remove(this);
+            gameContext.AllCharacters.Remove(this);
         }
 
         private void Update()
