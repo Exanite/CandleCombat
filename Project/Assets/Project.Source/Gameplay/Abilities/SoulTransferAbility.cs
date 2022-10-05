@@ -1,4 +1,5 @@
 using Project.Source.Gameplay.Player;
+using UniDi;
 using UnityEngine;
 
 namespace Project.Source.Gameplay.Abilities
@@ -7,6 +8,7 @@ namespace Project.Source.Gameplay.Abilities
     {
         [SerializeField] private int soulGunIndex = 2;
 
+        [Inject]
         private GameContext gameContext;
         
         public override void Execute()

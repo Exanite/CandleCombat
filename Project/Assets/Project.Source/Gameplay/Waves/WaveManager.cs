@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Project.Source.Gameplay.Characters;
+using UniDi;
 using UnityEngine;
 
 namespace Project.Source.Gameplay.Waves
@@ -25,6 +26,7 @@ namespace Project.Source.Gameplay.Waves
 
         private float spawnCooldown;
 
+        [Inject]
         private GameContext gameContext;
 
         private void Start()
