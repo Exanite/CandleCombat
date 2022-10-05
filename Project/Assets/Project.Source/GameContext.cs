@@ -19,7 +19,6 @@ namespace Project.Source
     public class GameContext : MonoBehaviour, AbilityInputActions.IPlayerAbilitiesActions
     {
         [Header("Dependencies")]
-        public Camera MainCamera;
         public GunController GunController;
         public CinemachineVirtualCamera VirtualCamera;
         public Character CurrentPlayer;

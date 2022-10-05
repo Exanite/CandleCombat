@@ -9,7 +9,6 @@ namespace Project.Source.Gameplay.Player
     public class PlayerController : MonoBehaviour
     {
         [Header("Dependencies")]
-        public Camera MainCamera;
         [SerializeField] private InputActionReference shootReference;
         [SerializeField] private InputActionReference movementReference;
         [SerializeField] private InputActionReference pointerReference;
@@ -25,6 +24,9 @@ namespace Project.Source.Gameplay.Player
 
         [Inject]
         private GameContext gameContext;
+
+        [Inject]
+        private Camera mainCamera;
 
         private void Awake()
         {
@@ -71,7 +73,7 @@ namespace Project.Source.Gameplay.Player
         
         private Vector3 PointerToWorldPosition(Vector3 pointerPosition)
         {
-            var ray = MainCamera.ScreenPointToRay(pointerPosition);
+            var ray = mainCamera.ScreenPointToRay(pointerPosition);
             if (Plane.Raycast(ray, out var distance))
             {
                 return ray.GetPoint(distance);
