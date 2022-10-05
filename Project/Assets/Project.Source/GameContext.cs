@@ -44,7 +44,7 @@ namespace Project.Source
         public GunController PlayerGunController;
 
         public HashSet<Character> ActiveCharacters = new HashSet<Character>();
-        
+
         //TODO: Move event??
         public event Action<Character> Possessed;
 
@@ -88,7 +88,7 @@ namespace Project.Source
 
         public void Possess(Character character)
         {
-            if (CurrentPlayer != null)
+            if (CurrentPlayer != null && CurrentPlayer != character)
             {
                 CurrentPlayer.OverwriteHealth(-1);
                 CurrentHealth = MaxHealth;
