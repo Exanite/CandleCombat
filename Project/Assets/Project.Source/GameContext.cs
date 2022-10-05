@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Cinemachine;
 using Exanite.Core.Components;
 using Exanite.Drawing;
@@ -22,6 +21,7 @@ namespace Project.Source
     {
         [Header("Dependencies")]
         public Camera MainCamera;
+        public GunController GunController;
         public CinemachineVirtualCamera VirtualCamera;
         public Character CurrentPlayer;
         [FormerlySerializedAs("waveManager")]
@@ -43,7 +43,7 @@ namespace Project.Source
 
         private AbilityInputActions abilityInputActions;
         public GunController PlayerGunController;
-        
+
         //TODO: Move event??
         public event Action<Character> Possessed;
 
@@ -53,16 +53,14 @@ namespace Project.Source
 
             abilityInputActions = new AbilityInputActions();
             abilityInputActions.PlayerAbilities.SetCallbacks(this);
-
-            //TODO: Ensure component is on main camera with separate script w/ require component.
-            AudioSource = MainCamera.GetComponent<AudioSource>();
-            PlayerGunController = GetComponent<GunController>();
         }
 
         private void Start()
         {
-            if(CurrentPlayer != null)
+            if (CurrentPlayer != null)
+            {
                 Possess(CurrentPlayer);
+            }
         }
 
         protected override void OnEnable()
@@ -83,7 +81,7 @@ namespace Project.Source
             {
                 return;
             }
-            
+
             UpdateHealthDecay();
             CheckDeath();
             SyncHealth();
@@ -98,10 +96,10 @@ namespace Project.Source
                 CurrentPlayer.OverwriteHealth(-1);
                 CurrentHealth = Instance.MaxHealth;
             }
-            
+
             CurrentPlayer = character;
-            CurrentPlayer.OnPossessed(); 
-            
+            CurrentPlayer.OnPossessed();
+
             Possessed?.Invoke(character);
         }
 
@@ -115,16 +113,17 @@ namespace Project.Source
             var timer = 0f;
             var channels = VirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
             channels.m_AmplitudeGain = intensity;
-            
+
             while (timer < duration)
             {
                 timer += Time.deltaTime;
+
                 yield return null;
             }
 
             channels.m_AmplitudeGain = 0f;
         }
-        
+
         private void CheckDeath()
         {
             if (CurrentHealth <= 0 || CurrentPlayer == null)
@@ -152,8 +151,6 @@ namespace Project.Source
         private void OnDead()
         {
             IsDead = true;
-            
-            // Debug.Log("Character died");
 
             StartCoroutine(Restart(5));
         }
@@ -179,7 +176,7 @@ namespace Project.Source
             {
                 return;
             }
-            
+
             if (index < 0 || index >= Abilities.Count)
             {
                 return;
@@ -195,10 +192,10 @@ namespace Project.Source
             {
                 return;
             }
-            
+
             ability.CurrentCooldown = ability.CooldownDuration;
             CurrentHealth -= ability.HealthCost;
-            
+
             ability.Execute();
         }
 

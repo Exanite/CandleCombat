@@ -8,6 +8,7 @@ namespace Project.Source.Gameplay.Player
     public class PlayerController : MonoBehaviour
     {
         [Header("Dependencies")]
+        public Camera MainCamera;
         [SerializeField] private InputActionReference shootReference;
         [SerializeField] private InputActionReference movementReference;
         [SerializeField] private InputActionReference pointerReference;
@@ -18,14 +19,14 @@ namespace Project.Source.Gameplay.Player
         private PlayerMovement playerMovement;
         private PlayerLook playerLook;
         private GunController gunController;
+        
+        private Plane Plane => new Plane(Vector3.up, Vector3.zero);
 
         private void Awake()
         {
             playerMovement = GetComponent<PlayerMovement>();
             playerLook = GetComponent<PlayerLook>();
             gunController = GetComponent<GunController>();
-        
-            playerLook.SetCamera(GameContext.Instance.MainCamera);
         }
 
         private void Update()
@@ -39,8 +40,9 @@ namespace Project.Source.Gameplay.Player
             gunController.SetCharacter(character);
 
             playerMovement.SetMoveDirection(movementReference.action.ReadValue<Vector2>());
+            
             Vector3 pointerPosition = pointerReference.action.ReadValue<Vector2>();
-            playerLook.SetPointerPosition(pointerPosition);
+            playerLook.SetTargetPosition(PointerToWorldPosition(pointerPosition));
 
             if (shootReference.action.IsPressed())
             {
@@ -61,6 +63,16 @@ namespace Project.Source.Gameplay.Player
             {
                 Application.Quit();
             }
+        }
+        
+        private Vector3 PointerToWorldPosition(Vector3 pointerPosition)
+        {
+            var ray = MainCamera.ScreenPointToRay(pointerPosition);
+            if (Plane.Raycast(ray, out var distance))
+            {
+                return ray.GetPoint(distance);
+            }
+            return transform.position;
         }
     }
 }
