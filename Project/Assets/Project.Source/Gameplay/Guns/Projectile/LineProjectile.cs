@@ -30,6 +30,9 @@ namespace Project.Source.Gameplay.Guns.Projectile
         [Inject]
         private IInstantiator instantiator;
 
+        [Inject]
+        private PhysicsScene physicsScene;
+
         public override void Fire(Character characterFrom, Vector3 direction, Vector3 visualPosition)
         {
             owner = characterFrom;
@@ -37,9 +40,7 @@ namespace Project.Source.Gameplay.Guns.Projectile
             var startPosition = transform.position;
             var endPosition = Vector3.zero;
 
-            var ray = new Ray(startPosition, direction);
-
-            if (Physics.SphereCast(ray, radius, out var hit, maxDistance))
+            if (physicsScene.SphereCast(startPosition, radius, direction, out var hit, maxDistance))
             {
                 endPosition = direction * hit.distance;
                 // Debug.Log("Hit: " + hit.collider.gameObject);

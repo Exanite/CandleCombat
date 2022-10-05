@@ -25,6 +25,9 @@ namespace Project.Source.Gameplay.Guns.Projectile
         [Inject]
         private IInstantiator instantiator;
 
+        [Inject]
+        private PhysicsScene physicsScene;
+
         public override void Fire(Character characterFrom, Vector3 direction, Vector3 visualPosition)
         {
             owner = characterFrom;
@@ -77,7 +80,7 @@ namespace Project.Source.Gameplay.Guns.Projectile
             }
 
             var distance = Time.deltaTime * rb.velocity.magnitude;
-            if (Physics.SphereCast(transform.position, colliderRadius, rb.velocity.normalized, out var hit, distance))
+            if (physicsScene.SphereCast(transform.position, colliderRadius, rb.velocity.normalized, out var hit, distance))
             {
                 OnCollide(hit);
             }

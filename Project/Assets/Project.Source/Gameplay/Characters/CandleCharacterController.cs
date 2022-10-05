@@ -69,6 +69,9 @@ namespace Project.Source.Gameplay.Characters
         [Inject]
         private GameContext gameContext;
         
+        [Inject]
+        private PhysicsScene physicsScene;
+        
         private void Awake()
         {
             audioSource = GetComponent <AudioSource>();
@@ -116,7 +119,7 @@ namespace Project.Source.Gameplay.Characters
                     var offset = targetPosition - currentPosition;
                     var distanceToTarget = offset.magnitude;
                     
-                    var canSeePlayer = Physics.Linecast(transform.position + Vector3.up, target.transform.position + Vector3.up, out var hit)
+                    var canSeePlayer = physicsScene.Raycast(transform.position + Vector3.up, offset.normalized, out var hit, offset.magnitude)
                         && hit.collider.TryGetComponent(out Character character)
                         && character.IsPlayer;
                     
@@ -239,7 +242,7 @@ namespace Project.Source.Gameplay.Characters
                 timer += Time.deltaTime * JumpSpeed;
 
                 var distance = Time.deltaTime * jumpDistance * JumpSpeed;
-                if (Physics.Raycast(transform.position + Vector3.up, jumpDirection, out var hit, distance + CharacterRadius))
+                if (physicsScene.Raycast(transform.position + Vector3.up, jumpDirection, out var hit, distance + CharacterRadius))
                 {
                     distance = Mathf.Clamp(hit.distance - CharacterRadius, 0, distance);
                 }
@@ -299,7 +302,7 @@ namespace Project.Source.Gameplay.Characters
                     SetTargetPosition(pathBuffer[1]);
                     for (var i = 2; i < resultCount; i++)
                     {
-                        if (!Physics.Raycast(transform.position, pathBuffer[i]))
+                        if (!physicsScene.Raycast(transform.position, pathBuffer[i]))
                         {
                             SetTargetPosition(pathBuffer[i]);
                         }
