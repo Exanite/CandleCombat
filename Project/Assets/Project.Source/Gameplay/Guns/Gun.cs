@@ -47,7 +47,7 @@ namespace Project.Source.Gameplay.Guns
         private bool isReloading = false;
 
         [Inject]
-        private GameContext gameContext;
+        private AudioSource mainAudioSource;
 
         [Inject]
         private IInstantiator instantiator;
@@ -106,7 +106,7 @@ namespace Project.Source.Gameplay.Guns
 
                 if (fireAudioClip != null)
                 {
-                    gameContext.AudioSource.PlayOneShot(fireAudioClip, fireAudioScale);
+                    mainAudioSource.PlayOneShot(fireAudioClip, fireAudioScale);
                 }
             }
 

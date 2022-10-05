@@ -26,7 +26,6 @@ namespace Project.Source
         public WaveManager WaveManager;
         public VisualEffect PlayerWickPrefab;
         public DrawingService DrawingService;
-        public AudioSource AudioSource;
 
         [Header("Health")]
         public float CurrentHealth = 100;
