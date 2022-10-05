@@ -955,12 +955,31 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 194676992}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 194676994}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &194676994 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 705308142393325304, guid: 331cb4b253ed5fc43835e99264b3fd0b,
+    type: 3}
+  m_PrefabInstance: {fileID: 194676992}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &194676995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 194676994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 417005dc5ba84b7ba5e34e8f262ab457, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VirtualCamera: {fileID: 194676993}
 --- !u!43 &214828355
 Mesh:
   m_ObjectHideFlags: 0
@@ -8023,8 +8042,6 @@ MonoBehaviour:
   GlobalSpawnCooldownTime: 2
   ActiveCharacterCount: 0
   ActiveEnemyCount: 0
-  Spawners: []
-  ActiveSpawners: []
 --- !u!114 &71436300808230498
 MonoBehaviour:
   m_ObjectHideFlags: 0
