@@ -6,7 +6,7 @@ namespace Project.Source.Gameplay.Waves
     {
         public float SpawnCooldownTime = 5f;
 
-        private WaveManager WaveManager => GameContext.Instance.waveManager;
+        private WaveManager WaveManager => GameContext.Instance.WaveManager;
         private float spawnCooldown;
 
         public bool IsCoolingDown => spawnCooldown > 0;

@@ -3,15 +3,12 @@ using UnityEngine;
 
 namespace Project.Source.Gameplay.Abilities
 {
-    [CreateAssetMenu(menuName = "Project/Abilities/SoulTransfer")]
     public class SoulTransferAbility : Ability
     {
         [SerializeField] private int soulGunIndex = 2;
         
         public override void Execute()
         {
-            // Debug.Log("SoulTransferAbility");
-
             var player = GameContext.Instance.CurrentPlayer;
             if (player == null)
             {

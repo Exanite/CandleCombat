@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Project.Source.Gameplay.Abilities
 {
-    [CreateAssetMenu(menuName = "Project/Abilities/BurningShot")]
     public class BurningShotAbility : Ability
     {
         [Header("Settings")]

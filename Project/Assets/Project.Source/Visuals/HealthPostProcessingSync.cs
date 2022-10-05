@@ -3,7 +3,7 @@ using UnityEngine.Rendering;
 
 namespace Project.Source.Visuals
 {
-    public class HealthGrayoutDisplay : MonoBehaviour
+    public class HealthPostProcessingSync : MonoBehaviour
     {
         public Volume Volume;
         public AnimationCurve GrayoutCurve;

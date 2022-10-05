@@ -3,7 +3,7 @@ using UnityEngine.Serialization;
 
 namespace Project.Source.Gameplay.Abilities
 {
-    public abstract class Ability : ScriptableObject
+    public abstract class Ability : MonoBehaviour
     {
         [Header("UI")]
         public Sprite Icon;

@@ -24,8 +24,8 @@ namespace Project.Source
         public Camera MainCamera;
         public CinemachineVirtualCamera VirtualCamera;
         public Character CurrentPlayer;
-        [FormerlySerializedAs("EnemySpawnManager")]
-        public WaveManager waveManager;
+        [FormerlySerializedAs("waveManager")]
+        public WaveManager WaveManager;
         public VisualEffect PlayerWickPrefab;
         public DrawingService DrawingService;
         public AudioSource AudioSource;
@@ -53,8 +53,6 @@ namespace Project.Source
 
             abilityInputActions = new AbilityInputActions();
             abilityInputActions.PlayerAbilities.SetCallbacks(this);
-
-            Abilities = Abilities.Select(asset => Instantiate(asset)).ToList();
 
             //TODO: Ensure component is on main camera with separate script w/ require component.
             AudioSource = MainCamera.GetComponent<AudioSource>();
