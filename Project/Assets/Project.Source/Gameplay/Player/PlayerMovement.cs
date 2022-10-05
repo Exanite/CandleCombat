@@ -8,13 +8,12 @@ namespace Project.Source.Gameplay.Player
         [Header("Settings")]
         [SerializeField] private float movementSpeed;
         [SerializeField] private float movementSmoothTime = 0.05f;
-        // [SerializeField] private float moveTiltDegrees = 30f;
         [SerializeField] private float dodgeSpeed = 50f;
         [SerializeField] private float dodgeTime = 0.2f;
         [SerializeField] private float timeBetweenDodge = 2f;
 
         public int DodgeAbilityIndex = 2;
-    
+
         private Character character;
         private Vector2 moveDirection;
 
@@ -39,12 +38,18 @@ namespace Project.Source.Gameplay.Player
             if (isDodging)
             {
                 if (elapsedDodgeTime > dodgeTime)
+                {
                     StopDodging();
+                }
                 else
+                {
                     elapsedDodgeTime += Time.fixedDeltaTime;
+                }
             }
             else
+            {
                 elapsedTimeSinceDodge += Time.fixedDeltaTime;
+            }
 
             if (!character || character.IsDead || !character.Rigidbody)
             {
@@ -55,7 +60,7 @@ namespace Project.Source.Gameplay.Player
 
             var targetVelocity = new Vector3(moveDirection.x, 0, moveDirection.y);
             targetVelocity *= movementSpeed;
-        
+
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref smoothedVelocityVelocity, movementSmoothTime);
         }
 
@@ -64,14 +69,17 @@ namespace Project.Source.Gameplay.Player
             this.character = character;
         }
 
-        public void SetMoveDirection(Vector2 moveDir)
+        public void SetMoveDirection(Vector2 direction)
         {
-            moveDirection = moveDir;
+            moveDirection = direction;
         }
 
         public void Dodge()
         {
-            if (elapsedTimeSinceDodge < timeBetweenDodge) return;
+            if (elapsedTimeSinceDodge < timeBetweenDodge)
+            {
+                return;
+            }
 
             startingMoveSpeed = movementSpeed;
             movementSpeed = dodgeSpeed;
