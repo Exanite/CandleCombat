@@ -976,7 +976,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 194676994}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1c41e01fba446f395324331587be1e4, type: 3}
+  m_Script: {fileID: 11500000, guid: 271051601e4e4d6097e5f7fd042dff62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   VirtualCamera: {fileID: 194676993}
