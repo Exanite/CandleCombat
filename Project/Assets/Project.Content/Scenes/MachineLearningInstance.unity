@@ -8049,18 +8049,22 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2172941941644653489}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af3a92115f2835b4fba70673c31dd980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootInput: {fileID: -8201882024213249610, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
-    type: 3}
   movementInput: {fileID: -8316123569946995269, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
   pointerInput: {fileID: 8361749311868396992, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
+  burningShotInput: {fileID: 5722540760831924762, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+    type: 3}
+  soulTransferInput: {fileID: 3571860329548786983, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+    type: 3}
   dodgeInput: {fileID: 5933847315574979479, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+    type: 3}
+  shootInput: {fileID: -8201882024213249610, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
   reloadInput: {fileID: 7209500551064937317, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
@@ -8171,6 +8175,7 @@ GameObject:
   - component: {fileID: 7421392469704493644}
   - component: {fileID: 47807113162422965}
   - component: {fileID: 7421392469704493645}
+  - component: {fileID: 7421392469704493646}
   m_Layer: 0
   m_Name: GameContext
   m_TagString: Untagged
@@ -8827,6 +8832,18 @@ MonoBehaviour:
   _useSceneContext: 0
   _context: {fileID: 0}
   _bindType: 0
+--- !u!114 &7421392469704493646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2172941941644653489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49bea52fbb7243c8bff1961cf9db46ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8917243932660566504
 PrefabInstance:
   m_ObjectHideFlags: 0

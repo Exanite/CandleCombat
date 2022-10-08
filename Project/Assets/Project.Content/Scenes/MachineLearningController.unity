@@ -381,7 +381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InstanceSceneName: MachineLearningInstance
-  TargetInstanceCount: 10
+  TargetInstanceCount: 1
 --- !u!1 &1388771380
 GameObject:
   m_ObjectHideFlags: 0

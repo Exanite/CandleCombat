@@ -16,7 +16,7 @@ namespace Project.Source.MachineLearning
         private void Update()
         {
             timer += Time.deltaTime;
-            VirtualCamera.Priority = (int)timer;
+            VirtualCamera.Priority = (int)(timer * 100);
         }
     }
 }
