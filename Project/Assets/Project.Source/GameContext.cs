@@ -149,11 +149,11 @@ namespace Project.Source
             if (parentScene.IsValid())
             {
                 sceneLoader.UnloadScene(selfScene).Forget();
-                sceneLoader.LoadAdditiveScene(gameObject.scene.name, parentScene).Forget();
+                sceneLoader.LoadAdditiveScene(gameObject.scene.name, parentScene, LocalPhysicsMode.Physics3D).Forget();
             }
             else
             {
-                sceneLoader.LoadSingleScene(gameObject.scene.name).Forget();
+                sceneLoader.LoadSingleScene(gameObject.scene.name, LocalPhysicsMode.None).Forget();
             }
         }
 

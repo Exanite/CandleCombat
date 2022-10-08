@@ -21,7 +21,7 @@ namespace Project.Source.MachineLearning
         {
             for (var i = 0; i < TargetInstanceCount; i++)
             {
-                sceneLoader.LoadAdditiveScene(InstanceSceneName, scene);
+                sceneLoader.LoadAdditiveScene(InstanceSceneName, scene, LocalPhysicsMode.Physics3D);
             }
         }
     }

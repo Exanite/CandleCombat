@@ -16,7 +16,7 @@ namespace Project.Source.SceneManagement
     public class SceneLoader : MonoBehaviour
     {
         public const string ParentSceneId = "ParentScene";
-        
+
         private bool isLoading;
 
         private SceneContextRegistry sceneContextRegistry;
@@ -26,7 +26,7 @@ namespace Project.Source.SceneManagement
         {
             this.sceneContextRegistry = sceneContextRegistry;
         }
-        
+
         /// <summary>
         ///     Loads the <see cref="Scene"/> using the provided
         ///     <see cref="Scene"/> as its parent
@@ -50,12 +50,13 @@ namespace Project.Source.SceneManagement
         public UniTask<Scene> LoadAdditiveScene(
             string sceneName,
             Scene parent,
+            LocalPhysicsMode localPhysicsMode,
             Action<DiContainer> bindings = null,
             Action<DiContainer> bindingsLate = null)
         {
             var context = sceneContextRegistry.TryGetSceneContextForScene(parent);
 
-            return LoadAdditiveScene(sceneName, context, bindings, bindingsLate);
+            return LoadAdditiveScene(sceneName, context, localPhysicsMode, bindings, bindingsLate);
         }
 
         /// <summary>
@@ -81,6 +82,7 @@ namespace Project.Source.SceneManagement
         public async UniTask<Scene> LoadAdditiveScene(
             string sceneName,
             SceneContext parent,
+            LocalPhysicsMode localPhysicsMode,
             Action<DiContainer> bindings = null,
             Action<DiContainer> bindingsLate = null)
         {
@@ -88,7 +90,7 @@ namespace Project.Source.SceneManagement
             {
                 throw new ArgumentException($"Failed to load scene. Specified scene '{sceneName}' does not exist.", nameof(sceneName));
             }
-            
+
             bindings += container =>
             {
                 container.Bind<Scene>().WithId(ParentSceneId).To<Scene>().FromInstance(parent.gameObject.scene);
@@ -102,7 +104,7 @@ namespace Project.Source.SceneManagement
 
             try
             {
-                var loadSceneParameters = new LoadSceneParameters(LoadSceneMode.Additive, LocalPhysicsMode.Physics3D);
+                var loadSceneParameters = new LoadSceneParameters(LoadSceneMode.Additive, localPhysicsMode);
                 await SceneManager.LoadSceneAsync(sceneName, loadSceneParameters);
 
                 // LoadSceneAsync does not return the newly loaded scene, this is the only way to get the new scene
@@ -117,7 +119,7 @@ namespace Project.Source.SceneManagement
             {
                 // Prevent dead lock
                 isLoading = false;
-                
+
                 Cleanup();
             }
         }
@@ -138,7 +140,11 @@ namespace Project.Source.SceneManagement
         /// <returns>
         ///     The newly loaded <see cref="Scene"/>
         /// </returns>
-        public async UniTask<Scene> LoadSingleScene(string sceneName, Action<DiContainer> bindings = null, Action<DiContainer> bindingsLate = null)
+        public async UniTask<Scene> LoadSingleScene(
+            string sceneName,
+            LocalPhysicsMode localPhysicsMode,
+            Action<DiContainer> bindings = null,
+            Action<DiContainer> bindingsLate = null)
         {
             if (!Application.CanStreamedLevelBeLoaded(sceneName))
             {
@@ -153,7 +159,7 @@ namespace Project.Source.SceneManagement
 
             try
             {
-                var loadSceneParameters = new LoadSceneParameters(LoadSceneMode.Single, LocalPhysicsMode.Physics3D);
+                var loadSceneParameters = new LoadSceneParameters(LoadSceneMode.Single, localPhysicsMode);
                 await SceneManager.LoadSceneAsync(sceneName, loadSceneParameters);
 
                 // LoadSceneAsync does not return the newly loaded scene, this is the only way to get the new scene
@@ -168,7 +174,7 @@ namespace Project.Source.SceneManagement
             {
                 // Prevent dead lock
                 isLoading = false;
-                
+
                 Cleanup();
             }
         }
