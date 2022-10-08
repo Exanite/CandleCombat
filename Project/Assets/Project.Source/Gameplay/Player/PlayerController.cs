@@ -1,34 +1,22 @@
-using Project.Source.Gameplay.Characters;
+using Project.Source.Input;
 using UniDi;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Project.Source.Gameplay.Player
 {
-    [RequireComponent(typeof(PlayerMovement), typeof(PlayerLook))]
-    public class PlayerController : MonoBehaviour
+    public abstract class PlayerController : MonoBehaviour
     {
-        [Header("Dependencies")]
-        [SerializeField] private InputActionReference shootReference;
-        [SerializeField] private InputActionReference movementReference;
-        [SerializeField] private InputActionReference pointerReference;
-        [SerializeField] private InputActionReference dodgeReference;
-        [SerializeField] private InputActionReference reloadReference;
-        [SerializeField] private InputActionReference quitReference;
-
         private PlayerMovement playerMovement;
         private PlayerLook playerLook;
         private GunController gunController;
-        
-        private Plane Plane => new Plane(Vector3.up, Vector3.up);
 
         [Inject]
         private GameContext gameContext;
 
-        [Inject]
-        private Camera mainCamera;
+        private PlayerInputData currentInput = new PlayerInputData();
+        private PlayerInputData previousInput = new PlayerInputData();
 
-        private void Awake()
+        protected virtual void Awake()
         {
             playerMovement = GetComponent<PlayerMovement>();
             playerLook = GetComponent<PlayerLook>();
@@ -37,48 +25,41 @@ namespace Project.Source.Gameplay.Player
 
         private void Update()
         {
-            Character character = gameContext.CurrentPlayer;
+            var character = gameContext.CurrentPlayer;
+            if (character == null)
+            {
+                return;
+            }
 
-            if (character == null) return;
-        
+            // Gather
+            (currentInput, previousInput) = (previousInput, currentInput);
+            GatherInput(currentInput);
+            currentInput.Clean();
+
+            // Apply
             playerMovement.SetCharacter(character);
             playerLook.SetCharacter(character);
             gunController.SetCharacter(character);
 
-            playerMovement.SetMoveDirection(movementReference.action.ReadValue<Vector2>());
-            
-            Vector3 pointerPosition = pointerReference.action.ReadValue<Vector2>();
-            playerLook.SetTargetPosition(PointerToWorldPosition(pointerPosition));
+            playerMovement.SetMovementDirection(currentInput.MovementDirection);
+            playerLook.SetTargetPosition(currentInput.TargetPosition);
 
-            if (shootReference.action.IsPressed())
+            if (currentInput.IsShootPressed)
             {
                 gunController.Fire();
             }
 
-            if (dodgeReference.action.WasPressedThisFrame())
+            if (currentInput.IsDodgePressed && !previousInput.IsDodgePressed)
             {
                 playerMovement.Dodge();
             }
 
-            if (reloadReference.action.WasPressedThisFrame())
+            if (currentInput.IsReloadPressed && !previousInput.IsReloadPressed)
             {
                 gunController.ReloadEquippedGun();
             }
+        }
 
-            if (quitReference.action.WasPressedThisFrame())
-            {
-                Application.Quit();
-            }
-        }
-        
-        private Vector3 PointerToWorldPosition(Vector3 pointerPosition)
-        {
-            var ray = mainCamera.ScreenPointToRay(pointerPosition);
-            if (Plane.Raycast(ray, out var distance))
-            {
-                return ray.GetPoint(distance);
-            }
-            return transform.position;
-        }
+        protected abstract void GatherInput(PlayerInputData input);
     }
 }

@@ -12,7 +12,6 @@ namespace Project.Source.Gameplay.Abilities
         public void RemoveFire(int fireDPSRemoved);
     }
 
-    [RequireComponent(typeof(MeshRenderer), typeof(AudioSource))]
     public class BurnableObject : MonoBehaviour, IBurn
     {
         [Header("Dependencies")]

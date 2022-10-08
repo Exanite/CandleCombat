@@ -7,7 +7,6 @@ using Random = UnityEngine.Random;
 
 namespace Project.Source.Gameplay.Characters
 {
-    [RequireComponent(typeof(AudioSource))]
     public class CandleCharacterController : MonoBehaviour
     {
         [Header("Dependencies")]

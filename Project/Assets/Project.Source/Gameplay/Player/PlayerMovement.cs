@@ -73,7 +73,7 @@ namespace Project.Source.Gameplay.Player
             this.character = character;
         }
 
-        public void SetMoveDirection(Vector2 direction)
+        public void SetMovementDirection(Vector2 direction)
         {
             moveDirection = direction;
         }
