@@ -55,8 +55,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6beb6db959b4411eb7d33ded856d1f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
-  MainCamera: {fileID: 0}
   GunController: {fileID: 3495844000217364866}
   VirtualCamera: {fileID: 0}
   CurrentPlayer: {fileID: 0}
@@ -64,7 +62,6 @@ MonoBehaviour:
   PlayerWickPrefab: {fileID: 8536334166681188412, guid: 23cf517df9df38846ba2a81f7885ebbc,
     type: 3}
   DrawingService: {fileID: 6465885308093522785}
-  AudioSource: {fileID: 0}
   CurrentHealth: 100
   MaxHealth: 100
   HealthRegenPerSecond: -2
@@ -100,17 +97,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af3a92115f2835b4fba70673c31dd980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootReference: {fileID: -8201882024213249610, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+  shootInput: {fileID: -8201882024213249610, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
-  movementReference: {fileID: -8316123569946995269, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+  movementInput: {fileID: -8316123569946995269, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
-  pointerReference: {fileID: 8361749311868396992, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+  pointerInput: {fileID: 8361749311868396992, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
-  dodgeReference: {fileID: 5933847315574979479, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+  dodgeInput: {fileID: 5933847315574979479, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
-  reloadReference: {fileID: 7209500551064937317, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+  reloadInput: {fileID: 7209500551064937317, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
-  quitReference: {fileID: 6777660083500653768, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+  quitInput: {fileID: 6777660083500653768, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
 --- !u!114 &4686590657947957126
 MonoBehaviour:
@@ -124,7 +121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fef5a7db694f9748979abfabd7722c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainCamera: {fileID: 0}
   targetGroupPrefab: {fileID: 8781010152380938305, guid: 8fb722de1591bf24f8ac49f778613d3b,
     type: 3}
   lookAtTargetPrefab: {fileID: 5415174367118024089, guid: 32aee1dce9d414d42b9c14a375b295f2,
@@ -223,8 +219,6 @@ MonoBehaviour:
   GlobalSpawnCooldownTime: 2
   ActiveCharacterCount: 0
   ActiveEnemyCount: 0
-  Spawners: []
-  ActiveSpawners: []
 --- !u!114 &6417752709699026851
 MonoBehaviour:
   m_ObjectHideFlags: 0

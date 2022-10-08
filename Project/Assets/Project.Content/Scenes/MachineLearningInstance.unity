@@ -8054,17 +8054,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af3a92115f2835b4fba70673c31dd980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootReference: {fileID: -8201882024213249610, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+  shootInput: {fileID: -8201882024213249610, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
-  movementReference: {fileID: -8316123569946995269, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+  movementInput: {fileID: -8316123569946995269, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
-  pointerReference: {fileID: 8361749311868396992, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+  pointerInput: {fileID: 8361749311868396992, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
-  dodgeReference: {fileID: 5933847315574979479, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+  dodgeInput: {fileID: 5933847315574979479, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
-  reloadReference: {fileID: 7209500551064937317, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+  reloadInput: {fileID: 7209500551064937317, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
-  quitReference: {fileID: 6777660083500653768, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+  quitInput: {fileID: 6777660083500653768, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
 --- !u!114 &412501273410878446
 MonoBehaviour:
