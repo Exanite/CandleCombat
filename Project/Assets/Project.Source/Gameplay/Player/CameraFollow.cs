@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Project.Source.Gameplay.Player
 {
-    public class CameraFollowController : MonoBehaviour
+    public class CameraFollow : MonoBehaviour
     {
         [Header("Dependencies")]
         [SerializeField]
