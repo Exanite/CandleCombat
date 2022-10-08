@@ -97,13 +97,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af3a92115f2835b4fba70673c31dd980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootInput: {fileID: -8201882024213249610, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
-    type: 3}
   movementInput: {fileID: -8316123569946995269, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
   pointerInput: {fileID: 8361749311868396992, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
+  burningShotInput: {fileID: 5722540760831924762, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+    type: 3}
+  soulTransferInput: {fileID: 3571860329548786983, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+    type: 3}
   dodgeInput: {fileID: 5933847315574979479, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
+    type: 3}
+  shootInput: {fileID: -8201882024213249610, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}
   reloadInput: {fileID: 7209500551064937317, guid: 9e67d22d384e96b43a9e5596d7f8bffc,
     type: 3}

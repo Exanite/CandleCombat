@@ -58,6 +58,16 @@ namespace Project.Source.Gameplay.Player
             {
                 gunController.ReloadEquippedGun();
             }
+
+            if (currentInput.IsBurningShotPressed && !previousInput.IsBurningShotPressed)
+            {
+                gameContext.ExecuteAbility(0);
+            }
+
+            if (currentInput.IsSoulTransferPressed && !previousInput.IsSoulTransferPressed)
+            {
+                gameContext.ExecuteAbility(1);
+            }
         }
 
         protected abstract void GatherInput(PlayerInputData input);

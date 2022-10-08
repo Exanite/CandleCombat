@@ -9,7 +9,7 @@ namespace Project.Source.Gameplay.Abilities
     public interface IBurn
     {
         public void AddFire(int fireDps);
-        public void RemoveFire(int fireDPSRemoved);
+        public void RemoveFire(int fireDpsRemoved);
     }
 
     public class BurnableObject : MonoBehaviour, IBurn
@@ -47,7 +47,7 @@ namespace Project.Source.Gameplay.Abilities
         private MeshRenderer meshRenderer;
 
         private float CurrentHealth = 0;
-        private int currentFireDPS = 0;
+        private int currentFireDps = 0;
         private bool isOnFire = false;
         private bool isFractured = false;
 
@@ -110,7 +110,7 @@ namespace Project.Source.Gameplay.Abilities
 
             timeElapsedSincePossess += Time.deltaTime;
 
-            CurrentHealth -= currentFireDPS * Time.deltaTime;
+            CurrentHealth -= currentFireDps * Time.deltaTime;
 
             if (spawnedLight != null)
             {
@@ -135,12 +135,12 @@ namespace Project.Source.Gameplay.Abilities
 
         public void AddFire(int fireDps)
         {
-            if (isOnFire || fireDps < currentFireDPS)
+            if (isOnFire || fireDps < currentFireDps)
             {
                 return;
             }
 
-            currentFireDPS = fireDps;
+            currentFireDps = fireDps;
             isOnFire = true;
 
             spawnedLight.gameObject.SetActive(true);
@@ -148,15 +148,15 @@ namespace Project.Source.Gameplay.Abilities
             audioSource.enabled = true;
         }
 
-        public void RemoveFire(int fireDPSRemoved)
+        public void RemoveFire(int fireDpsRemoved)
         {
             isOnFire = false;
 
-            currentFireDPS -= fireDPSRemoved;
+            currentFireDps -= fireDpsRemoved;
 
-            if (currentFireDPS <= 0)
+            if (currentFireDps <= 0)
             {
-                currentFireDPS = 0;
+                currentFireDps = 0;
                 spawnedLight.gameObject.SetActive(false);
                 fireVisualEffectPrefab.gameObject.SetActive(false);
                 audioSource.enabled = false;
@@ -168,8 +168,6 @@ namespace Project.Source.Gameplay.Abilities
             var healthPercent = 1 - CurrentHealth / MaxHealth;
             var intensity = healthToIntensityCurve.Evaluate(healthPercent) * MaxIntensity;
             intensity = Mathf.Clamp(intensity, MinIntensity, MaxIntensity);
-
-            // Debug.Log("Intensity: " + intensity);
 
             spawnedLight.intensity = intensity;
 
@@ -247,8 +245,9 @@ namespace Project.Source.Gameplay.Abilities
             {
                 return;
             }
-            
-            fireVisualEffect = instantiator.InstantiatePrefabForComponent<VisualEffect>(fireVisualEffectPrefab, transform.position, Quaternion.identity, null);
+
+            fireVisualEffect =
+                instantiator.InstantiatePrefabForComponent<VisualEffect>(fireVisualEffectPrefab, transform.position, Quaternion.identity, null);
             fireVisualEffect.gameObject.SetActive(false);
             fireVisualEffect.SetFloat(flameSizeAttribute, MaxFireSize);
             originalFireColor = fireVisualEffect.GetVector4(flameColorAttribute);

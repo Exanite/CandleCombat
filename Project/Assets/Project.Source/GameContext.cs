@@ -8,18 +8,16 @@ using Project.Source.Gameplay.Abilities;
 using Project.Source.Gameplay.Characters;
 using Project.Source.Gameplay.Player;
 using Project.Source.Gameplay.Waves;
-using Project.Source.Input;
 using Project.Source.SceneManagement;
 using UniDi;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
 
 namespace Project.Source
 {
-    public class GameContext : MonoBehaviour, AbilityInputActions.IPlayerAbilitiesActions
+    public class GameContext : MonoBehaviour
     {
         [Header("Dependencies")]
         public GunController GunController;
@@ -41,12 +39,10 @@ namespace Project.Source
         [Header("Abilities")]
         public List<Ability> Abilities = new List<Ability>();
 
-        private AbilityInputActions abilityInputActions;
         public GunController PlayerGunController;
 
         public HashSet<Character> AllCharacters = new HashSet<Character>();
 
-        //TODO: Move event??
         public event Action<Character> Possessed;
 
         [InjectOptional(Id = SceneLoader.ParentSceneId)]
@@ -54,15 +50,9 @@ namespace Project.Source
 
         [Inject]
         private Scene selfScene;
-        
+
         [Inject]
         private SceneLoader sceneLoader;
-
-        private void Awake()
-        {
-            abilityInputActions = new AbilityInputActions();
-            abilityInputActions.PlayerAbilities.SetCallbacks(this);
-        }
 
         private void Start()
         {
@@ -70,16 +60,6 @@ namespace Project.Source
             {
                 Possess(CurrentPlayer);
             }
-        }
-
-        private void OnEnable()
-        {
-            abilityInputActions.Enable();
-        }
-
-        private void OnDisable()
-        {
-            abilityInputActions.Disable();
         }
 
         private void Update()
@@ -185,7 +165,7 @@ namespace Project.Source
             }
         }
 
-        private void ExecuteAbility(int index)
+        public void ExecuteAbility(int index)
         {
             if (IsDead)
             {
@@ -212,22 +192,6 @@ namespace Project.Source
             CurrentHealth -= ability.HealthCost;
 
             ability.Execute();
-        }
-
-        void AbilityInputActions.IPlayerAbilitiesActions.OnExecuteAbility0(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                ExecuteAbility(0);
-            }
-        }
-
-        void AbilityInputActions.IPlayerAbilitiesActions.OnExecuteAbility1(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                ExecuteAbility(1);
-            }
         }
     }
 }

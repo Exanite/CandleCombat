@@ -58,6 +58,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "BurningShot",
+                    "type": "Button",
+                    "id": "11af03b6-624c-4fd5-884a-41721bb5233d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SoulTransfer",
+                    "type": "Button",
+                    "id": "e75adcfa-6e73-4711-8c5d-a0987fce70eb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -234,6 +252,28 @@
                     "processors": "",
                     "groups": "Keyboard and Mouse",
                     "action": "Quit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8e7c1c2f-ccbc-487d-b02a-b9964cb47bdb",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BurningShot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "665ea56d-b282-4f43-92c6-c47667227d19",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SoulTransfer",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
