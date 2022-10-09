@@ -137,6 +137,8 @@ namespace Project.Source.MachineLearning
                 for (var i = 0; i < inputCount; i++)
                 {
                     var input = new MlGameInput();
+                    inputs.Add(input);
+                    
                     input.MovementDirection.x = reader.ReadSingle();
                     input.MovementDirection.y = reader.ReadSingle();
                     input.TargetDirection.x = reader.ReadSingle();
