@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 
 namespace Project.Source.MachineLearning
 {
-    public class MachineLearningSceneManager : MonoBehaviour
+    [DefaultExecutionOrder(-60)]
+    public class MachineLearningController : MonoBehaviour
     {
         public string InstanceSceneName = "MachineLearningInstance";
 
