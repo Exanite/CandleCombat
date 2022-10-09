@@ -27,16 +27,16 @@ namespace Project.Source.MachineLearning
         private Scene scene;
 
         private NamedPipeServerStream server;
-        private StreamReader reader;
-        private StreamWriter writer;
+        private BinaryReader reader;
+        private BinaryWriter writer;
 
         private bool hasInitialized;
 
         private void Start()
         {
             server = new NamedPipeServerStream("CandleCombatMachineLearning");
-            reader = new StreamReader(server);
-            writer = new StreamWriter(server);
+            reader = new BinaryReader(server);
+            writer = new BinaryWriter(server);
         }
 
         private void Update()
@@ -57,20 +57,22 @@ namespace Project.Source.MachineLearning
             if (server.IsConnected && hasInitialized)
             {
                 // Output data and wait for input
-                
+
                 // Gather outputs
                 var outputs = new List<MlGameOutput>();
                 foreach (var mlGameContext in gameContexts)
                 {
                     var game = mlGameContext.GameContext;
-                    
+
                     var output = new MlGameOutput();
                     outputs.Add(output);
-                    
+
                     output.Player.TimeAlive = game.TimeAlive;
                     output.Player.CurrentHealth = game.CurrentHealth;
                     output.Player.MaxHealth = game.MaxHealth;
-                    output.Player.Velocity = game.CurrentPlayer ? new Vector2(game.CurrentPlayer.Rigidbody.velocity.x, game.CurrentPlayer.Rigidbody.velocity.z) : Vector2.zero;
+                    output.Player.Velocity = game.CurrentPlayer
+                        ? new Vector2(game.CurrentPlayer.Rigidbody.velocity.x, game.CurrentPlayer.Rigidbody.velocity.z)
+                        : Vector2.zero;
                     output.Player.BurningShotCooldown = Mathf.Clamp(game.Abilities[0].CurrentCooldown, 0, float.PositiveInfinity);
                     output.Player.SoulTransferCooldown = Mathf.Clamp(game.Abilities[1].CurrentCooldown, 0, float.PositiveInfinity);
                     output.Player.DodgeCooldown = Mathf.Clamp(game.Abilities[2].CurrentCooldown, 0, float.PositiveInfinity);
@@ -91,9 +93,9 @@ namespace Project.Source.MachineLearning
                                 enemyData.OffsetFromPlayer = new Vector2(offsetFromPlayer.x, offsetFromPlayer.z);
 
                                 var canSeeFromPlayer = game.PhysicsScene.Raycast(
-                                    game.CurrentPlayer.transform.position + Vector3.one, 
-                                    offsetFromPlayer.normalized,
-                                    out var hit, offsetFromPlayer.magnitude) 
+                                        game.CurrentPlayer.transform.position + Vector3.one,
+                                        offsetFromPlayer.normalized,
+                                        out var hit, offsetFromPlayer.magnitude)
                                     && hit.collider.TryGetComponent(out Character hitCharacter)
                                     && hitCharacter == character;
                                 enemyData.CanSeeFromPlayer = canSeeFromPlayer;
@@ -103,18 +105,57 @@ namespace Project.Source.MachineLearning
                 }
 
                 // Serialize and send outputs
-                
+                writer.Write(outputs.Count);
+                foreach (var output in outputs)
+                {
+                    writer.Write(output.Player.TimeAlive);
+                    writer.Write(output.Player.CurrentHealth);
+                    writer.Write(output.Player.MaxHealth);
+                    writer.Write(output.Player.Position.x);
+                    writer.Write(output.Player.Position.y);
+                    writer.Write(output.Player.Velocity.x);
+                    writer.Write(output.Player.Velocity.y);
+                    writer.Write(output.Player.BurningShotCooldown);
+                    writer.Write(output.Player.SoulTransferCooldown);
+                    writer.Write(output.Player.DodgeCooldown);
+                    writer.Write(output.Player.CurrentAmmo);
+                    writer.Write(output.Player.MaxAmmo);
+                    writer.Write(output.Player.IsReloading);
+
+                    writer.Write(output.Enemies.Count);
+                    foreach (var enemy in output.Enemies)
+                    {
+                        writer.Write(enemy.OffsetFromPlayer.x);
+                        writer.Write(enemy.OffsetFromPlayer.y);
+                        writer.Write(enemy.CanSeeFromPlayer);
+                    }
+                }
+
                 // Read and deserialize inputs
                 var inputs = new List<MlGameInput>();
+                var inputCount = reader.ReadInt32();
+                for (var i = 0; i < inputCount; i++)
+                {
+                    var input = new MlGameInput();
+                    input.MovementDirection.x = reader.ReadSingle();
+                    input.MovementDirection.y = reader.ReadSingle();
+                    input.TargetDirection.x = reader.ReadSingle();
+                    input.TargetDirection.y = reader.ReadSingle();
+                    input.IsBurningShotPressed = reader.ReadBoolean();
+                    input.IsSoulTransferPressed = reader.ReadBoolean();
+                    input.IsDodgePressed = reader.ReadBoolean();
+                    input.IsShootPressed = reader.ReadBoolean();
+                    input.IsReloadPressed = reader.ReadBoolean();
+                }
 
                 // Apply inputs
                 if (inputs.Count != outputs.Count)
                 {
-                    throw new ArgumentException($"Did not receive the same number of inputs as outputs. " +
+                    throw new ArgumentException("Did not receive the same number of inputs as outputs. " +
                         $"Input count: {inputs.Count}. " +
                         $"Output count: {outputs.Count}.");
                 }
-                
+
                 for (var i = 0; i < inputs.Count; i++)
                 {
                     var input = inputs[i];
@@ -131,7 +172,7 @@ namespace Project.Source.MachineLearning
         private void OnDestroy()
         {
             reader.Dispose();
-            
+
             if (server.IsConnected)
             {
                 writer.Dispose();
@@ -144,7 +185,7 @@ namespace Project.Source.MachineLearning
             var index = gameContexts.FindIndex(x => x.GameContext == gameContext);
             if (index == -1)
             {
-                gameContexts.Add(new MlGameContext()
+                gameContexts.Add(new MlGameContext
                 {
                     GameContext = gameContext,
                     Controller = gameContext.GetComponent<ExternalPlayerController>(),
