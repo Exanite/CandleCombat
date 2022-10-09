@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
+using Project.Source.Gameplay.Characters;
 using Project.Source.SceneManagement;
 using UniDi;
 using UnityEngine;
@@ -83,6 +84,14 @@ namespace Project.Source.MachineLearning
 
                                 var offsetFromPlayer = context.CurrentPlayer.transform.position - character.transform.position;
                                 enemyData.OffsetFromPlayer = new Vector2(offsetFromPlayer.x, offsetFromPlayer.z);
+
+                                var canSeeFromPlayer = context.PhysicsScene.Raycast(
+                                    context.CurrentPlayer.transform.position + Vector3.one, 
+                                    offsetFromPlayer.normalized,
+                                    out var hit, offsetFromPlayer.magnitude) 
+                                    && hit.collider.TryGetComponent(out Character hitCharacter)
+                                    && hitCharacter == character;
+                                enemyData.CanSeeFromPlayer = canSeeFromPlayer;
                             }
                         }
                     }
