@@ -8,6 +8,7 @@ using Project.Source.Gameplay.Abilities;
 using Project.Source.Gameplay.Characters;
 using Project.Source.Gameplay.Player;
 using Project.Source.Gameplay.Waves;
+using Project.Source.MachineLearning;
 using Project.Source.SceneManagement;
 using UniDi;
 using UnityEngine;
@@ -54,12 +55,25 @@ namespace Project.Source
         [Inject]
         private SceneLoader sceneLoader;
 
+        [InjectOptional]
+        private MlController mlController;
+        
         private void Start()
         {
             if (CurrentPlayer != null)
             {
                 Possess(CurrentPlayer);
             }
+        }
+
+        private void OnEnable()
+        {
+            mlController.GameContexts.Add(this);
+        }
+
+        private void OnDisable()
+        {
+            mlController.GameContexts.Remove(this);
         }
 
         private void Update()
