@@ -75,12 +75,12 @@ namespace Project.Source
 
         private void OnEnable()
         {
-            mlController.GameContexts.Add(this);
+            mlController.RegisterGameContext(this);
         }
 
         private void OnDisable()
         {
-            mlController.GameContexts.Remove(this);
+            mlController.UnregisterGameContext(this);
         }
 
         private void Update()

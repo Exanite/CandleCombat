@@ -2,7 +2,7 @@ using Project.Source.Input;
 
 namespace Project.Source.Gameplay.Player
 {
-    public class MlPlayerController : PlayerController
+    public class ExternalPlayerController : PlayerController
     {
         public PlayerInputData PlayerInputData;
         
