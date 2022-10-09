@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Project.Source.SceneManagement
 {
+    [DefaultExecutionOrder(-50)]
     public class PhysicsSceneTicker : MonoBehaviour
     {
         [Inject]
