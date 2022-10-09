@@ -5,14 +5,16 @@ namespace Project.Source.MachineLearning
 {
     public class MlGameOutput
     {
-        public float TimeAlive;
-        
         public readonly MlPlayerData Player = new MlPlayerData();
         public readonly List<MlEnemyData> Enemies = new List<MlEnemyData>();
+        
+        // Add projectiles
     }
 
     public class MlPlayerData
     {
+        public float TimeAlive;
+        
         public float CurrentHealth;
         public float MaxHealth;
 

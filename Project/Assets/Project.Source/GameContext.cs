@@ -35,7 +35,9 @@ namespace Project.Source
 
         public float HealthRegenPerSecond = -5f;
 
+        [Header("Runtime")]
         public bool IsDead;
+        public float TimeAlive;
 
         [Header("Abilities")]
         public List<Ability> Abilities = new List<Ability>();
@@ -57,7 +59,12 @@ namespace Project.Source
 
         [InjectOptional]
         private MlController mlController;
-        
+
+        [Inject]
+        private PhysicsScene physicsScene;
+
+        public PhysicsScene PhysicsScene => physicsScene;
+
         private void Start()
         {
             if (CurrentPlayer != null)
@@ -82,6 +89,8 @@ namespace Project.Source
             {
                 return;
             }
+
+            TimeAlive += Time.deltaTime;
 
             UpdateHealthDecay();
             CheckDeath();

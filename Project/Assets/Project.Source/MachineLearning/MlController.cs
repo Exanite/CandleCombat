@@ -55,6 +55,38 @@ namespace Project.Source.MachineLearning
             if (server.IsConnected && hasInitialized)
             {
                 // Output data and wait for input
+                var outputs = new List<MlGameOutput>();
+                foreach (var context in GameContexts)
+                {
+                    var output = new MlGameOutput();
+                    outputs.Add(output);
+                    
+                    output.Player.TimeAlive = context.TimeAlive;
+                    output.Player.CurrentHealth = context.CurrentHealth;
+                    output.Player.MaxHealth = context.MaxHealth;
+                    output.Player.Velocity = context.CurrentPlayer ? new Vector2(context.CurrentPlayer.Rigidbody.velocity.x, context.CurrentPlayer.Rigidbody.velocity.z) : Vector2.zero;
+                    output.Player.BurningShotCooldown = Mathf.Clamp(context.Abilities[0].CurrentCooldown, 0, float.PositiveInfinity);
+                    output.Player.SoulTransferCooldown = Mathf.Clamp(context.Abilities[1].CurrentCooldown, 0, float.PositiveInfinity);
+                    output.Player.DodgeCooldown = Mathf.Clamp(context.Abilities[2].CurrentCooldown, 0, float.PositiveInfinity);
+                    output.Player.CurrentAmmo = context.GunController.GetCurrentAmmo();
+                    output.Player.MaxAmmo = context.GunController.GetMaxAmmo();
+                    output.Player.IsReloading = context.GunController.IsReloading();
+
+                    if (context.CurrentPlayer)
+                    {
+                        foreach (var character in context.AllCharacters)
+                        {
+                            if (!character.IsPlayer && !character.IsDead)
+                            {
+                                var enemyData = new MlEnemyData();
+                                output.Enemies.Add(enemyData);
+
+                                var offsetFromPlayer = context.CurrentPlayer.transform.position - character.transform.position;
+                                enemyData.OffsetFromPlayer = new Vector2(offsetFromPlayer.x, offsetFromPlayer.z);
+                            }
+                        }
+                    }
+                }
             }
         }
 
