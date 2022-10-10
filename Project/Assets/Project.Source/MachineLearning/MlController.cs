@@ -177,6 +177,8 @@ namespace Project.Source.MachineLearning
 
         public void RegisterGameContext(GameContext gameContext)
         {
+            Debug.Log("Registering GameContext");
+            
             var index = gameContexts.FindIndex(x => x.GameContext == gameContext);
             if (index == -1)
             {
@@ -190,6 +192,8 @@ namespace Project.Source.MachineLearning
 
         public void UnregisterGameContext(GameContext gameContext)
         {
+            Debug.Log("Unregistering GameContext");
+            
             var index = gameContexts.FindIndex(x => x.GameContext == gameContext);
             if (index != -1)
             {
