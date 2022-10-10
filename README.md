@@ -15,11 +15,11 @@ Survive as long as possible fighting against an endless wave of enemies. Melt (k
 
 Shoot - Left Click
 
-Movement - WASD
+Movement - WASD \
 Dash - Left Shift or Space
 
-Burning Shot - 1
-Soul Transfer - 2
+Burning Shot - 1 \
+Soul Transfer - 2 \
 Reload - R
 
 Scale UI - Plus or Minus
