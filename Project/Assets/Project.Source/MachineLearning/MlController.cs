@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
+using Newtonsoft.Json;
 using Project.Source.Gameplay.Characters;
 using Project.Source.Gameplay.Player;
 using Project.Source.SceneManagement;
+using Project.Source.Serialization;
 using UniDi;
 using UnityEditor;
 using UnityEngine;
@@ -27,9 +29,14 @@ namespace Project.Source.MachineLearning
         [Inject]
         private Scene scene;
 
+        [Inject]
+        private ProjectJsonSerializer serializer;
+
         private NamedPipeServerStream server;
-        private BinaryReader reader;
-        private BinaryWriter writer;
+        private StreamReader streamReader;
+        private StreamWriter streamWriter;
+        private JsonTextReader jsonReader;
+        private JsonTextWriter jsonWriter;
 
         private bool hasInitialized;
 
@@ -42,8 +49,11 @@ namespace Project.Source.MachineLearning
             server = new NamedPipeServerStream(pipeName, PipeDirection.InOut);
             server.BeginWaitForConnection(null, null);
 
-            reader = new BinaryReader(server);
-            writer = new BinaryWriter(server);
+            streamReader = new StreamReader(server);
+            streamWriter = new StreamWriter(server);
+
+            jsonReader = new JsonTextReader(streamReader);
+            jsonWriter = new JsonTextWriter(streamWriter);
 
             Debug.Log($"Starting named pipe: {pipeName}");
         }
@@ -125,50 +135,10 @@ namespace Project.Source.MachineLearning
                 }
 
                 // Serialize and send outputs
-                writer.Write(outputs.Count);
-                foreach (var output in outputs)
-                {
-                    writer.Write(output.Player.TimeAlive);
-                    writer.Write(output.Player.CurrentHealth);
-                    writer.Write(output.Player.MaxHealth);
-                    writer.Write(output.Player.Position.x);
-                    writer.Write(output.Player.Position.y);
-                    writer.Write(output.Player.Velocity.x);
-                    writer.Write(output.Player.Velocity.y);
-                    writer.Write(output.Player.BurningShotCooldown);
-                    writer.Write(output.Player.SoulTransferCooldown);
-                    writer.Write(output.Player.DodgeCooldown);
-                    writer.Write(output.Player.CurrentAmmo);
-                    writer.Write(output.Player.MaxAmmo);
-                    writer.Write(output.Player.IsReloading);
-
-                    writer.Write(output.Enemies.Count);
-                    foreach (var enemy in output.Enemies)
-                    {
-                        writer.Write(enemy.OffsetFromPlayer.x);
-                        writer.Write(enemy.OffsetFromPlayer.y);
-                        writer.Write(enemy.CanSeeFromPlayer);
-                    }
-                }
+                serializer.Serialize(jsonWriter, outputs);
 
                 // Read and deserialize inputs
-                var inputs = new List<MlGameInput>();
-                var inputCount = reader.ReadInt32();
-                for (var i = 0; i < inputCount; i++)
-                {
-                    var input = new MlGameInput();
-                    inputs.Add(input);
-
-                    input.MovementDirection.x = reader.ReadSingle();
-                    input.MovementDirection.y = reader.ReadSingle();
-                    input.TargetDirection.x = reader.ReadSingle();
-                    input.TargetDirection.y = reader.ReadSingle();
-                    input.IsBurningShotPressed = reader.ReadBoolean();
-                    input.IsSoulTransferPressed = reader.ReadBoolean();
-                    input.IsDodgePressed = reader.ReadBoolean();
-                    input.IsShootPressed = reader.ReadBoolean();
-                    input.IsReloadPressed = reader.ReadBoolean();
-                }
+                var inputs = serializer.Deserialize<List<MlGameInput>>(jsonReader);
 
                 // Apply inputs
                 if (inputs.Count != outputs.Count)
@@ -193,11 +163,10 @@ namespace Project.Source.MachineLearning
 
         private void OnDestroy()
         {
-            reader.Dispose();
-
             if (server.IsConnected)
             {
-                writer.Dispose();
+                streamWriter.Dispose();
+                streamReader.Dispose();
                 server.Dispose();
             }
         }

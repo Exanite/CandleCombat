@@ -47,6 +47,30 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0"
-  }
+    "com.unity.modules.xr": "1.0.0",
+    "jillejr.newtonsoft.json-for-unity.converters": "1.4.0"
+  },
+  "scopedRegistries": [
+    {
+      "name": "JetBrains",
+      "url": "https://npm.pkg.jetbrains.space/public/p/jetbrains-gamedev/jetbrains-gamedev",
+      "scopes": [
+        "com.jetbrains"
+      ]
+    },
+    {
+      "name": "jillejr",
+      "url": "https://npm.cloudsmith.io/jillejr/newtonsoft-json-for-unity",
+      "scopes": [
+        "jillejr"
+      ]
+    },
+    {
+      "name": "OpenUPM",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "com.unity.editoriterationprofiler"
+      ]
+    }
+  ]
 }
