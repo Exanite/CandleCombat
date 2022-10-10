@@ -35,8 +35,6 @@ namespace Project.Source.MachineLearning
         private NamedPipeServerStream server;
         private StreamReader streamReader;
         private StreamWriter streamWriter;
-        private JsonTextReader jsonReader;
-        private JsonTextWriter jsonWriter;
 
         private bool hasInitialized;
 
@@ -51,9 +49,6 @@ namespace Project.Source.MachineLearning
 
             streamReader = new StreamReader(server);
             streamWriter = new StreamWriter(server);
-
-            jsonReader = new JsonTextReader(streamReader);
-            jsonWriter = new JsonTextWriter(streamWriter);
 
             Debug.Log($"Starting named pipe: {pipeName}");
         }
@@ -97,6 +92,8 @@ namespace Project.Source.MachineLearning
                     var output = new MlGameOutput();
                     outputs.Add(output);
 
+                    output.Id = game.Id;
+
                     output.Player.TimeAlive = game.TimeAlive;
                     output.Player.CurrentHealth = game.CurrentHealth;
                     output.Player.MaxHealth = game.MaxHealth;
@@ -138,11 +135,12 @@ namespace Project.Source.MachineLearning
                 }
 
                 // Serialize and send outputs
-                serializer.Serialize(jsonWriter, outputs);
-                jsonWriter.Flush();
+                streamWriter.WriteLine(Serialize(outputs));
+                streamWriter.Flush();
 
                 // Read and deserialize inputs
-                var inputs = serializer.Deserialize<List<MlGameInput>>(jsonReader);
+                var json = streamReader.ReadLine();
+                var inputs = Deserialize<List<MlGameInput>>(json);
 
                 // Apply inputs
                 if (inputs.Count != outputs.Count)
@@ -167,18 +165,15 @@ namespace Project.Source.MachineLearning
 
         private void OnDestroy()
         {
-            if (server.IsConnected)
-            {
-                streamWriter.Dispose();
-                streamReader.Dispose();
-                server.Dispose();
-            }
+            server.Dispose();
+            streamWriter.Dispose();
+            streamReader.Dispose();
         }
 
         public void RegisterGameContext(GameContext gameContext)
         {
             Debug.Log("Registering GameContext");
-            
+
             var index = gameContexts.FindIndex(x => x.GameContext == gameContext);
             if (index == -1)
             {
@@ -193,7 +188,7 @@ namespace Project.Source.MachineLearning
         public void UnregisterGameContext(GameContext gameContext)
         {
             Debug.Log("Unregistering GameContext");
-            
+
             var index = gameContexts.FindIndex(x => x.GameContext == gameContext);
             if (index != -1)
             {
@@ -206,6 +201,27 @@ namespace Project.Source.MachineLearning
             for (var i = 0; i < TargetInstanceCount; i++)
             {
                 sceneLoader.LoadAdditiveScene(InstanceSceneName, scene, LocalPhysicsMode.Physics3D);
+            }
+        }
+
+        private string Serialize(object value)
+        {
+            using (var stringWriter = new StringWriter())
+            using (var jsonWriter = new JsonTextWriter(stringWriter))
+            {
+                serializer.Serialize(jsonWriter, value);
+                var json = stringWriter.ToString();
+
+                return json;
+            }
+        }
+
+        private T Deserialize<T>(string json)
+        {
+            using (var stringReader = new StringReader(json))
+            using (var jsonReader = new JsonTextReader(stringReader))
+            {
+                return serializer.Deserialize<T>(jsonReader);
             }
         }
     }

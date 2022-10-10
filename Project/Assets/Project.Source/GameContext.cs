@@ -64,6 +64,7 @@ namespace Project.Source
         private PhysicsScene physicsScene;
 
         public PhysicsScene PhysicsScene => physicsScene;
+        public string Id { get; } = Guid.NewGuid().ToString();
 
         private void Start()
         {

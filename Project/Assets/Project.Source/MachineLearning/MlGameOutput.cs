@@ -13,6 +13,8 @@ namespace Project.Source.MachineLearning
     
     public class MlGameOutput
     {
+        public string Id;
+        
         public readonly MlPlayerData Player = new MlPlayerData();
         public readonly List<MlEnemyData> Enemies = new List<MlEnemyData>();
         
