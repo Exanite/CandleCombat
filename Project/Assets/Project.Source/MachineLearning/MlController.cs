@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Project.Source.Gameplay.Characters;
 using Project.Source.Gameplay.Player;
@@ -44,8 +45,9 @@ namespace Project.Source.MachineLearning
         private void Start()
         {
             TryReadCommandLineArguments();
-            
+
             server = new NamedPipeServerStream(PipeName, PipeDirection.InOut);
+            server.WaitForConnectionAsync(this.GetCancellationTokenOnDestroy());
 
             streamReader = new StreamReader(server);
             streamWriter = new StreamWriter(server);
@@ -168,7 +170,8 @@ namespace Project.Source.MachineLearning
         {
             try
             {
-                server.Dispose();
+                streamWriter.Dispose();
+                streamReader.Dispose();
             }
             catch (Exception)
             {
@@ -177,8 +180,7 @@ namespace Project.Source.MachineLearning
 
             try
             {
-                streamWriter.Dispose();
-                streamReader.Dispose();
+                server.Dispose();
             }
             catch (Exception)
             {
@@ -245,7 +247,7 @@ namespace Project.Source.MachineLearning
         {
             Debug.Log("Attempting to read command line arguments");
             var args = Environment.GetCommandLineArgs();
-            
+
             for (var i = 0; i < args.Length; i++)
             {
                 var arg = args[i];
@@ -253,7 +255,7 @@ namespace Project.Source.MachineLearning
                 {
                     TargetInstanceCount = int.Parse(args[i + 1]);
                 }
-                
+
                 if (arg == "--pipe-name")
                 {
                     PipeName = args[i + 1];
