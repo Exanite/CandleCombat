@@ -165,9 +165,24 @@ namespace Project.Source.MachineLearning
 
         private void OnDestroy()
         {
-            server.Dispose();
-            streamWriter.Dispose();
-            streamReader.Dispose();
+            try
+            {
+                streamWriter.Dispose();
+                streamReader.Dispose();
+            }
+            catch (ObjectDisposedException)
+            {
+                // Ignore
+            }
+            
+            try
+            {
+                server.Dispose();
+            }
+            catch (ObjectDisposedException)
+            {
+                // Ignore
+            }
         }
 
         public void RegisterGameContext(GameContext gameContext)
