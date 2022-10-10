@@ -44,7 +44,7 @@ interface MlGameInput {
 }
 
 const run = async (): Promise<void> => {
-  const socket = net.connect("\\\\.\\pipe\\123", () => {
+  const socket = net.connect("\\\\.\\pipe\\CandleCombatMachineLearning", () => {
     console.log("Connected");
   });
 
