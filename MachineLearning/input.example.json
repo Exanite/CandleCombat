@@ -1,0 +1,32 @@
+[
+  {
+    "MovementDirection": {
+      "x": 0.29594098875800734,
+      "y": 0.9764236661541497
+    },
+    "TargetDirection": {
+      "x": -0.13570661122842465,
+      "y": 0.38015368855463505
+    },
+    "IsBurningShotPressed": true,
+    "IsSoulTransferPressed": true,
+    "IsDodgePressed": true,
+    "IsShootPressed": true,
+    "IsReloadPressed": true
+  },
+  {
+    "MovementDirection": {
+      "x": 0.12252338384674921,
+      "y": -0.603679644189365
+    },
+    "TargetDirection": {
+      "x": -0.9010916485089902,
+      "y": -0.6282613114213644
+    },
+    "IsBurningShotPressed": true,
+    "IsSoulTransferPressed": true,
+    "IsDodgePressed": true,
+    "IsShootPressed": true,
+    "IsReloadPressed": true
+  }
+]

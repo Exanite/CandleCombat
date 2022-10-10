@@ -1,0 +1,113 @@
+[
+  {
+    "Id": "933c7b75-e14b-467b-a3e3-2e09375ee090",
+    "Player": {
+      "TimeAlive": 8.335436,
+      "CurrentHealth": 48.3291931,
+      "MaxHealth": 100,
+      "Position": {
+        "x": 2.954881,
+        "y": -4.9197154
+      },
+      "Velocity": {
+        "x": -0.957393169,
+        "y": -0.884511054
+      },
+      "BurningShotCooldown": 0,
+      "SoulTransferCooldown": 0,
+      "DodgeCooldown": 0,
+      "CurrentAmmo": 0,
+      "MaxAmmo": 20,
+      "IsReloading": true
+    },
+    "Enemies": [
+      {
+        "OffsetFromPlayer": {
+          "x": 0.908470869,
+          "y": -0.5006795
+        },
+        "CanSeeFromPlayer": false
+      },
+      {
+        "OffsetFromPlayer": {
+          "x": -6.83606529,
+          "y": 6.15960264
+        },
+        "CanSeeFromPlayer": false
+      },
+      {
+        "OffsetFromPlayer": {
+          "x": -11.509347,
+          "y": -11.5521946
+        },
+        "CanSeeFromPlayer": false
+      },
+      {
+        "OffsetFromPlayer": {
+          "x": 3.48148942,
+          "y": 4.355663
+        },
+        "CanSeeFromPlayer": false
+      },
+      {
+        "OffsetFromPlayer": {
+          "x": 21.0880642,
+          "y": 19.83516
+        },
+        "CanSeeFromPlayer": false
+      }
+    ]
+  },
+  {
+    "Id": "ca5b3a58-f280-45cf-84f5-aad6a6e6e7dc",
+    "Player": {
+      "TimeAlive": 7.99166775,
+      "CurrentHealth": 54.0167274,
+      "MaxHealth": 100,
+      "Position": {
+        "x": 1.00869775,
+        "y": -1.07245862
+      },
+      "Velocity": {
+        "x": 0.0658975542,
+        "y": 1.34726322
+      },
+      "BurningShotCooldown": 0,
+      "SoulTransferCooldown": 0,
+      "DodgeCooldown": 0,
+      "CurrentAmmo": 0,
+      "MaxAmmo": 20,
+      "IsReloading": true
+    },
+    "Enemies": [
+      {
+        "OffsetFromPlayer": {
+          "x": -0.457029819,
+          "y": 1.2201699
+        },
+        "CanSeeFromPlayer": false
+      },
+      {
+        "OffsetFromPlayer": {
+          "x": 16.9201851,
+          "y": -24.6709251
+        },
+        "CanSeeFromPlayer": false
+      },
+      {
+        "OffsetFromPlayer": {
+          "x": 15.0380278,
+          "y": 20.2349586
+        },
+        "CanSeeFromPlayer": false
+      },
+      {
+        "OffsetFromPlayer": {
+          "x": -11.3065491,
+          "y": 10.9625835
+        },
+        "CanSeeFromPlayer": false
+      }
+    ]
+  }
+]
