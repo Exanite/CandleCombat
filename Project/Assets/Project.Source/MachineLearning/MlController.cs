@@ -100,6 +100,9 @@ namespace Project.Source.MachineLearning
                     output.Player.TimeAlive = game.TimeAlive;
                     output.Player.CurrentHealth = game.CurrentHealth;
                     output.Player.MaxHealth = game.MaxHealth;
+                    output.Player.Position = game.CurrentPlayer
+                        ? new Vector2(game.CurrentPlayer.transform.position.x, game.CurrentPlayer.transform.position.z)
+                        : Vector2.zero;
                     output.Player.Velocity = game.CurrentPlayer
                         ? new Vector2(game.CurrentPlayer.Rigidbody.velocity.x, game.CurrentPlayer.Rigidbody.velocity.z)
                         : Vector2.zero;
