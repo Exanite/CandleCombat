@@ -19,6 +19,7 @@ namespace Project.Source.MachineLearning
     {
         public string InstanceSceneName = "MachineLearningInstance";
 
+        public string PipeName = "CandleCombatMachineLearning";
         public int TargetInstanceCount = 10;
 
         private readonly List<MlGameContext> gameContexts = new List<MlGameContext>();
@@ -42,15 +43,15 @@ namespace Project.Source.MachineLearning
 
         private void Start()
         {
-            var pipeName = "CandleCombatMachineLearning";
-
-            server = new NamedPipeServerStream(pipeName, PipeDirection.InOut);
-            server.BeginWaitForConnection(null, null);
+            TryReadCommandLineArguments();
+            
+            server = new NamedPipeServerStream(PipeName, PipeDirection.InOut);
 
             streamReader = new StreamReader(server);
             streamWriter = new StreamWriter(server);
 
-            Debug.Log($"Starting named pipe: {pipeName}");
+            Debug.Log($"Starting named pipe: {PipeName}");
+            Debug.Log($"Target instance count: {TargetInstanceCount}");
         }
 
         private void Update()
@@ -167,19 +168,19 @@ namespace Project.Source.MachineLearning
         {
             try
             {
-                streamWriter.Dispose();
-                streamReader.Dispose();
+                server.Dispose();
             }
-            catch (ObjectDisposedException)
+            catch (Exception)
             {
                 // Ignore
             }
-            
+
             try
             {
-                server.Dispose();
+                streamWriter.Dispose();
+                streamReader.Dispose();
             }
-            catch (ObjectDisposedException)
+            catch (Exception)
             {
                 // Ignore
             }
@@ -237,6 +238,26 @@ namespace Project.Source.MachineLearning
             using (var jsonReader = new JsonTextReader(stringReader))
             {
                 return serializer.Deserialize<T>(jsonReader);
+            }
+        }
+
+        private void TryReadCommandLineArguments()
+        {
+            Debug.Log("Attempting to read command line arguments");
+            var args = Environment.GetCommandLineArgs();
+            
+            for (var i = 0; i < args.Length; i++)
+            {
+                var arg = args[i];
+                if (arg == "--instance-count")
+                {
+                    TargetInstanceCount = int.Parse(args[i + 1]);
+                }
+                
+                if (arg == "--pipe-name")
+                {
+                    PipeName = args[i + 1];
+                }
             }
         }
     }
