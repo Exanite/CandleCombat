@@ -82,7 +82,7 @@ namespace Project.Source.MachineLearning
 #endif
             }
 
-            if (server.IsConnected && hasInitialized)
+            if (server.IsConnected && hasInitialized && gameContexts.Count > 0)
             {
                 Debug.Log($"Running tick: {tickCount}");
                 tickCount++;
@@ -136,6 +136,7 @@ namespace Project.Source.MachineLearning
 
                 // Serialize and send outputs
                 serializer.Serialize(jsonWriter, outputs);
+                jsonWriter.Flush();
 
                 // Read and deserialize inputs
                 var inputs = serializer.Deserialize<List<MlGameInput>>(jsonReader);

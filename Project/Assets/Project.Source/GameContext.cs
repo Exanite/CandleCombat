@@ -71,17 +71,14 @@ namespace Project.Source
             {
                 Possess(CurrentPlayer);
             }
-        }
-
-        private void OnEnable()
-        {
+            
             if (mlController != null)
             {
                 mlController.RegisterGameContext(this);
             }
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             if (mlController != null)
             {
