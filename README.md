@@ -26,10 +26,10 @@ Scale UI - Plus or Minus
 
 ## Credits
 
-Andrew Goldstein (fablefox) - Environment Art, VFX
-Luke Dobbs - Environment Art
-William Chen (Exanite) - Programming
-Alex Gallardo (RoboZero) - Programming
+Andrew Goldstein (fablefox) - Environment Art, VFX \
+Luke Dobbs - Environment Art \
+William Chen (Exanite) - Programming \
+Alex Gallardo (RoboZero) - Programming \
 Michael Tomadakis - Technical Art, VFX, Shader
 
 ## Third Party Assets
