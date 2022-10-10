@@ -1,7 +1,7 @@
 # Candle Combat: The Spirit of Wick
 
 Created by Alex, Andrew, Luke, Michael, and William for the DevLUp Fall 2022 Game Jam. \
-Thetheme for the jam was "Just Pick One". 
+The theme for the jam was "Just Pick One". 
 
 The game can be found [here on itch.io](https://fablefox5.itch.io/candle-combat).
 
