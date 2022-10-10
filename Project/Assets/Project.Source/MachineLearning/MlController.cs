@@ -6,6 +6,7 @@ using Project.Source.Gameplay.Characters;
 using Project.Source.Gameplay.Player;
 using Project.Source.SceneManagement;
 using UniDi;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -32,17 +33,28 @@ namespace Project.Source.MachineLearning
 
         private bool hasInitialized;
 
+        private long tickCount;
+
         private void Start()
         {
-            server = new NamedPipeServerStream("CandleCombatMachineLearning");
+            var pipeName = "CandleCombatMachineLearning";
+
+            server = new NamedPipeServerStream(pipeName, PipeDirection.InOut);
+            server.BeginWaitForConnection(null, null);
+
             reader = new BinaryReader(server);
             writer = new BinaryWriter(server);
+
+            Debug.Log($"Starting named pipe: {pipeName}");
         }
 
         private void Update()
         {
             if (server.IsConnected && !hasInitialized)
             {
+                Debug.Log("Detected connection");
+                Debug.Log("Initializing scenes");
+
                 // Initialize
                 hasInitialized = true;
                 LoadInstanceScenes();
@@ -50,14 +62,22 @@ namespace Project.Source.MachineLearning
 
             if (!server.IsConnected && hasInitialized)
             {
+                Debug.Log("Connection lost... exiting");
+
                 // Shutdown
+#if UNITY_EDITOR
+                EditorApplication.isPlaying = false;
+#else
                 Application.Quit();
+#endif
             }
 
             if (server.IsConnected && hasInitialized)
             {
-                // Output data and wait for input
+                Debug.Log($"Running tick: {tickCount}");
+                tickCount++;
 
+                // Output data and wait for input
                 // Gather outputs
                 var outputs = new List<MlGameOutput>();
                 foreach (var mlGameContext in gameContexts)
@@ -138,7 +158,7 @@ namespace Project.Source.MachineLearning
                 {
                     var input = new MlGameInput();
                     inputs.Add(input);
-                    
+
                     input.MovementDirection.x = reader.ReadSingle();
                     input.MovementDirection.y = reader.ReadSingle();
                     input.TargetDirection.x = reader.ReadSingle();

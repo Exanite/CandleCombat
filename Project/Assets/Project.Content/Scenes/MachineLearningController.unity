@@ -346,6 +346,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1237211831}
   - component: {fileID: 1237211832}
+  - component: {fileID: 1237211833}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -382,6 +383,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InstanceSceneName: MachineLearningInstance
   TargetInstanceCount: 1
+--- !u!114 &1237211833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237211830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89901fa14ca434ce89025b2d46aaf893, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _components:
+  - {fileID: 1237211832}
+  _identifier: 
+  _useSceneContext: 0
+  _context: {fileID: 0}
+  _bindType: 0
 --- !u!1 &1388771380
 GameObject:
   m_ObjectHideFlags: 0
