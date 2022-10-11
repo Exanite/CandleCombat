@@ -158,6 +158,8 @@ namespace Project.Source.MachineLearning
                                 ? hit.distance
                                 : MlPlayerData.DefaultNavigationRaycastMaxDistance;
 
+                            direction = Quaternion.AngleAxis(360f / MlPlayerData.NavigationRaycastCount, Vector3.up) * direction;
+
                             output.Player.NavigationRaycasts[i] = distance;
                         }
 
