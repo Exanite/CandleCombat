@@ -13,20 +13,5 @@
     "IsDodgePressed": true,
     "IsShootPressed": true,
     "IsReloadPressed": true
-  },
-  {
-    "MovementDirection": {
-      "x": 0.12252338384674921,
-      "y": -0.603679644189365
-    },
-    "TargetDirection": {
-      "x": -0.9010916485089902,
-      "y": -0.6282613114213644
-    },
-    "IsBurningShotPressed": true,
-    "IsSoulTransferPressed": true,
-    "IsDodgePressed": true,
-    "IsShootPressed": true,
-    "IsReloadPressed": true
   }
 ]

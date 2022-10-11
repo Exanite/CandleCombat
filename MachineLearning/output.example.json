@@ -1,112 +1,71 @@
 [
   {
-    "Id": "933c7b75-e14b-467b-a3e3-2e09375ee090",
+    "Id": "af1fed94-de4a-4606-aced-20348bda556c",
     "Player": {
-      "TimeAlive": 8.335436,
-      "CurrentHealth": 48.3291931,
+      "TimeAlive": 6.06906557,
+      "CurrentHealth": 77.86188,
       "MaxHealth": 100,
       "Position": {
-        "x": 2.954881,
-        "y": -4.9197154
+        "x": 0.392306626,
+        "y": -0.956996
       },
       "Velocity": {
-        "x": -0.957393169,
-        "y": -0.884511054
+        "x": -1.68471968,
+        "y": -1.35180867
       },
+      "MovementSpeed": 5,
       "BurningShotCooldown": 0,
       "SoulTransferCooldown": 0,
       "DodgeCooldown": 0,
+      "BurningShotCooldownDuration": 2,
+      "SoulTransferCooldownDuration": 3,
+      "DodgeCooldownDuration": 2,
       "CurrentAmmo": 0,
       "MaxAmmo": 20,
-      "IsReloading": true
+      "IsReloading": true,
+      "NavigationRaycastCount": 8,
+      "NavigationRaycasts": [
+        8,
+        8,
+        5.77496052,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "NavigationRaycastMaxDistance": 8
     },
     "Enemies": [
       {
         "OffsetFromPlayer": {
-          "x": 0.908470869,
-          "y": -0.5006795
+          "x": 10.3256,
+          "y": -10.473278
         },
         "CanSeeFromPlayer": false
       },
       {
         "OffsetFromPlayer": {
-          "x": -6.83606529,
-          "y": 6.15960264
+          "x": -1.03820515,
+          "y": -5.863139
         },
         "CanSeeFromPlayer": false
       },
       {
         "OffsetFromPlayer": {
-          "x": -11.509347,
-          "y": -11.5521946
-        },
-        "CanSeeFromPlayer": false
-      },
-      {
-        "OffsetFromPlayer": {
-          "x": 3.48148942,
-          "y": 4.355663
-        },
-        "CanSeeFromPlayer": false
-      },
-      {
-        "OffsetFromPlayer": {
-          "x": 21.0880642,
-          "y": 19.83516
+          "x": -16.3294086,
+          "y": 11.4764032
         },
         "CanSeeFromPlayer": false
       }
-    ]
-  },
-  {
-    "Id": "ca5b3a58-f280-45cf-84f5-aad6a6e6e7dc",
-    "Player": {
-      "TimeAlive": 7.99166775,
-      "CurrentHealth": 54.0167274,
-      "MaxHealth": 100,
-      "Position": {
-        "x": 1.00869775,
-        "y": -1.07245862
-      },
-      "Velocity": {
-        "x": 0.0658975542,
-        "y": 1.34726322
-      },
-      "BurningShotCooldown": 0,
-      "SoulTransferCooldown": 0,
-      "DodgeCooldown": 0,
-      "CurrentAmmo": 0,
-      "MaxAmmo": 20,
-      "IsReloading": true
-    },
-    "Enemies": [
+    ],
+    "Projectiles": [
       {
         "OffsetFromPlayer": {
-          "x": -0.457029819,
-          "y": 1.2201699
+          "x": -0.203714535,
+          "y": -1.35621548
         },
-        "CanSeeFromPlayer": false
-      },
-      {
-        "OffsetFromPlayer": {
-          "x": 16.9201851,
-          "y": -24.6709251
-        },
-        "CanSeeFromPlayer": false
-      },
-      {
-        "OffsetFromPlayer": {
-          "x": 15.0380278,
-          "y": 20.2349586
-        },
-        "CanSeeFromPlayer": false
-      },
-      {
-        "OffsetFromPlayer": {
-          "x": -11.3065491,
-          "y": 10.9625835
-        },
-        "CanSeeFromPlayer": false
+        "IsOwnedByPlayer": false
       }
     ]
   }
