@@ -19,7 +19,6 @@ namespace Project.Source.Gameplay.Guns.Projectile
         [SerializeField] protected float acceleration = 0.1f;
         [SerializeField] protected float colliderRadius = 0.1f;
 
-        protected Character owner;
         protected float lifetime;
 
         [Inject]
@@ -27,12 +26,6 @@ namespace Project.Source.Gameplay.Guns.Projectile
 
         [Inject]
         private PhysicsScene physicsScene;
-
-        public Character Owner
-        {
-            get => owner;
-            set => owner = value;
-        }
         
         private void FixedUpdate()
         {
@@ -56,16 +49,16 @@ namespace Project.Source.Gameplay.Guns.Projectile
             }
         }
 
-        public override void Fire(Character characterFrom, Vector3 direction, Vector3 visualPosition)
+        public override void Fire(Character owningCharacter, Vector3 direction, Vector3 visualPosition)
         {
-            Owner = characterFrom;
+            OwningCharacter = owningCharacter;
             transform.position = visualPosition;
             transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
             rb.velocity = direction * speed;
 
             if (retainCharacterVelocity)
             {
-                rb.velocity += characterFrom.Rigidbody.velocity;
+                rb.velocity += owningCharacter.Rigidbody.velocity;
             }
         }
 
@@ -86,7 +79,7 @@ namespace Project.Source.Gameplay.Guns.Projectile
 
         public override void Hit(Character character)
         {
-            var isSameTeam = Owner.IsPlayer == character.IsPlayer;
+            var isSameTeam = OwningCharacter.IsPlayer == character.IsPlayer;
             if (isSameTeam)
             {
                 return;

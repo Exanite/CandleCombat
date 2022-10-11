@@ -35,7 +35,7 @@ namespace Project.Source.Gameplay.Guns.Projectile
             vfx.transform.up = direction;
             vfx.SetVector3(PlayerVelocityAttribute, new Vector3(0, -distance, 0));
 
-            spawned = vfx.gameObject;
+            visual = vfx.gameObject;
         }
     }
 }

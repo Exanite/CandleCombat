@@ -22,8 +22,7 @@ namespace Project.Source.Gameplay.Guns.Projectile
         [SerializeField] private float maxDistance = 10f;
         [SerializeField] private float timeToExpire = 1f;
 
-        protected GameObject spawned;
-        private Character owner;
+        protected GameObject visual;
         private float lifetime = 0;
         private bool fired;
 
@@ -33,9 +32,9 @@ namespace Project.Source.Gameplay.Guns.Projectile
         [Inject]
         private PhysicsScene physicsScene;
 
-        public override void Fire(Character characterFrom, Vector3 direction, Vector3 visualPosition)
+        public override void Fire(Character owningCharacter, Vector3 direction, Vector3 visualPosition)
         {
-            owner = characterFrom;
+            OwningCharacter = owningCharacter;
 
             var startPosition = transform.position;
             var endPosition = Vector3.zero;
@@ -61,7 +60,7 @@ namespace Project.Source.Gameplay.Guns.Projectile
 
         public override void Hit(Character character)
         {
-            var sameTeam = owner.IsPlayer == character.IsPlayer;
+            var sameTeam = OwningCharacter.IsPlayer == character.IsPlayer;
             if (sameTeam || character.IsInvulnerable)
             {
                 return;
@@ -86,16 +85,16 @@ namespace Project.Source.Gameplay.Guns.Projectile
             line.SetPosition(0, Vector3.zero);
             line.SetPosition(1, endPosition);
 
-            spawned = line.gameObject;
+            visual = line.gameObject;
         }
 
         private void Expire()
         {
             // Debug.Log("Destroy!");
 
-            if (spawned != null)
+            if (visual != null)
             {
-                Destroy(spawned);
+                Destroy(visual);
             }
 
             Destroy(gameObject);
