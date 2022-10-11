@@ -45,8 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Icon: {fileID: 21300000, guid: a33905d1da7b6c24ab74935e5ff33ac5, type: 3}
-  CooldownDuration: 2
-  HealthCost: 10
-  CurrentCooldown: 2
-  shotsUntilWornOff: 5
+  CooldownDuration: 3
+  HealthCost: 20
+  CurrentCooldown: 3
   fireGunIndex: 1

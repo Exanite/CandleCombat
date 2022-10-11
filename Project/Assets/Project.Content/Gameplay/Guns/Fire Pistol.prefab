@@ -156,16 +156,17 @@ MonoBehaviour:
   firePointVisual: {fileID: 5011619906631964488}
   projectilePrefabs:
   - {fileID: 7209473686946063059, guid: e3c1a4ceceb71de49b40722066382d29, type: 3}
-  fireAudioClip: {fileID: 8300000, guid: 3581942034e21514381dd3c9d45265c3, type: 3}
+  fireAudioClip: {fileID: 8300000, guid: 630da8ad19628504eb22cb0436f1f363, type: 3}
   fireAudioScale: 0.05
   GunHoldType: 0
   TimeToHolsterGun: 2
-  ReloadOnSwitchTo: 1
+  SwitchReloadBehaviour: 2
   SelectedProjectile: 0
-  Burst: 1
-  BurstRadius: 1
-  TimeBetweenShots: 0.5
-  MaxAmmo: 3
+  BurstCount: 3
+  SpreadAngle: 15
+  BurstSpreadAngle: 30
+  TimeBetweenShots: 0.3
+  MaxAmmo: 5
   ReloadTime: 5
 --- !u!82 &4813533812991842476
 AudioSource:
@@ -180,7 +181,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0

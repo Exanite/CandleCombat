@@ -160,10 +160,11 @@ MonoBehaviour:
   fireAudioScale: 0.021
   GunHoldType: 0
   TimeToHolsterGun: 1
-  ReloadOnSwitchTo: 0
+  SwitchReloadBehaviour: 1
   SelectedProjectile: 0
-  Burst: 1
-  BurstRadius: 0.2
+  BurstCount: 1
+  SpreadAngle: 3
+  BurstSpreadAngle: 0
   TimeBetweenShots: 0.1
   MaxAmmo: 20
   ReloadTime: 3

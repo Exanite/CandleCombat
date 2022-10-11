@@ -56,10 +56,11 @@ MonoBehaviour:
   fireAudioScale: 0.151
   GunHoldType: 1
   TimeToHolsterGun: 2
-  ReloadOnSwitchTo: 1
+  SwitchReloadBehaviour: 2
   SelectedProjectile: 0
-  Burst: 1
-  BurstRadius: 1
+  BurstCount: 1
+  SpreadAngle: 5
+  BurstSpreadAngle: 0
   TimeBetweenShots: 1
   MaxAmmo: 1
   ReloadTime: 1

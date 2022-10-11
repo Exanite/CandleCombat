@@ -9,16 +9,7 @@ namespace Project.Source.Gameplay.Abilities
     {
         [Header("Settings")]
         [SerializeField]
-        private int shotsUntilWornOff = 1;
-        [SerializeField]
         private int fireGunIndex = 1;
-
-        // Saving this within the ability can be considered hacky.
-        private GunController currentGunController;
-        private Gun currentGun;
-        private int currentReloads;
-        private int currentShots;
-        private int previousGun;
 
         [Inject]
         private GameContext gameContext;
@@ -31,29 +22,30 @@ namespace Project.Source.Gameplay.Abilities
                 return;
             }
 
-            var gunController = gameContext.PlayerGunController;
-            previousGun = gunController.EquippedGunIndex;
-            gunController.SwitchGun(fireGunIndex);
+            var controller = gameContext.PlayerGunController;
+            var previousGunIndex = controller.EquippedGunIndex;
             
-            var gun = gunController.GetEquippedGun();
-            gun.OnShoot += HandleShoot; // Dynamically subscribing is hacky.
-            currentGunController = gunController;
-            currentGun = gun;
+            controller.SwitchGun(fireGunIndex);
+            AddBulletShotHandler(controller, previousGunIndex);
         }
 
-        private void HandleShoot()
+        private void AddBulletShotHandler(GunController controller, int previousGunIndex)
         {
-            currentShots++;
+            var gun = controller.GetEquippedGun();
+            var shotsLeft = gun.MaxAmmo;
+            
+            gun.BulletShot += OnBulletShot;
 
-            if (currentShots < shotsUntilWornOff)
+            void OnBulletShot()
             {
-                return;
-            }
+                shotsLeft--;
 
-            currentGun.OnShoot -= HandleShoot;
-            currentGunController.SwitchGun(previousGun);
-            previousGun = 0;
-            currentShots = 0;
+                if (shotsLeft <= 0)
+                {
+                    gun.BulletShot -= OnBulletShot;
+                    controller.SwitchGun(previousGunIndex);
+                }
+            }
         }
     }
 }

@@ -7,15 +7,24 @@ using Random = UnityEngine.Random;
 
 namespace Project.Source.Gameplay.Guns
 {
+    [Serializable]
     public enum GunHoldType
     {
         OneHandGun,
         OneHandFan,
     }
 
+    [Serializable]
+    public enum SwitchReloadBehaviour
+    {
+        KeepPrevious = 0,
+        SetToZeroAmmo,
+        SetToFullAmmo,
+    }
+
     public class Gun : MonoBehaviour
     {
-        public Action OnShoot;
+        public Action BulletShot;
         public Action OnReload;
 
         [Header("Dependencies")]
@@ -32,10 +41,11 @@ namespace Project.Source.Gameplay.Guns
         [Header("Settings")]
         public GunHoldType GunHoldType = GunHoldType.OneHandGun;
         public float TimeToHolsterGun = 4f;
-        public bool ReloadOnSwitchTo = false;
+        public SwitchReloadBehaviour SwitchReloadBehaviour;
         public int SelectedProjectile = 0;
-        public int Burst = 1;
-        public float BurstRadius = 1f;
+        public int BurstCount = 1;
+        public float SpreadAngle = 0f;
+        public float BurstSpreadAngle = 0f;
         public float TimeBetweenShots = 1f;
         public int MaxAmmo = 1;
         public float ReloadTime = 2f;
@@ -82,33 +92,35 @@ namespace Project.Source.Gameplay.Guns
                 return;
             }
 
-            var direction = firePoint.forward;
-
-            for (var i = 0; i < Burst; i++)
+            if (ammo <= 0)
             {
-                if (ammo <= 0)
+                return;
+            }
+
+            ammo--;
+
+            for (var i = 0; i < BurstCount; i++)
+            {
+                var direction = firePoint.forward;
+                var angleOffsetDegrees = Random.Range(-SpreadAngle, SpreadAngle) / 2;
+                if (BurstCount > 1)
                 {
-                    continue;
+                    angleOffsetDegrees += -BurstSpreadAngle / 2f + i * (BurstSpreadAngle / BurstCount);
                 }
 
-                if (i > 0)
-                {
-                    var randomVector = Random.insideUnitCircle * BurstRadius;
-                    direction += new Vector3(randomVector.x, 0, 0);
-                }
+                direction = Quaternion.AngleAxis(angleOffsetDegrees, Vector3.up) * direction;
 
                 var projectile = instantiator.InstantiatePrefabForComponent<Projectile.Projectile>(projectilePrefabs[SelectedProjectile],
                     firePoint.position, Quaternion.Euler(direction), null);
                 projectile.Fire(characterFrom, direction, firePointVisual.position);
-
-                ammo--;
-                OnShoot?.Invoke();
 
                 if (fireAudioClip != null)
                 {
                     mainAudioSource.PlayOneShot(fireAudioClip, fireAudioScale);
                 }
             }
+
+            BulletShot?.Invoke();
 
             elapsedTimeSinceShot -= TimeBetweenShots;
             elapsedTimeSinceHolstered = 0;
@@ -124,9 +136,25 @@ namespace Project.Source.Gameplay.Guns
 
         public void OnSwitch()
         {
-            if (ReloadOnSwitchTo)
+            switch (SwitchReloadBehaviour)
             {
-                Reloaded();
+                case SwitchReloadBehaviour.SetToFullAmmo:
+                {
+                    Reloaded();
+
+                    break;
+                }
+                case SwitchReloadBehaviour.SetToZeroAmmo:
+                {
+                    ammo = 0;
+
+                    break;
+                }
+                case SwitchReloadBehaviour.KeepPrevious:
+                default:
+                {
+                    break;
+                }
             }
         }
 
@@ -181,7 +209,7 @@ namespace Project.Source.Gameplay.Guns
         private void OnValidate()
         {
             SelectedProjectile = Mathf.Clamp(SelectedProjectile, 0, projectilePrefabs.Count - 1);
-            MaxAmmo = Mathf.Clamp(MaxAmmo, Burst, 100); // Arbitrary max
+            MaxAmmo = Mathf.Clamp(MaxAmmo, BurstCount, 100); // Arbitrary max
         }
     }
 }
