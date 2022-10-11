@@ -8463,11 +8463,6 @@ PrefabInstance:
       propertyPath: text
       value: 
       objectReference: {fileID: 670376421}
-    - target: {fileID: 4111066707566689777, guid: 57615ce97bbc97e46a4674c14d33db8c,
-        type: 3}
-      propertyPath: m_Pitch
-      value: 1.54
-      objectReference: {fileID: 0}
     - target: {fileID: 4489160689818018701, guid: 57615ce97bbc97e46a4674c14d33db8c,
         type: 3}
       propertyPath: BurstRadius
