@@ -73,7 +73,7 @@ namespace Project.Source.Gameplay.Characters
         
         private void Awake()
         {
-            audioSource = GetComponent <AudioSource>();
+            audioSource = GetComponent<AudioSource>();
             path = new NavMeshPath();
         }
 
@@ -257,27 +257,6 @@ namespace Project.Source.Gameplay.Characters
             isJumping = false;
         }
 
-        // private void OnRenderObject()
-        // {
-        //     var resultCount = path.GetCornersNonAlloc(pathBuffer);
-        //     if (resultCount > 1)
-        //     {
-        //         using (var handle = GameContext.Instance.DrawingService.BeginDrawing())
-        //         {
-        //             handle.Topology = MeshTopology.Lines;
-        //             handle.Color = Color.cyan;
-        //
-        //             for (var i = 1; i < resultCount; i++)
-        //             {
-        //                 handle.AddVertex(pathBuffer[i - 1]);
-        //                 handle.AddVertex(pathBuffer[i]);
-        //             }
-        //
-        //             handle.DrawSphere(pathBuffer[1], Quaternion.identity, Vector3.one);
-        //         }
-        //     }
-        // }
-
         private Vector3 SelectJumpPosition()
         {
             var targetPosition = target.transform.position + target.Rigidbody.velocity * JumpLookAheadTime;
@@ -292,20 +271,8 @@ namespace Project.Source.Gameplay.Characters
                 var resultCount = path.GetCornersNonAlloc(pathBuffer);
                 if (resultCount > 1)
                 {
-                    void SetTargetPosition(Vector3 cornerPosition)
-                    {
-                        var directionFromSelf = (cornerPosition - transform.position).normalized;
-                        targetPosition = cornerPosition + directionFromSelf * 2f;
-                    }
-
-                    SetTargetPosition(pathBuffer[1]);
-                    for (var i = 2; i < resultCount; i++)
-                    {
-                        if (!physicsScene.Raycast(transform.position, pathBuffer[i]))
-                        {
-                            SetTargetPosition(pathBuffer[i]);
-                        }
-                    }
+                    var directionFromSelf = (pathBuffer[1] - transform.position).normalized;
+                    targetPosition = pathBuffer[1] + directionFromSelf * 2f;
                 }
             }
 
