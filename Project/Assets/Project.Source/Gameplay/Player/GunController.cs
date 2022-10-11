@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Project.Source.Gameplay.Characters;
 using Project.Source.Gameplay.Guns;
+using UniDi;
 using UnityEngine;
 
 namespace Project.Source.Gameplay.Player
@@ -8,47 +9,69 @@ namespace Project.Source.Gameplay.Player
     public class GunController : MonoBehaviour
     {
         [Header("Settings")]
-        public int EquippedGunIndex = 0;
-        [SerializeField] private List<Gun> equippableGuns = new List<Gun>();
+        public bool IsOwnedByPlayer;
+        public int EquippedGunIndex;
+        [SerializeField]
+        private List<Gun> equippableGuns = new List<Gun>();
 
         private Character character;
-        private int currentEquippedGunIndex = 0;
+        private int currentEquippedGunIndex;
         private Gun equippedGun;
+
+        [Inject]
+        private GameContext gameContext;
 
         private void Start()
         {
-        
             SwitchGun(EquippedGunIndex);
         }
 
         private void Update()
         {
-            if (equippableGuns.Count == 0) return;
+            if (equippableGuns.Count == 0)
+            {
+                return;
+            }
 
-            if (equippedGun == null || character == null) return;
+            if (equippedGun == null || character == null)
+            {
+                return;
+            }
 
-            if (character.IsDead)
+            if (IsOwnedByPlayer && gameContext.IsDead || !IsOwnedByPlayer && character.IsDead)
             {
                 Cleanup();
+
                 return;
             }
 
             MoveGunToCharacterGunPoint(character);
-        
+
             if (equippedGun.IsHolstered())
+            {
                 character.GunPosition.HandleHolster(equippedGun.GunHoldType);
-            else 
-                character.GunPosition.HandleDraw(equippedGun.GunHoldType);
-        
-            if(equippedGun.IsFiring())
-                character.GunPosition.HandleFire(equippedGun.GunHoldType);
+            }
             else
+            {
+                character.GunPosition.HandleDraw(equippedGun.GunHoldType);
+            }
+
+            if (equippedGun.IsFiring())
+            {
+                character.GunPosition.HandleFire(equippedGun.GunHoldType);
+            }
+            else
+            {
                 character.GunPosition.HandleStopFiring(equippedGun.GunHoldType);
+            }
         }
-    
+
         public void Fire()
         {
-            if (equippedGun == null) return;
+            if (equippedGun == null)
+            {
+                return;
+            }
 
             equippedGun.Fire(character);
         }
@@ -60,9 +83,12 @@ namespace Project.Source.Gameplay.Player
 
         public void SwitchGun(int gunIndex)
         {
-            if (equippedGun != null && gunIndex == currentEquippedGunIndex) return;
-        
-            for (int i = 0; i < equippableGuns.Count; i++)
+            if (equippedGun != null && gunIndex == currentEquippedGunIndex)
+            {
+                return;
+            }
+
+            for (var i = 0; i < equippableGuns.Count; i++)
             {
                 if (gunIndex == i)
                 {
@@ -70,45 +96,68 @@ namespace Project.Source.Gameplay.Player
                     currentEquippedGunIndex = i;
                     equippedGun = equippableGuns[i];
                     equippedGun.gameObject.SetActive(true);
-                
-                    if(character != null)
+
+                    if (character != null)
+                    {
                         MoveGunToCharacterGunPoint(character);
-                
+                    }
+
                     equippedGun.OnSwitch();
                 }
                 else
-                    equippableGuns[i].gameObject.SetActive(false); 
+                {
+                    equippableGuns[i].gameObject.SetActive(false);
+                }
             }
         }
 
         public void SwitchAmmo(int ammoIndex)
         {
-            if (equippedGun == null) return;
+            if (equippedGun == null)
+            {
+                return;
+            }
 
             equippedGun.SwitchAmmo(ammoIndex);
         }
 
         public int GetCurrentAmmo()
         {
-            if (equippedGun == null) return 0;
+            if (equippedGun == null)
+            {
+                return 0;
+            }
+
             return equippedGun.GetAmmo();
         }
 
         public int GetMaxAmmo()
         {
-            if (equippedGun == null) return 0;
+            if (equippedGun == null)
+            {
+                return 0;
+            }
+
             return equippedGun.MaxAmmo;
         }
 
         public bool IsReloading()
         {
-            if (equippedGun == null) return false;
+            if (equippedGun == null)
+            {
+                return false;
+            }
+
             return equippedGun.IsReloading();
         }
-    
+
         public void ReloadEquippedGun()
         {
-            if (equippedGun == null) return;
+            if (equippedGun == null)
+            {
+                return;
+            }
+
             equippedGun.StartReload();
         }
 
@@ -119,9 +168,9 @@ namespace Project.Source.Gameplay.Player
 
         private void MoveGunToCharacterGunPoint(Character character)
         {
-            Transform gun = equippedGun.transform;
-            Transform model = equippedGun.GetModel().transform;
-            GunPosition characterGun = character.GunPosition;
+            var gun = equippedGun.transform;
+            var model = equippedGun.GetModel().transform;
+            var characterGun = character.GunPosition;
             gun.position = characterGun.transform.position;
             gun.rotation = characterGun.transform.rotation;
             model.position = characterGun.GetAnimationPosition();
