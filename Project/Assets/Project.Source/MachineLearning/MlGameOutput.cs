@@ -17,8 +17,7 @@ namespace Project.Source.MachineLearning
         
         public readonly MlPlayerData Player = new MlPlayerData();
         public readonly List<MlEnemyData> Enemies = new List<MlEnemyData>();
-        
-        // Add projectiles
+        public readonly List<MlProjectileData> Projectiles = new List<MlProjectileData>();
     }
 
     public class MlPlayerData
@@ -33,7 +32,6 @@ namespace Project.Source.MachineLearning
 
         public Vector2 Position;
         public Vector2 Velocity;
-
         public float MovementSpeed;
 
         public float BurningShotCooldown;
@@ -57,6 +55,12 @@ namespace Project.Source.MachineLearning
     {
         public Vector2 OffsetFromPlayer;
         public bool CanSeeFromPlayer;
+    }
+    
+    public class MlProjectileData
+    {
+        public Vector2 OffsetFromPlayer;
+        public bool IsOwnedByPlayer;
     }
 
     public class MlGameInput

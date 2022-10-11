@@ -100,38 +100,35 @@ namespace Project.Source.MachineLearning
                     output.Id = game.Id;
 
                     var player = game.CurrentPlayer;
+                    var playerPosition = player ? player.transform.position : Vector3.zero;
+                    var playerVelocity = player ? player.Rigidbody.velocity : Vector3.zero;
 
-                    output.Player.TimeAlive = game.TimeAlive;
-                    output.Player.CurrentHealth = game.CurrentHealth;
-                    output.Player.MaxHealth = game.MaxHealth;
-                    
-                    output.Player.MovementSpeed = game.PlayerMovement.MovementSpeed;
-                    
-                    output.Player.BurningShotCooldown = Mathf.Clamp(game.Abilities[0].CurrentCooldown, 0, float.PositiveInfinity);
-                    output.Player.SoulTransferCooldown = Mathf.Clamp(game.Abilities[1].CurrentCooldown, 0, float.PositiveInfinity);
-                    output.Player.DodgeCooldown = Mathf.Clamp(game.Abilities[2].CurrentCooldown, 0, float.PositiveInfinity);
-                    
-                    output.Player.BurningShotCooldownDuration = game.Abilities[0].CooldownDuration;
-                    output.Player.SoulTransferCooldownDuration = game.Abilities[1].CooldownDuration;
-                    output.Player.DodgeCooldownDuration = game.Abilities[2].CooldownDuration;
-                    
-                    output.Player.CurrentAmmo = game.GunController.GetCurrentAmmo();
-                    output.Player.MaxAmmo = game.GunController.GetMaxAmmo();
-                    output.Player.IsReloading = game.GunController.IsReloading();
+                    // Player
+                    {
+                        output.Player.TimeAlive = game.TimeAlive;
+                        output.Player.CurrentHealth = game.CurrentHealth;
+                        output.Player.MaxHealth = game.MaxHealth;
 
-                    if (player)
-                    {
-                        output.Player.Position = new Vector2(player.transform.position.x, player.transform.position.z);
-                        output.Player.Velocity = new Vector2(player.Rigidbody.velocity.x, player.Rigidbody.velocity.z);
-                    }
-                    else
-                    {
-                        output.Player.Position = Vector2.zero;
-                        output.Player.Velocity = Vector2.zero;
+                        output.Player.Position = new Vector2(playerPosition.x, playerPosition.z);
+                        output.Player.Velocity = new Vector2(playerVelocity.x, playerVelocity.z);
+                        output.Player.MovementSpeed = game.PlayerMovement.MovementSpeed;
+
+                        output.Player.BurningShotCooldown = Mathf.Clamp(game.Abilities[0].CurrentCooldown, 0, float.PositiveInfinity);
+                        output.Player.SoulTransferCooldown = Mathf.Clamp(game.Abilities[1].CurrentCooldown, 0, float.PositiveInfinity);
+                        output.Player.DodgeCooldown = Mathf.Clamp(game.Abilities[2].CurrentCooldown, 0, float.PositiveInfinity);
+
+                        output.Player.BurningShotCooldownDuration = game.Abilities[0].CooldownDuration;
+                        output.Player.SoulTransferCooldownDuration = game.Abilities[1].CooldownDuration;
+                        output.Player.DodgeCooldownDuration = game.Abilities[2].CooldownDuration;
+
+                        output.Player.CurrentAmmo = game.GunController.GetCurrentAmmo();
+                        output.Player.MaxAmmo = game.GunController.GetMaxAmmo();
+                        output.Player.IsReloading = game.GunController.IsReloading();
                     }
 
-                    if (player)
+                    // Enemies
                     {
+                        output.Enemies.Clear();
                         foreach (var character in game.AllCharacters)
                         {
                             if (!character.IsPlayer && !character.IsDead)
@@ -139,29 +136,29 @@ namespace Project.Source.MachineLearning
                                 var enemyData = new MlEnemyData();
                                 output.Enemies.Add(enemyData);
 
-                                var offsetFromPlayer = player.transform.position - character.transform.position;
+                                var offsetFromPlayer = character.transform.position - playerPosition;
                                 enemyData.OffsetFromPlayer = new Vector2(offsetFromPlayer.x, offsetFromPlayer.z);
 
                                 var canSeeFromPlayer = game.PhysicsScene.Raycast(
-                                        player.transform.position + Vector3.one,
-                                        offsetFromPlayer.normalized,
-                                        out var hit, offsetFromPlayer.magnitude)
+                                    playerPosition + Vector3.one,
+                                    offsetFromPlayer.normalized,
+                                    out var hit, offsetFromPlayer.magnitude)
                                     && hit.collider.TryGetComponent(out Character hitCharacter)
                                     && hitCharacter == character;
-                                
+
                                 enemyData.CanSeeFromPlayer = canSeeFromPlayer;
                             }
                         }
                     }
 
+                    // Navigation raycasts
                     {
-                        var position = new Vector3(output.Player.Position.x, 0, output.Player.Position.y);
                         var direction = Vector3.forward;
                         for (var i = 0; i < MlPlayerData.DefaultNavigationRaycastCount; i++)
                         {
                             var distance = NavMesh.Raycast(
-                                position,
-                                position + direction * MlPlayerData.DefaultNavigationRaycastMaxDistance,
+                                playerPosition,
+                                playerPosition + direction * MlPlayerData.DefaultNavigationRaycastMaxDistance,
                                 out var hit, NavMesh.AllAreas)
                                 ? hit.distance
                                 : MlPlayerData.DefaultNavigationRaycastMaxDistance;
@@ -172,6 +169,20 @@ namespace Project.Source.MachineLearning
                         }
 
                         output.Player.NavigationRaycastMaxDistance = MlPlayerData.DefaultNavigationRaycastMaxDistance;
+                    }
+
+                    // Projectiles
+                    {
+                        output.Projectiles.Clear();
+                        foreach (var orbProjectile in game.AllOrbProjectiles)
+                        {
+                            var projectileData = new MlProjectileData();
+                            output.Projectiles.Add(projectileData);
+
+                            var offsetFromPlayer = orbProjectile.transform.position - playerPosition;
+                            projectileData.OffsetFromPlayer = new Vector2(offsetFromPlayer.x, offsetFromPlayer.z);
+                            projectileData.IsOwnedByPlayer = orbProjectile.OwningCharacter.IsPlayer;
+                        }
                     }
                 }
 

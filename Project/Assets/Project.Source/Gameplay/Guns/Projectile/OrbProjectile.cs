@@ -1,3 +1,4 @@
+using System;
 using Project.Source.Gameplay.Characters;
 using UniDi;
 using UnityEngine;
@@ -26,7 +27,20 @@ namespace Project.Source.Gameplay.Guns.Projectile
 
         [Inject]
         private PhysicsScene physicsScene;
-        
+
+        [Inject]
+        private GameContext gameContext;
+
+        private void OnEnable()
+        {
+            gameContext.AllOrbProjectiles.Add(this);
+        }
+
+        private void OnDisable()
+        {
+            gameContext.AllOrbProjectiles.Remove(this);
+        }
+
         private void FixedUpdate()
         {
             lifetime += Time.deltaTime;

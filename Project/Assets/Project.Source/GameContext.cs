@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using Exanite.Drawing;
 using Project.Source.Gameplay.Abilities;
 using Project.Source.Gameplay.Characters;
+using Project.Source.Gameplay.Guns.Projectile;
 using Project.Source.Gameplay.Player;
 using Project.Source.Gameplay.Waves;
 using Project.Source.MachineLearning;
@@ -46,6 +47,7 @@ namespace Project.Source
         public GunController PlayerGunController;
 
         public HashSet<Character> AllCharacters = new HashSet<Character>();
+        public HashSet<OrbProjectile> AllOrbProjectiles = new HashSet<OrbProjectile>();
 
         public event Action<Character> Possessed;
 
