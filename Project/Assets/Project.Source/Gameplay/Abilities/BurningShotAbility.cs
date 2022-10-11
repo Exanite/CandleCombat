@@ -8,10 +8,12 @@ namespace Project.Source.Gameplay.Abilities
     public class BurningShotAbility : Ability
     {
         [Header("Settings")]
-        [SerializeField] private int shotsUntilWornOff = 1;
-        [SerializeField] private int fireGunIndex = 1;
+        [SerializeField]
+        private int shotsUntilWornOff = 1;
+        [SerializeField]
+        private int fireGunIndex = 1;
 
-        //Saving this within the ability can be considered hacky.
+        // Saving this within the ability can be considered hacky.
         private GunController currentGunController;
         private Gun currentGun;
         private int currentReloads;
@@ -20,7 +22,7 @@ namespace Project.Source.Gameplay.Abilities
 
         [Inject]
         private GameContext gameContext;
-        
+
         public override void Execute()
         {
             var player = gameContext.CurrentPlayer;
@@ -29,12 +31,12 @@ namespace Project.Source.Gameplay.Abilities
                 return;
             }
 
-            // TODO: Don't reach into directly
-            var gunController = gameContext.gameObject.GetComponent<GunController>();
+            var gunController = gameContext.PlayerGunController;
             previousGun = gunController.EquippedGunIndex;
             gunController.SwitchGun(fireGunIndex);
-            Gun gun = gunController.GetEquippedGun();
-            gun.OnShoot += HandleShoot; //Dynamically subscribing is hacky.
+            
+            var gun = gunController.GetEquippedGun();
+            gun.OnShoot += HandleShoot; // Dynamically subscribing is hacky.
             currentGunController = gunController;
             currentGun = gun;
         }
@@ -42,8 +44,11 @@ namespace Project.Source.Gameplay.Abilities
         private void HandleShoot()
         {
             currentShots++;
-            
-            if (currentShots < shotsUntilWornOff) return;
+
+            if (currentShots < shotsUntilWornOff)
+            {
+                return;
+            }
 
             currentGun.OnShoot -= HandleShoot;
             currentGunController.SwitchGun(previousGun);

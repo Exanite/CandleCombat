@@ -8196,7 +8196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6beb6db959b4411eb7d33ded856d1f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GunController: {fileID: 3495843999818241335}
+  PlayerGunController: {fileID: 3495843999818241335}
   PlayerMovement: {fileID: 412501273410878446}
   VirtualCamera: {fileID: 194676993}
   CurrentPlayer: {fileID: 66419338}
@@ -8213,7 +8213,6 @@ MonoBehaviour:
   - {fileID: 1291005235}
   - {fileID: 1957402794}
   - {fileID: 1530027622}
-  PlayerGunController: {fileID: 3495843999818241335}
 --- !u!4 &2172941941644653491
 Transform:
   m_ObjectHideFlags: 0
@@ -8575,6 +8574,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1f9f289523f02344abc855d7f1597a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsOwnedByPlayer: 1
   EquippedGunIndex: 0
   equippableGuns:
   - {fileID: 78934189}
