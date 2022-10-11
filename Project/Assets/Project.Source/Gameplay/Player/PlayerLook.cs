@@ -43,10 +43,6 @@ namespace Project.Source.Gameplay.Player
             targetGroup = instantiator.InstantiatePrefabForComponent<CinemachineTargetGroup>(targetGroupPrefab);
             lookAtTarget = instantiator.InstantiatePrefabForComponent<Transform>(lookAtTargetPrefab);
             lookAtTarget.position = transform.position;
-        }
-
-        private void Start()
-        {
             targetGroup.AddMember(lookAtTarget, pointerWeight, 0);
         }
 
@@ -73,10 +69,9 @@ namespace Project.Source.Gameplay.Player
                 {
                     targetGroup.RemoveMember(character.transform);
                 }
-
-                targetGroup.AddMember(newCharacter.transform, playerWeight, 0);
             }
 
+            targetGroup.AddMember(newCharacter.transform, playerWeight, 0);
             character = newCharacter;
         }
 

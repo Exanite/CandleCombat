@@ -1588,6 +1588,18 @@ MonoBehaviour:
   _useSceneContext: 0
   _context: {fileID: 0}
   _bindType: 0
+--- !u!114 &349685475 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4686590657947957126, guid: 57615ce97bbc97e46a4674c14d33db8c,
+    type: 3}
+  m_PrefabInstance: {fileID: 2172941941883464709}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349685458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fef5a7db694f9748979abfabd7722c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &350649763
 Mesh:
   m_ObjectHideFlags: 0
@@ -8462,6 +8474,11 @@ PrefabInstance:
       propertyPath: MainCamera
       value: 
       objectReference: {fileID: 1175499560}
+    - target: {fileID: 2172941941509775111, guid: 57615ce97bbc97e46a4674c14d33db8c,
+        type: 3}
+      propertyPath: PlayerLook
+      value: 
+      objectReference: {fileID: 349685475}
     - target: {fileID: 2172941941509775111, guid: 57615ce97bbc97e46a4674c14d33db8c,
         type: 3}
       propertyPath: AudioSource

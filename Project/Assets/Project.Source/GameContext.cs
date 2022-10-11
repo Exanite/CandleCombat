@@ -24,6 +24,7 @@ namespace Project.Source
         [Header("Dependencies")]
         public GunController PlayerGunController;
         public PlayerMovement PlayerMovement;
+        public PlayerLook PlayerLook;
         public CinemachineVirtualCamera VirtualCamera;
         public Character CurrentPlayer;
         [FormerlySerializedAs("waveManager")]
@@ -113,6 +114,11 @@ namespace Project.Source
             }
 
             CurrentPlayer = character;
+            
+            PlayerGunController.SetCharacter(character);
+            PlayerMovement.SetCharacter(character);
+            PlayerLook.SetCharacter(character);
+            
             CurrentPlayer.OnPossessed();
 
             Possessed?.Invoke(character);

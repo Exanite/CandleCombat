@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 7421392470636029689}
   - component: {fileID: 47807112758318592}
   - component: {fileID: 6417752709699026851}
+  - component: {fileID: 4854697150484060130}
   m_Layer: 0
   m_Name: GameContext
   m_TagString: Untagged
@@ -57,6 +58,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerGunController: {fileID: 3495844000217364866}
   PlayerMovement: {fileID: 412501272478291803}
+  PlayerLook: {fileID: 0}
   VirtualCamera: {fileID: 0}
   CurrentPlayer: {fileID: 0}
   WaveManager: {fileID: 47807112758318592}
@@ -283,6 +285,24 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4854697150484060130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2172941941509775108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89901fa14ca434ce89025b2d46aaf893, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _components:
+  - {fileID: 2172941941509775111}
+  _identifier: 
+  _useSceneContext: 0
+  _context: {fileID: 0}
+  _bindType: 0
 --- !u!1 &2483501906309256595
 GameObject:
   m_ObjectHideFlags: 0

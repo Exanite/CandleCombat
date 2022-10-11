@@ -124,10 +124,10 @@ namespace Project.Source.Gameplay.Characters
                 pointLight.gameObject.SetActive(true);
         }
 
-        public void SwitchLights(bool onToffF)
+        public void SwitchLights(bool isActive)
         {
             foreach(var pointLight in PointLights)
-                pointLight.gameObject.SetActive(onToffF);
+                pointLight.gameObject.SetActive(isActive);
         }
 
         private void UpdateHealthDecay()

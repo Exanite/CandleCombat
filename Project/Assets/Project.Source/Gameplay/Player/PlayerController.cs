@@ -37,10 +37,6 @@ namespace Project.Source.Gameplay.Player
             currentInput.Clean();
 
             // Apply
-            playerMovement.SetCharacter(character);
-            playerLook.SetCharacter(character);
-            gunController.SetCharacter(character);
-
             playerMovement.SetMovementDirection(currentInput.MovementDirection);
             playerLook.SetTargetPosition(currentInput.TargetPosition);
 

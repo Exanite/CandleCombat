@@ -18,9 +18,6 @@ namespace Project.Source.Gameplay.Player
         private int currentEquippedGunIndex;
         private Gun equippedGun;
 
-        [Inject]
-        private GameContext gameContext;
-
         private void Start()
         {
             SwitchGun(EquippedGunIndex);
@@ -38,7 +35,7 @@ namespace Project.Source.Gameplay.Player
                 return;
             }
 
-            if (IsOwnedByPlayer && gameContext.IsDead || !IsOwnedByPlayer && character.IsDead)
+            if (character.IsDead)
             {
                 Cleanup();
 
