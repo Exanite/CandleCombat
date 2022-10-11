@@ -104,10 +104,17 @@ namespace Project.Source.MachineLearning
                     output.Player.TimeAlive = game.TimeAlive;
                     output.Player.CurrentHealth = game.CurrentHealth;
                     output.Player.MaxHealth = game.MaxHealth;
+                    
                     output.Player.MovementSpeed = game.PlayerMovement.MovementSpeed;
+                    
                     output.Player.BurningShotCooldown = Mathf.Clamp(game.Abilities[0].CurrentCooldown, 0, float.PositiveInfinity);
                     output.Player.SoulTransferCooldown = Mathf.Clamp(game.Abilities[1].CurrentCooldown, 0, float.PositiveInfinity);
                     output.Player.DodgeCooldown = Mathf.Clamp(game.Abilities[2].CurrentCooldown, 0, float.PositiveInfinity);
+                    
+                    output.Player.BurningShotCooldownDuration = game.Abilities[0].CooldownDuration;
+                    output.Player.SoulTransferCooldownDuration = game.Abilities[1].CooldownDuration;
+                    output.Player.DodgeCooldownDuration = game.Abilities[2].CooldownDuration;
+                    
                     output.Player.CurrentAmmo = game.GunController.GetCurrentAmmo();
                     output.Player.MaxAmmo = game.GunController.GetMaxAmmo();
                     output.Player.IsReloading = game.GunController.IsReloading();
@@ -150,7 +157,7 @@ namespace Project.Source.MachineLearning
                     {
                         var position = new Vector3(output.Player.Position.x, 0, output.Player.Position.y);
                         var direction = Vector3.forward;
-                        for (var i = 0; i < MlPlayerData.NavigationRaycastCount; i++)
+                        for (var i = 0; i < MlPlayerData.DefaultNavigationRaycastCount; i++)
                         {
                             var distance = NavMesh.Raycast(
                                 position,
@@ -159,7 +166,7 @@ namespace Project.Source.MachineLearning
                                 ? hit.distance
                                 : MlPlayerData.DefaultNavigationRaycastMaxDistance;
 
-                            direction = Quaternion.AngleAxis(360f / MlPlayerData.NavigationRaycastCount, Vector3.up) * direction;
+                            direction = Quaternion.AngleAxis(360f / MlPlayerData.DefaultNavigationRaycastCount, Vector3.up) * direction;
 
                             output.Player.NavigationRaycasts[i] = distance;
                         }
