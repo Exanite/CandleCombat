@@ -20,7 +20,7 @@ namespace Project.Source.Gameplay.Abilities
             }
 
             // TODO: Don't reach into Ability directly.
-            var gunController = gameContext.gameObject.GetComponent<GunController>();
+            var gunController = gameContext.PlayerGunController;
             int previousGun = gunController.EquippedGunIndex;
             gunController.SwitchGun(soulGunIndex);
             gunController.Fire();

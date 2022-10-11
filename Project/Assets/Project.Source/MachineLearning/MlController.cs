@@ -121,9 +121,9 @@ namespace Project.Source.MachineLearning
                         output.Player.SoulTransferCooldownDuration = game.Abilities[1].CooldownDuration;
                         output.Player.DodgeCooldownDuration = game.Abilities[2].CooldownDuration;
 
-                        output.Player.CurrentAmmo = game.GunController.GetCurrentAmmo();
-                        output.Player.MaxAmmo = game.GunController.GetMaxAmmo();
-                        output.Player.IsReloading = game.GunController.IsReloading();
+                        output.Player.CurrentAmmo = game.PlayerGunController.GetCurrentAmmo();
+                        output.Player.MaxAmmo = game.PlayerGunController.GetMaxAmmo();
+                        output.Player.IsReloading = game.PlayerGunController.IsReloading();
                     }
 
                     // Enemies

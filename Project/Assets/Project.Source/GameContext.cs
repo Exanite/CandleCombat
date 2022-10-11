@@ -22,7 +22,7 @@ namespace Project.Source
     public class GameContext : MonoBehaviour
     {
         [Header("Dependencies")]
-        public GunController GunController;
+        public GunController PlayerGunController;
         public PlayerMovement PlayerMovement;
         public CinemachineVirtualCamera VirtualCamera;
         public Character CurrentPlayer;
@@ -43,8 +43,6 @@ namespace Project.Source
 
         [Header("Abilities")]
         public List<Ability> Abilities = new List<Ability>();
-
-        public GunController PlayerGunController;
 
         public HashSet<Character> AllCharacters = new HashSet<Character>();
         public HashSet<OrbProjectile> AllOrbProjectiles = new HashSet<OrbProjectile>();
