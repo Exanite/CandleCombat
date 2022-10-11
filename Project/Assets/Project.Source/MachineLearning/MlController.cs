@@ -97,15 +97,11 @@ namespace Project.Source.MachineLearning
 
                     output.Id = game.Id;
 
+                    var player = game.CurrentPlayer;
+
                     output.Player.TimeAlive = game.TimeAlive;
                     output.Player.CurrentHealth = game.CurrentHealth;
                     output.Player.MaxHealth = game.MaxHealth;
-                    output.Player.Position = game.CurrentPlayer
-                        ? new Vector2(game.CurrentPlayer.transform.position.x, game.CurrentPlayer.transform.position.z)
-                        : Vector2.zero;
-                    output.Player.Velocity = game.CurrentPlayer
-                        ? new Vector2(game.CurrentPlayer.Rigidbody.velocity.x, game.CurrentPlayer.Rigidbody.velocity.z)
-                        : Vector2.zero;
                     output.Player.BurningShotCooldown = Mathf.Clamp(game.Abilities[0].CurrentCooldown, 0, float.PositiveInfinity);
                     output.Player.SoulTransferCooldown = Mathf.Clamp(game.Abilities[1].CurrentCooldown, 0, float.PositiveInfinity);
                     output.Player.DodgeCooldown = Mathf.Clamp(game.Abilities[2].CurrentCooldown, 0, float.PositiveInfinity);
@@ -113,7 +109,18 @@ namespace Project.Source.MachineLearning
                     output.Player.MaxAmmo = game.GunController.GetMaxAmmo();
                     output.Player.IsReloading = game.GunController.IsReloading();
 
-                    if (game.CurrentPlayer)
+                    if (player)
+                    {
+                        output.Player.Position = new Vector2(player.transform.position.x, player.transform.position.z);
+                        output.Player.Velocity = new Vector2(player.Rigidbody.velocity.x, player.Rigidbody.velocity.z);
+                    }
+                    else
+                    {
+                        output.Player.Position = Vector2.zero;
+                        output.Player.Velocity = Vector2.zero;
+                    }
+
+                    if (player)
                     {
                         foreach (var character in game.AllCharacters)
                         {
@@ -122,15 +129,16 @@ namespace Project.Source.MachineLearning
                                 var enemyData = new MlEnemyData();
                                 output.Enemies.Add(enemyData);
 
-                                var offsetFromPlayer = game.CurrentPlayer.transform.position - character.transform.position;
+                                var offsetFromPlayer = player.transform.position - character.transform.position;
                                 enemyData.OffsetFromPlayer = new Vector2(offsetFromPlayer.x, offsetFromPlayer.z);
 
                                 var canSeeFromPlayer = game.PhysicsScene.Raycast(
-                                        game.CurrentPlayer.transform.position + Vector3.one,
+                                        player.transform.position + Vector3.one,
                                         offsetFromPlayer.normalized,
                                         out var hit, offsetFromPlayer.magnitude)
                                     && hit.collider.TryGetComponent(out Character hitCharacter)
                                     && hitCharacter == character;
+                                
                                 enemyData.CanSeeFromPlayer = canSeeFromPlayer;
                             }
                         }
