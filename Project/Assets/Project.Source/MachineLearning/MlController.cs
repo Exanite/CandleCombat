@@ -104,6 +104,7 @@ namespace Project.Source.MachineLearning
                     output.Player.TimeAlive = game.TimeAlive;
                     output.Player.CurrentHealth = game.CurrentHealth;
                     output.Player.MaxHealth = game.MaxHealth;
+                    output.Player.MovementSpeed = game.PlayerMovement.MovementSpeed;
                     output.Player.BurningShotCooldown = Mathf.Clamp(game.Abilities[0].CurrentCooldown, 0, float.PositiveInfinity);
                     output.Player.SoulTransferCooldown = Mathf.Clamp(game.Abilities[1].CurrentCooldown, 0, float.PositiveInfinity);
                     output.Player.DodgeCooldown = Mathf.Clamp(game.Abilities[2].CurrentCooldown, 0, float.PositiveInfinity);

@@ -8197,6 +8197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GunController: {fileID: 3495843999818241335}
+  PlayerMovement: {fileID: 412501273410878446}
   VirtualCamera: {fileID: 194676993}
   CurrentPlayer: {fileID: 66419338}
   WaveManager: {fileID: 47807113162422965}

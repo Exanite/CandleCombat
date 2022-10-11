@@ -34,6 +34,8 @@ namespace Project.Source.MachineLearning
         public Vector2 Position;
         public Vector2 Velocity;
 
+        public float MovementSpeed;
+
         public float BurningShotCooldown;
         public float SoulTransferCooldown;
         public float DodgeCooldown;

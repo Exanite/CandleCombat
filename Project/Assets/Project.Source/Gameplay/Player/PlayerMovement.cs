@@ -29,6 +29,12 @@ namespace Project.Source.Gameplay.Player
         [Inject]
         private GameContext gameContext;
 
+        public float MovementSpeed
+        {
+            get => movementSpeed;
+            set => movementSpeed = value;
+        }
+
         private void Update()
         {
             var ability = gameContext.Abilities[DodgeAbilityIndex];
@@ -63,7 +69,7 @@ namespace Project.Source.Gameplay.Player
             var rb = character.Rigidbody;
 
             var targetVelocity = new Vector3(moveDirection.x, 0, moveDirection.y);
-            targetVelocity *= movementSpeed;
+            targetVelocity *= MovementSpeed;
 
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref smoothedVelocityVelocity, movementSmoothTime);
         }
@@ -85,8 +91,8 @@ namespace Project.Source.Gameplay.Player
                 return;
             }
 
-            startingMoveSpeed = movementSpeed;
-            movementSpeed = dodgeSpeed;
+            startingMoveSpeed = MovementSpeed;
+            MovementSpeed = dodgeSpeed;
             isDodging = true;
             character.IsInvulnerable = true;
             elapsedDodgeTime = 0;
@@ -97,7 +103,7 @@ namespace Project.Source.Gameplay.Player
         {
             isDodging = false;
             character.IsInvulnerable = false;
-            movementSpeed = startingMoveSpeed;
+            MovementSpeed = startingMoveSpeed;
         }
     }
 }

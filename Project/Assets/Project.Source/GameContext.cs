@@ -22,6 +22,7 @@ namespace Project.Source
     {
         [Header("Dependencies")]
         public GunController GunController;
+        public PlayerMovement PlayerMovement;
         public CinemachineVirtualCamera VirtualCamera;
         public Character CurrentPlayer;
         [FormerlySerializedAs("waveManager")]
