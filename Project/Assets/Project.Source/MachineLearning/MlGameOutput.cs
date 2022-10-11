@@ -23,6 +23,9 @@ namespace Project.Source.MachineLearning
 
     public class MlPlayerData
     {
+        public const int NavigationRaycastCount = 8;
+        public const int DefaultNavigationRaycastMaxDistance = 8;
+        
         public float TimeAlive;
         
         public float CurrentHealth;
@@ -38,6 +41,9 @@ namespace Project.Source.MachineLearning
         public int CurrentAmmo;
         public int MaxAmmo;
         public bool IsReloading;
+
+        public readonly float[] NavigationRaycasts = new float[NavigationRaycastCount];
+        public float NavigationRaycastMaxDistance = DefaultNavigationRaycastMaxDistance;
     }
 
     public class MlEnemyData

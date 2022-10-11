@@ -11,6 +11,8 @@ using Project.Source.Serialization;
 using UniDi;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.Rendering.Universal.Internal;
 using UnityEngine.SceneManagement;
 
 namespace Project.Source.MachineLearning
@@ -142,6 +144,24 @@ namespace Project.Source.MachineLearning
                                 enemyData.CanSeeFromPlayer = canSeeFromPlayer;
                             }
                         }
+                    }
+
+                    {
+                        var position = new Vector3(output.Player.Position.x, 0, output.Player.Position.y);
+                        var direction = Vector3.forward;
+                        for (var i = 0; i < MlPlayerData.NavigationRaycastCount; i++)
+                        {
+                            var distance = NavMesh.Raycast(
+                                position,
+                                position + direction * MlPlayerData.DefaultNavigationRaycastMaxDistance,
+                                out var hit, ~0)
+                                ? hit.distance
+                                : MlPlayerData.DefaultNavigationRaycastMaxDistance;
+
+                            output.Player.NavigationRaycasts[i] = distance;
+                        }
+
+                        output.Player.NavigationRaycastMaxDistance = MlPlayerData.DefaultNavigationRaycastMaxDistance;
                     }
                 }
 
