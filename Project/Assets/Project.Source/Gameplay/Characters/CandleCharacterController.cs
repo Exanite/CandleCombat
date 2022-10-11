@@ -263,7 +263,7 @@ namespace Project.Source.Gameplay.Characters
 
             var filter = new NavMeshQueryFilter
             {
-                areaMask = ~0,
+                areaMask = NavMesh.AllAreas,
             };
 
             if (NavMesh.CalculatePath(transform.position, targetPosition, filter, path))

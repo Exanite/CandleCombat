@@ -154,7 +154,7 @@ namespace Project.Source.MachineLearning
                             var distance = NavMesh.Raycast(
                                 position,
                                 position + direction * MlPlayerData.DefaultNavigationRaycastMaxDistance,
-                                out var hit, ~0)
+                                out var hit, NavMesh.AllAreas)
                                 ? hit.distance
                                 : MlPlayerData.DefaultNavigationRaycastMaxDistance;
 
