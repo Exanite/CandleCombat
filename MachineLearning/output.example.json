@@ -23,7 +23,6 @@
       "CurrentAmmo": 0,
       "MaxAmmo": 20,
       "IsReloading": true,
-      "NavigationRaycastCount": 8,
       "NavigationRaycasts": [
         8,
         8,

@@ -46,7 +46,6 @@ namespace Project.Source.MachineLearning
         public int MaxAmmo;
         public bool IsReloading;
 
-        public int NavigationRaycastCount = DefaultNavigationRaycastCount;
         public readonly float[] NavigationRaycasts = new float[DefaultNavigationRaycastCount];
         public float NavigationRaycastMaxDistance = DefaultNavigationRaycastMaxDistance;
     }
