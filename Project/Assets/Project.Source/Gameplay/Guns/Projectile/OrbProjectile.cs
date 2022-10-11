@@ -28,11 +28,39 @@ namespace Project.Source.Gameplay.Guns.Projectile
         [Inject]
         private PhysicsScene physicsScene;
 
+        public Character Owner
+        {
+            get => owner;
+            set => owner = value;
+        }
+        
+        private void FixedUpdate()
+        {
+            lifetime += Time.deltaTime;
+            if (lifetime > timeToExpire)
+            {
+                Despawn();
+            }
+
+            var distance = Time.deltaTime * rb.velocity.magnitude;
+            if (physicsScene.SphereCast(transform.position, colliderRadius, rb.velocity.normalized, out var hit, distance))
+            {
+                OnCollide(hit);
+            }
+
+            if (acceleration != 0)
+            {
+                var velocity = rb.velocity;
+                velocity += new Vector3(velocity.x * acceleration, 0, velocity.z * acceleration);
+                rb.velocity = velocity;
+            }
+        }
+
         public override void Fire(Character characterFrom, Vector3 direction, Vector3 visualPosition)
         {
-            owner = characterFrom;
+            Owner = characterFrom;
             transform.position = visualPosition;
-            transform.forward = direction;
+            transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
             rb.velocity = direction * speed;
 
             if (retainCharacterVelocity)
@@ -48,8 +76,7 @@ namespace Project.Source.Gameplay.Guns.Projectile
                 instantiator.InstantiatePrefabForComponent<VisualEffect>(hitEffect, hit.point, Quaternion.LookRotation(hit.normal, Vector3.up), null);
             }
 
-            var otherCharacter = hit.collider.GetComponent<Character>();
-            if (otherCharacter != null)
+            if (hit.collider.TryGetComponent(out Character otherCharacter))
             {
                 Hit(otherCharacter);
             }
@@ -59,7 +86,7 @@ namespace Project.Source.Gameplay.Guns.Projectile
 
         public override void Hit(Character character)
         {
-            var isSameTeam = owner.IsPlayer == character.IsPlayer;
+            var isSameTeam = Owner.IsPlayer == character.IsPlayer;
             if (isSameTeam)
             {
                 return;
@@ -67,35 +94,10 @@ namespace Project.Source.Gameplay.Guns.Projectile
 
             character.TakeDamage(damage);
 
-            Expire();
+            Despawn();
         }
 
-        private void FixedUpdate()
-        {
-            lifetime += Time.deltaTime;
-
-            if (lifetime > timeToExpire)
-            {
-                Expire();
-            }
-
-            var distance = Time.deltaTime * rb.velocity.magnitude;
-            if (physicsScene.SphereCast(transform.position, colliderRadius, rb.velocity.normalized, out var hit, distance))
-            {
-                OnCollide(hit);
-            }
-
-            if (acceleration == 0)
-            {
-                return;
-            }
-
-            var velocity = rb.velocity;
-            velocity += new Vector3(velocity.x * acceleration, 0, velocity.z * acceleration);
-            rb.velocity = velocity;
-        }
-
-        protected void Expire()
+        protected void Despawn()
         {
             Destroy(gameObject);
         }
