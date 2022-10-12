@@ -188,23 +188,24 @@ namespace Project.Source.MachineLearning
 
                 // Serialize and send outputs
                 var outputJson = Serialize(outputs);
-                streamWriter.WriteLine(outputJson);
-                streamWriter.Flush();
-
+                
                 if (LogInputOutputs)
                 {
                     print(outputJson);
                 }
+                
+                streamWriter.WriteLine(outputJson);
+                streamWriter.Flush();
 
                 // Read and deserialize inputs
                 var inputJson = streamReader.ReadLine();
-                var inputs = Deserialize<List<MlGameInput>>(inputJson);
                 
                 if (LogInputOutputs)
                 {
                     print(inputJson);
                 }
-
+                
+                var inputs = Deserialize<List<MlGameInput>>(inputJson);
 
                 // Apply inputs
                 if (inputs.Count != outputs.Count)
