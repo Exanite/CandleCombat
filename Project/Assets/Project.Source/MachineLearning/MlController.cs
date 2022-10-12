@@ -12,7 +12,6 @@ using UniDi;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Rendering.Universal.Internal;
 using UnityEngine.SceneManagement;
 
 namespace Project.Source.MachineLearning
@@ -21,9 +20,10 @@ namespace Project.Source.MachineLearning
     public class MlController : MonoBehaviour
     {
         public string InstanceSceneName = "MachineLearningInstance";
-
+        
         public string PipeName = "CandleCombatMachineLearning";
         public int TargetInstanceCount = 10;
+        public bool LogInputOutputs;
 
         private readonly List<MlGameContext> gameContexts = new List<MlGameContext>();
 
@@ -187,12 +187,24 @@ namespace Project.Source.MachineLearning
                 }
 
                 // Serialize and send outputs
-                streamWriter.WriteLine(Serialize(outputs));
+                var outputJson = Serialize(outputs);
+                streamWriter.WriteLine(outputJson);
                 streamWriter.Flush();
 
+                if (LogInputOutputs)
+                {
+                    print(outputJson);
+                }
+
                 // Read and deserialize inputs
-                var json = streamReader.ReadLine();
-                var inputs = Deserialize<List<MlGameInput>>(json);
+                var inputJson = streamReader.ReadLine();
+                var inputs = Deserialize<List<MlGameInput>>(inputJson);
+                
+                if (LogInputOutputs)
+                {
+                    print(inputJson);
+                }
+
 
                 // Apply inputs
                 if (inputs.Count != outputs.Count)
