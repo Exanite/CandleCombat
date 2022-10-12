@@ -24,6 +24,7 @@ namespace Project.Source.MachineLearning
         public string PipeName = "CandleCombatMachineLearning";
         public int TargetInstanceCount = 10;
         public bool LogInputOutputs;
+        public bool RespawnPlayers = true;
 
         private readonly List<MlGameContext> gameContexts = new List<MlGameContext>();
 
@@ -56,6 +57,8 @@ namespace Project.Source.MachineLearning
 
             Debug.Log($"Starting named pipe: {PipeName}");
             Debug.Log($"Target instance count: {TargetInstanceCount}");
+            Debug.Log($"Log input/outputs: {LogInputOutputs}");
+            Debug.Log($"Should respawn players: {RespawnPlayers}");
         }
 
         private void Update()
@@ -276,12 +279,27 @@ namespace Project.Source.MachineLearning
             }
         }
 
+        public void UnloadInstanceScene(Scene scene)
+        {
+            sceneLoader.UnloadScene(scene).Forget();
+
+            if (RespawnPlayers)
+            {
+                LoadInstanceScene();
+            }
+        }
+
         private void LoadInstanceScenes()
         {
             for (var i = 0; i < TargetInstanceCount; i++)
             {
-                sceneLoader.LoadAdditiveScene(InstanceSceneName, scene, LocalPhysicsMode.Physics3D);
+                LoadInstanceScene();
             }
+        }
+
+        private void LoadInstanceScene()
+        {
+            sceneLoader.LoadAdditiveScene(InstanceSceneName, scene, LocalPhysicsMode.Physics3D);
         }
 
         private string Serialize(object value)
@@ -321,6 +339,16 @@ namespace Project.Source.MachineLearning
                 if (arg == "--pipe-name")
                 {
                     PipeName = args[i + 1];
+                }
+                
+                if (arg == "--respawn-players")
+                {
+                    RespawnPlayers = bool.Parse(args[i + 1]);
+                }
+                
+                if (arg == "--log-input-outputs")
+                {
+                    LogInputOutputs = bool.Parse(args[i + 1]);
                 }
             }
         }

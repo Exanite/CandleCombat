@@ -182,8 +182,15 @@ namespace Project.Source
 
             if (parentScene.IsValid())
             {
-                sceneLoader.UnloadScene(selfScene).Forget();
-                sceneLoader.LoadAdditiveScene(gameObject.scene.name, parentScene, LocalPhysicsMode.Physics3D).Forget();
+                if (mlController)
+                {
+                    mlController.UnloadInstanceScene(selfScene);
+                }
+                else
+                {
+                    sceneLoader.UnloadScene(selfScene).Forget();
+                    sceneLoader.LoadAdditiveScene(gameObject.scene.name, parentScene, LocalPhysicsMode.Physics3D).Forget();
+                }
             }
             else
             {
