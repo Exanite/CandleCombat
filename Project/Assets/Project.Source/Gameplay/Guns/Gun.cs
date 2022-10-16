@@ -180,6 +180,11 @@ namespace Project.Source.Gameplay.Guns
             elapsedReloadTime = 0;
         }
 
+        public void ForceReload()
+        {
+            OnReloaded();
+        }
+
         private void OnReloaded()
         {
             Reloaded?.Invoke();

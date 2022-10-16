@@ -166,7 +166,7 @@ MonoBehaviour:
   BurstCount: 3
   SpreadAngle: 15
   BurstSpreadAngle: 30
-  SwitchReloadBehaviour: 2
+  SwitchReloadBehaviour: 0
   ReloadTime: 5
   CanReload: 0
 --- !u!82 &4813533812991842476

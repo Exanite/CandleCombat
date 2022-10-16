@@ -22,8 +22,9 @@ namespace Project.Source.Gameplay.Abilities
             var previousGunIndex = controller.EquippedGunIndex;
 
             controller.SwitchGun(fireGunIndex);
+            
             var fireGun = controller.GetEquippedGun();
-
+            fireGun.ForceReload();
             fireGun.BulletShot += OnBulletShot;
 
             void OnBulletShot()
