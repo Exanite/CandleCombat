@@ -3,7 +3,6 @@ using Project.Source.Gameplay.Player;
 using UniDi;
 using UnityEngine;
 using UnityEngine.AI;
-using Random = UnityEngine.Random;
 
 namespace Project.Source.Gameplay.Characters
 {
@@ -20,7 +19,7 @@ namespace Project.Source.Gameplay.Characters
         [Range(0, 1)]
         [SerializeField] private float jumpLandingAudioScale;
         private AudioSource audioSource;
-        
+
         [Header("Attacks")]
         public float AttackRange = 1;
 
@@ -39,6 +38,7 @@ namespace Project.Source.Gameplay.Characters
         public string JumpSpeedAnimatorFloat = "JumpSpeed";
 
         public float CharacterRadius = 0.25f;
+        public float JumpCollisionForceMultiplier = 5f;
 
         [Header("Death")]
         public string IsDeadAnimationBool = "IsDead";
@@ -67,10 +67,10 @@ namespace Project.Source.Gameplay.Characters
 
         [Inject]
         private GameContext gameContext;
-        
+
         [Inject]
         private PhysicsScene physicsScene;
-        
+
         private void Awake()
         {
             audioSource = GetComponent<AudioSource>();
@@ -117,11 +117,11 @@ namespace Project.Source.Gameplay.Characters
 
                     var offset = targetPosition - currentPosition;
                     var distanceToTarget = offset.magnitude;
-                    
+
                     var canSeePlayer = physicsScene.Raycast(transform.position + Vector3.up, offset.normalized, out var hit, offset.magnitude)
                         && hit.collider.TryGetComponent(out Character character)
                         && character.IsPlayer;
-                    
+
                     if (distanceToTarget > AttackRange + 0.5f || !canSeePlayer)
                     {
                         jumpCoroutine = StartCoroutine(JumpTowardsTarget());
@@ -172,7 +172,7 @@ namespace Project.Source.Gameplay.Characters
                 {
                     yield break;
                 }
-                
+
                 character.Rigidbody.AddForce(direction * CollisionForce, ForceMode.Acceleration);
 
                 yield return null;
@@ -203,7 +203,7 @@ namespace Project.Source.Gameplay.Characters
             {
                 return;
             }
-            
+
             if (GunController != null)
             {
                 GunController.Cleanup();
@@ -222,7 +222,7 @@ namespace Project.Source.Gameplay.Characters
             if (!target)
             {
                 isJumping = false;
-                
+
                 yield break;
             }
 
@@ -241,9 +241,16 @@ namespace Project.Source.Gameplay.Characters
                 timer += Time.deltaTime * JumpSpeed;
 
                 var distance = Time.deltaTime * jumpDistance * JumpSpeed;
-                if (physicsScene.Raycast(transform.position + Vector3.up, jumpDirection, out var hit, distance + CharacterRadius))
+                if (physicsScene.SphereCast(transform.position + Vector3.up, CharacterRadius, jumpDirection, out var hit,
+                    distance + CharacterRadius))
                 {
-                    distance = Mathf.Clamp(hit.distance - CharacterRadius, 0, distance);
+                    distance = Mathf.Clamp(hit.distance, 0, distance);
+
+                    if (hit.collider.attachedRigidbody)
+                    {
+                        var force = Character.Rigidbody.mass * JumpSpeed * JumpCollisionForceMultiplier * jumpDirection;
+                        hit.collider.attachedRigidbody.AddForceAtPosition(force, hit.point);
+                    }
                 }
 
                 transform.position += distance * jumpDirection;
@@ -251,9 +258,11 @@ namespace Project.Source.Gameplay.Characters
                 yield return null;
             }
 
-            if(jumpLandingClip != null)
+            if (jumpLandingClip != null)
+            {
                 audioSource.PlayOneShot(jumpLandingClip, jumpLandingAudioScale);
-            
+            }
+
             isJumping = false;
         }
 
