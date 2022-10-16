@@ -9,5 +9,7 @@ namespace Project.Source.Gameplay.Guns.Projectile
         
         public abstract void Fire(Character owningCharacter, Vector3 direction, Vector3 visualPosition);
         public abstract void Hit(Character character);
+
+        public abstract void Despawn();
     }
 }

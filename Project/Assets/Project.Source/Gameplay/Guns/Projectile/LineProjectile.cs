@@ -69,7 +69,7 @@ namespace Project.Source.Gameplay.Guns.Projectile
 
             if (lifetime > timeToExpire)
             {
-                Expire();
+                Despawn();
             }
         }
 
@@ -82,7 +82,7 @@ namespace Project.Source.Gameplay.Guns.Projectile
             visual = line.gameObject;
         }
 
-        private void Expire()
+        public override void Despawn()
         {
             Destroy(visual);
             Destroy(gameObject);

@@ -1,4 +1,3 @@
-using System;
 using Project.Source.Gameplay.Characters;
 using UniDi;
 using UnityEngine;
@@ -52,7 +51,8 @@ namespace Project.Source.Gameplay.Guns.Projectile
             }
 
             var distance = Time.deltaTime * rb.velocity.magnitude;
-            if (physicsScene.SphereCast(transform.position, colliderRadius, rb.velocity.normalized, out var hit, distance, queryTriggerInteraction: QueryTriggerInteraction.Ignore))
+            if (physicsScene.SphereCast(transform.position, colliderRadius, rb.velocity.normalized, out var hit, distance,
+                queryTriggerInteraction: QueryTriggerInteraction.Ignore))
             {
                 OnCollide(hit);
             }
@@ -89,8 +89,10 @@ namespace Project.Source.Gameplay.Guns.Projectile
             {
                 Hit(otherCharacter);
             }
-
-            Despawn();
+            else
+            {
+                Despawn();
+            }
         }
 
         public override void Hit(Character character)
@@ -106,7 +108,7 @@ namespace Project.Source.Gameplay.Guns.Projectile
             Despawn();
         }
 
-        protected void Despawn()
+        public override void Despawn()
         {
             Destroy(gameObject);
         }
