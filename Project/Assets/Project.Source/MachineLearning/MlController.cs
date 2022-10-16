@@ -20,7 +20,7 @@ namespace Project.Source.MachineLearning
     public class MlController : MonoBehaviour
     {
         public string InstanceSceneName = "MachineLearningInstance";
-        
+
         public string PipeName = "CandleCombatMachineLearning";
         public int TargetInstanceCount = 10;
         public bool LogInputOutputs;
@@ -140,12 +140,14 @@ namespace Project.Source.MachineLearning
                                 output.Enemies.Add(enemyData);
 
                                 var offsetFromPlayer = character.transform.position - playerPosition;
+                                offsetFromPlayer.y = 0;
+
                                 enemyData.OffsetFromPlayer = new Vector2(offsetFromPlayer.x, offsetFromPlayer.z);
 
                                 var canSeeFromPlayer = game.PhysicsScene.Raycast(
-                                    playerPosition + Vector3.one,
-                                    offsetFromPlayer.normalized,
-                                    out var hit, offsetFromPlayer.magnitude)
+                                        playerPosition + Vector3.up,
+                                        offsetFromPlayer.normalized,
+                                        out var hit, offsetFromPlayer.magnitude)
                                     && hit.collider.TryGetComponent(out Character hitCharacter)
                                     && hitCharacter == character;
 
@@ -191,23 +193,23 @@ namespace Project.Source.MachineLearning
 
                 // Serialize and send outputs
                 var outputJson = Serialize(outputs);
-                
+
                 if (LogInputOutputs)
                 {
                     print(outputJson);
                 }
-                
+
                 streamWriter.WriteLine(outputJson);
                 streamWriter.Flush();
 
                 // Read and deserialize inputs
                 var inputJson = streamReader.ReadLine();
-                
+
                 if (LogInputOutputs)
                 {
                     print(inputJson);
                 }
-                
+
                 var inputs = Deserialize<List<MlGameInput>>(inputJson);
 
                 // Apply inputs
@@ -340,12 +342,12 @@ namespace Project.Source.MachineLearning
                 {
                     PipeName = args[i + 1];
                 }
-                
+
                 if (arg == "--respawn-players")
                 {
                     RespawnPlayers = bool.Parse(args[i + 1]);
                 }
-                
+
                 if (arg == "--log-input-outputs")
                 {
                     LogInputOutputs = bool.Parse(args[i + 1]);
