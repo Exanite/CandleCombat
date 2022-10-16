@@ -47,6 +47,8 @@ namespace Project.Source.Gameplay.Guns.Projectile
             if (lifetime > timeToExpire)
             {
                 Despawn();
+
+                return;
             }
 
             var distance = Time.deltaTime * rb.velocity.magnitude;
@@ -88,7 +90,7 @@ namespace Project.Source.Gameplay.Guns.Projectile
                 Hit(otherCharacter);
             }
 
-            Destroy(gameObject);
+            Despawn();
         }
 
         public override void Hit(Character character)

@@ -90,13 +90,7 @@ namespace Project.Source.Gameplay.Guns.Projectile
 
         private void Expire()
         {
-            // Debug.Log("Destroy!");
-
-            if (visual != null)
-            {
-                Destroy(visual);
-            }
-
+            Destroy(visual);
             Destroy(gameObject);
         }
     }
