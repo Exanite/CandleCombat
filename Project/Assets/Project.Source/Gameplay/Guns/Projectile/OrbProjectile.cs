@@ -52,7 +52,7 @@ namespace Project.Source.Gameplay.Guns.Projectile
             }
 
             var distance = Time.deltaTime * rb.velocity.magnitude;
-            if (physicsScene.SphereCast(transform.position, colliderRadius, rb.velocity.normalized, out var hit, distance))
+            if (physicsScene.SphereCast(transform.position, colliderRadius, rb.velocity.normalized, out var hit, distance, queryTriggerInteraction: QueryTriggerInteraction.Ignore))
             {
                 OnCollide(hit);
             }

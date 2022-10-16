@@ -118,7 +118,8 @@ namespace Project.Source.Gameplay.Characters
                     var offset = targetPosition - currentPosition;
                     var distanceToTarget = offset.magnitude;
 
-                    var canSeePlayer = physicsScene.Raycast(transform.position + Vector3.up, offset.normalized, out var hit, offset.magnitude)
+                    var canSeePlayer = physicsScene.Raycast(transform.position + Vector3.up, offset.normalized, 
+                            out var hit, offset.magnitude, queryTriggerInteraction: QueryTriggerInteraction.Ignore)
                         && hit.collider.TryGetComponent(out Character character)
                         && character.IsPlayer;
 
@@ -241,8 +242,8 @@ namespace Project.Source.Gameplay.Characters
                 timer += Time.deltaTime * JumpSpeed;
 
                 var distance = Time.deltaTime * jumpDistance * JumpSpeed;
-                if (physicsScene.SphereCast(transform.position + Vector3.up, CharacterRadius, jumpDirection, out var hit,
-                    distance + CharacterRadius))
+                if (physicsScene.SphereCast(transform.position + Vector3.up, CharacterRadius, jumpDirection,
+                    out var hit, distance + CharacterRadius, queryTriggerInteraction: QueryTriggerInteraction.Ignore))
                 {
                     distance = Mathf.Clamp(hit.distance, 0, distance);
 

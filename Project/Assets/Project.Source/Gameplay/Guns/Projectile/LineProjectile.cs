@@ -39,7 +39,7 @@ namespace Project.Source.Gameplay.Guns.Projectile
             var startPosition = transform.position;
             var endPosition = direction * maxDistance;
 
-            if (physicsScene.SphereCast(startPosition, radius, direction, out var hit, maxDistance))
+            if (physicsScene.SphereCast(startPosition, radius, direction, out var hit, maxDistance, queryTriggerInteraction: QueryTriggerInteraction.Ignore))
             {
                 endPosition = direction * hit.distance;
 
