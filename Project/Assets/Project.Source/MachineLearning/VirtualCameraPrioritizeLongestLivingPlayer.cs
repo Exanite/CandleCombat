@@ -8,15 +8,12 @@ namespace Project.Source.MachineLearning
     {
         public CinemachineVirtualCamera VirtualCamera;
 
-        private float timer;
-
         [Inject]
         private GameContext gameContext;
 
         private void Update()
         {
-            timer += Time.deltaTime;
-            VirtualCamera.Priority = (int)(timer * 100);
+            VirtualCamera.Priority = (int)(gameContext.TimeAlive * 100);
         }
     }
 }
