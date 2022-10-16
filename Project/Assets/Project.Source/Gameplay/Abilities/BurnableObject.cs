@@ -1,3 +1,4 @@
+using System.Collections;
 using Project.Source.Gameplay.Characters;
 using UniDi;
 using UnityEngine;
@@ -51,17 +52,14 @@ namespace Project.Source.Gameplay.Abilities
         private bool isOnFire = false;
         private bool isFractured = false;
 
-        private float timeElapsedSincePossess = 0;
         private Color originalLightColor = Color.white;
         private float originalLightColorTemperature;
         private Color originalFireColor = Color.white;
-        private bool wasPossessed = false;
 
         private Light spawnedLight;
         private VisualEffect fireVisualEffect;
         private GameObject spawnedFracturedObject;
-
-        private int possesses = 0;
+        private Coroutine flashPossessedColorCoroutine;
 
         [InjectOptional]
         private GameContext gameContext;
@@ -97,7 +95,7 @@ namespace Project.Source.Gameplay.Abilities
         {
             if (gameContext)
             {
-                gameContext.Possessed += HandlePossessed;
+                gameContext.Possessed -= HandlePossessed;
             }
         }
 
@@ -108,13 +106,11 @@ namespace Project.Source.Gameplay.Abilities
                 return;
             }
 
-            timeElapsedSincePossess += Time.deltaTime;
-
             CurrentHealth -= currentFireDps * Time.deltaTime;
 
             if (spawnedLight != null)
             {
-                UpdateLightIntensity();
+                TickLightIntensity();
             }
 
             if (CurrentHealth <= MaxHealth && !isFractured)
@@ -125,11 +121,6 @@ namespace Project.Source.Gameplay.Abilities
             if (CurrentHealth <= 0)
             {
                 Expire();
-            }
-
-            if (timeElapsedSincePossess >= PossessSwitchTime)
-            {
-                HandleReturnFromPossessed();
             }
         }
 
@@ -163,7 +154,7 @@ namespace Project.Source.Gameplay.Abilities
             }
         }
 
-        private void UpdateLightIntensity()
+        private void TickLightIntensity()
         {
             var healthPercent = 1 - CurrentHealth / MaxHealth;
             var intensity = healthToIntensityCurve.Evaluate(healthPercent) * MaxIntensity;
@@ -192,8 +183,14 @@ namespace Project.Source.Gameplay.Abilities
         }
 
         private void HandlePossessed(Character character)
+        { 
+            StopFlashingPossessedColor();
+            flashPossessedColorCoroutine = StartCoroutine(FlashPossessedColor(PossessSwitchTime));
+        }
+
+        private IEnumerator FlashPossessedColor(float duration)
         {
-            wasPossessed = true;
+            float elapsedTime = 0;
 
             if (spawnedLight != null)
             {
@@ -206,13 +203,17 @@ namespace Project.Source.Gameplay.Abilities
                 fireVisualEffect.SetVector4(flameColorAttribute, PossessColor);
             }
 
-            timeElapsedSincePossess = 0;
+            while (elapsedTime < duration)
+            {
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            
+            StopFlashingPossessedColor();
         }
 
-        private void HandleReturnFromPossessed()
+        private void StopFlashingPossessedColor()
         {
-            wasPossessed = false;
-
             if (spawnedLight != null)
             {
                 spawnedLight.color = originalLightColor;
@@ -223,10 +224,8 @@ namespace Project.Source.Gameplay.Abilities
             {
                 fireVisualEffect.SetVector4(flameColorAttribute, originalFireColor);
             }
-
-            timeElapsedSincePossess = PossessSwitchTime;
         }
-
+        
         private void SpawnLight()
         {
             if (lightObjectPrefab != null)
@@ -265,6 +264,9 @@ namespace Project.Source.Gameplay.Abilities
 
         private void Expire()
         {
+            if(flashPossessedColorCoroutine != null)
+                StopCoroutine(flashPossessedColorCoroutine);
+            
             if (spawnedLight != null)
             {
                 Destroy(spawnedLight.gameObject);
@@ -279,6 +281,8 @@ namespace Project.Source.Gameplay.Abilities
             {
                 Destroy(fireVisualEffect.gameObject);
             }
+            
+            gameContext.Possessed -= HandlePossessed;
 
             Destroy(gameObject);
         }
