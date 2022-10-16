@@ -135,8 +135,8 @@ namespace Project.Source.Gameplay.Characters
                             return;
                         }
 
-                        var directionToTarget = offset.normalized;
-                        transform.rotation = Quaternion.LookRotation(directionToTarget, transform.up);
+                        var angleDegrees = Mathf.Atan2(offset.x, offset.z) * Mathf.Rad2Deg;
+                        transform.rotation = Quaternion.AngleAxis(angleDegrees, Vector3.up);
                         GunController.Fire();
                     }
                 }
