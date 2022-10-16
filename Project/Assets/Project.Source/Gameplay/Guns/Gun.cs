@@ -52,6 +52,7 @@ namespace Project.Source.Gameplay.Guns
         [Space]
         public SwitchReloadBehaviour SwitchReloadBehaviour;
         public float ReloadTime = 2f;
+        public bool CanReload = true;
 
         private float elapsedTimeSinceHolstered = 0f;
         private float elapsedTimeSinceShot = 0f;
@@ -82,6 +83,7 @@ namespace Project.Source.Gameplay.Guns
             elapsedTimeSinceShot = Mathf.Clamp(elapsedTimeSinceShot, 0, TimeBetweenShots);
             elapsedTimeSinceHolstered += Time.deltaTime;
             elapsedTimeSinceHolstered = Mathf.Clamp(elapsedTimeSinceHolstered, 0, TimeToHolsterGun);
+            elapsedReloadTime += Time.deltaTime;
 
             if (IsReloading && elapsedReloadTime >= ReloadTime)
             {
@@ -89,19 +91,19 @@ namespace Project.Source.Gameplay.Guns
             }
             else if (AmmoCount == 0)
             {
-                IsReloading = true;
-                elapsedReloadTime += Time.deltaTime;
+                StartReload();
             }
         }
 
         public void Fire(Character characterFrom)
         {
-            if (elapsedTimeSinceShot < TimeBetweenShots || IsReloading)
-            {
-                return;
-            }
+            var canFire = !(
+                elapsedTimeSinceShot < TimeBetweenShots
+                || IsReloading
+                || AmmoCount <= 0
+            );
 
-            if (AmmoCount <= 0)
+            if (!canFire)
             {
                 return;
             }
@@ -169,13 +171,18 @@ namespace Project.Source.Gameplay.Guns
 
         public void StartReload()
         {
-            if (IsReloading)
+            if (IsReloading || !CanReload)
             {
                 return;
             }
 
-            AmmoCount = 0;
             IsReloading = true;
+            elapsedReloadTime = 0;
+        }
+
+        public void ForceReload()
+        {
+            OnReloaded();
         }
 
         private void OnReloaded()
@@ -184,7 +191,6 @@ namespace Project.Source.Gameplay.Guns
 
             AmmoCount = MaxAmmo;
             IsReloading = false;
-            elapsedReloadTime = 0;
             elapsedTimeSinceShot = TimeBetweenShots;
             elapsedTimeSinceHolstered = TimeToHolsterGun;
         }
