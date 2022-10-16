@@ -5,6 +5,7 @@ using System.IO.Pipes;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Project.Source.Gameplay.Characters;
+using Project.Source.Gameplay.Guns;
 using Project.Source.Gameplay.Player;
 using Project.Source.SceneManagement;
 using Project.Source.Serialization;
@@ -126,7 +127,9 @@ namespace Project.Source.MachineLearning
 
                         output.Player.CurrentAmmo = game.PlayerGunController.GetCurrentAmmo();
                         output.Player.MaxAmmo = game.PlayerGunController.GetMaxAmmo();
-                        output.Player.IsReloading = game.PlayerGunController.IsReloading();
+                        // Technically not accurate, but AI probably doesn't need to know the difference between
+                        // switching and reloading.
+                        output.Player.IsReloading = game.PlayerGunController.GunState != GunState.Ready;
                     }
 
                     // Enemies

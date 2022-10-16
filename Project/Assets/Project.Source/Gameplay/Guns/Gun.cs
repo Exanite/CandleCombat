@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Project.Source.Gameplay.Characters;
 using UniDi;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace Project.Source.Gameplay.Guns
@@ -20,6 +21,14 @@ namespace Project.Source.Gameplay.Guns
         KeepPrevious = 0,
         SetToZeroAmmo,
         SetToFullAmmo,
+    }
+
+    [Serializable]
+    public enum GunState
+    {
+        Ready = 0,
+        Reloading,
+        Switching,
     }
 
     public class Gun : MonoBehaviour
@@ -51,19 +60,24 @@ namespace Project.Source.Gameplay.Guns
 
         [Space]
         public SwitchReloadBehaviour SwitchReloadBehaviour;
-        public float ReloadTime = 2f;
+        public float SwitchDuration = 0f;
+        
+        [Space]
+        [FormerlySerializedAs("ReloadTime")]
+        public float ReloadDuration = 2f;
         public bool CanReload = true;
 
-        private float elapsedTimeSinceHolstered = 0f;
-        private float elapsedTimeSinceShot = 0f;
-        private float elapsedReloadTime = 0f;
+        private float elapsedTimeSinceHolstered;
+        private float elapsedTimeSinceShot;
+        private float elapsedReloadTime;
+        private float elapsedTimeSinceSwitch = float.PositiveInfinity;
 
         [Inject] private AudioSource mainAudioSource;
         [Inject] private IInstantiator instantiator;
 
         public int AmmoCount { get; private set; }
 
-        public bool IsReloading { get; private set; }
+        public GunState State { get; private set; } = GunState.Ready;
         public bool IsFiring => elapsedTimeSinceShot < TimeBetweenShots;
         public bool IsHolstered => elapsedTimeSinceHolstered >= TimeToHolsterGun;
 
@@ -83,15 +97,41 @@ namespace Project.Source.Gameplay.Guns
             elapsedTimeSinceShot = Mathf.Clamp(elapsedTimeSinceShot, 0, TimeBetweenShots);
             elapsedTimeSinceHolstered += Time.deltaTime;
             elapsedTimeSinceHolstered = Mathf.Clamp(elapsedTimeSinceHolstered, 0, TimeToHolsterGun);
-            elapsedReloadTime += Time.deltaTime;
 
-            if (IsReloading && elapsedReloadTime >= ReloadTime)
+            switch (State)
             {
-                OnReloaded();
-            }
-            else if (AmmoCount == 0)
-            {
-                StartReload();
+                case GunState.Reloading:
+                {
+                    elapsedReloadTime += Time.deltaTime;
+
+                    if (elapsedReloadTime >= ReloadDuration)
+                    {
+                        OnReloaded();
+                    }
+
+                    break;
+                }
+                case GunState.Switching:
+                {
+                    elapsedTimeSinceSwitch += Time.deltaTime;
+
+                    if (elapsedTimeSinceSwitch > SwitchDuration)
+                    {
+                       OnSwitched();
+                    }
+
+                    break;
+                }
+                case GunState.Ready:
+                default:
+                {
+                    if (AmmoCount == 0)
+                    {
+                        StartReload();
+                    }
+
+                    break;
+                }
             }
         }
 
@@ -99,7 +139,7 @@ namespace Project.Source.Gameplay.Guns
         {
             var canFire = !(
                 elapsedTimeSinceShot < TimeBetweenShots
-                || IsReloading
+                || State != GunState.Ready
                 || AmmoCount <= 0
             );
 
@@ -145,7 +185,36 @@ namespace Project.Source.Gameplay.Guns
             }
         }
 
-        public void OnSwitch()
+        public void OnSwitching()
+        {
+            if (SwitchDuration > float.Epsilon)
+            {
+                State = GunState.Switching;
+                elapsedTimeSinceSwitch = 0;
+            }
+            else
+            {
+                OnSwitched();
+            }
+        }
+
+        public void StartReload()
+        {
+            if (State == GunState.Reloading || !CanReload)
+            {
+                return;
+            }
+
+            State = GunState.Reloading;
+            elapsedReloadTime = 0;
+        }
+
+        public void ForceReload()
+        {
+            OnReloaded();
+        }
+
+        private void OnSwitched()
         {
             switch (SwitchReloadBehaviour)
             {
@@ -167,22 +236,8 @@ namespace Project.Source.Gameplay.Guns
                     break;
                 }
             }
-        }
 
-        public void StartReload()
-        {
-            if (IsReloading || !CanReload)
-            {
-                return;
-            }
-
-            IsReloading = true;
-            elapsedReloadTime = 0;
-        }
-
-        public void ForceReload()
-        {
-            OnReloaded();
+            State = GunState.Ready;
         }
 
         private void OnReloaded()
@@ -190,7 +245,7 @@ namespace Project.Source.Gameplay.Guns
             Reloaded?.Invoke();
 
             AmmoCount = MaxAmmo;
-            IsReloading = false;
+            State = GunState.Ready;
             elapsedTimeSinceShot = TimeBetweenShots;
             elapsedTimeSinceHolstered = TimeToHolsterGun;
         }

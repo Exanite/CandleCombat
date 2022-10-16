@@ -17,6 +17,8 @@ namespace Project.Source.Gameplay.Player
         private int currentEquippedGunIndex;
         private Gun equippedGun;
 
+        public GunState GunState => equippedGun ? equippedGun.State : GunState.Ready;
+
         private void Start()
         {
             SwitchGun(EquippedGunIndex);
@@ -98,7 +100,7 @@ namespace Project.Source.Gameplay.Player
                         MoveGunToCharacterGunPoint(character);
                     }
 
-                    equippedGun.OnSwitch();
+                    equippedGun.OnSwitching();
                 }
                 else
                 {
@@ -135,16 +137,6 @@ namespace Project.Source.Gameplay.Player
             }
 
             return equippedGun.MaxAmmo;
-        }
-
-        public bool IsReloading()
-        {
-            if (equippedGun == null)
-            {
-                return false;
-            }
-
-            return equippedGun.IsReloading;
         }
 
         public void ReloadEquippedGun()
