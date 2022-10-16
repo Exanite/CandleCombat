@@ -112,7 +112,7 @@ namespace Project.Source.Gameplay.Guns
 
             for (var i = 0; i < BurstCount; i++)
             {
-                var direction = firePoint.forward;
+                var direction = Vector3.Cross(firePoint.right, Vector3.up);
                 var angleOffsetDegrees = Random.Range(-SpreadAngle, SpreadAngle) / 2;
                 if (BurstCount > 1)
                 {
