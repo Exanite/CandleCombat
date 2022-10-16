@@ -85,7 +85,7 @@ namespace Project.Source.Gameplay.Guns.Projectile
                 instantiator.InstantiatePrefabForComponent<VisualEffect>(hitEffect, hit.point, Quaternion.LookRotation(hit.normal, Vector3.up), null);
             }
 
-            if (hit.collider.TryGetComponent(out Character otherCharacter))
+            if (hit.collider.attachedRigidbody && hit.collider.attachedRigidbody.TryGetComponent(out Character otherCharacter))
             {
                 Hit(otherCharacter);
             }

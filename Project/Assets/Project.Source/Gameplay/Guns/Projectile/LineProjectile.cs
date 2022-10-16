@@ -37,24 +37,18 @@ namespace Project.Source.Gameplay.Guns.Projectile
             OwningCharacter = owningCharacter;
 
             var startPosition = transform.position;
-            var endPosition = Vector3.zero;
+            var endPosition = direction * maxDistance;
 
             if (physicsScene.SphereCast(startPosition, radius, direction, out var hit, maxDistance))
             {
                 endPosition = direction * hit.distance;
-                // Debug.Log("Hit: " + hit.collider.gameObject);
 
-                var character = hit.collider.gameObject.GetComponent<Character>();
-                if (character != null)
+                if (hit.collider.attachedRigidbody && hit.collider.attachedRigidbody.TryGetComponent(out Character character))
                 {
                     Hit(character);
                 }
             }
-            else
-            {
-                endPosition = direction * maxDistance;
-            }
-
+            
             CreateVisual(visualPosition, endPosition, hit.distance, direction);
         }
 
