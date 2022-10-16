@@ -6,6 +6,16 @@ interface Vector2 {
   y: number;
 }
 
+interface MlEnemyData {
+  OffsetFromPlayer: Vector2;
+  CanSeeFromPlayer: boolean;
+}
+
+interface MlProjectileData {
+  OffsetFromPlayer: Vector2;
+  IsOwnedByPlayer: boolean;
+}
+
 interface MlGameOutput {
   Id: string;
 
@@ -17,20 +27,27 @@ interface MlGameOutput {
 
     Position: Vector2;
     Velocity: Vector2;
+    MovementSpeed: number;
 
     BurningShotCooldown: number;
     SoulTransferCooldown: number;
     DodgeCooldown: number;
 
+    BurningShotCooldownDuration: number;
+    SoulTransferCooldownDuration: number;
+    DodgeCooldownDuration: number;
+    
     CurrentAmmo: number;
     MaxAmmo: number;
     IsReloading: boolean;
+
+    NavigationRaycasts: [number, number, number, number, number, number, number, number];
+    NavigationRaycastMaxDistance: number;
   };
 
-  Enemies: {
-    OffsetFromPlayer: Vector2;
-    CanSeeFromPlayer: boolean;
-  }[];
+  Enemies: MlEnemyData[];
+
+  Projectiles: MlProjectileData[];
 }
 
 interface MlGameInput {
@@ -69,11 +86,11 @@ const run = async (): Promise<void> => {
           x: (Math.random() - 0.5) * 2,
           y: (Math.random() - 0.5) * 2,
         },
-        IsBurningShotPressed: true,
-        IsSoulTransferPressed: true,
-        IsDodgePressed: true,
-        IsShootPressed: true,
-        IsReloadPressed: true,
+        IsBurningShotPressed: false,
+        IsSoulTransferPressed: false,
+        IsDodgePressed: false,
+        IsShootPressed: false,
+        IsReloadPressed: false,
       });
     }
 
