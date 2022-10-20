@@ -53,12 +53,12 @@ namespace Project.Source.Gameplay.Player
                 }
                 else
                 {
-                    elapsedDodgeTime += Time.fixedDeltaTime;
+                    elapsedDodgeTime += Time.deltaTime;
                 }
             }
             else
             {
-                elapsedTimeSinceDodge += Time.fixedDeltaTime;
+                elapsedTimeSinceDodge += Time.deltaTime;
             }
 
             if (!character || character.IsDead || !character.Rigidbody)
