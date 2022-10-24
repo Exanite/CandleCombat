@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
 using Cysharp.Threading.Tasks;
+using Exanite.Core.Utilities;
 using Newtonsoft.Json;
 using Project.Source.Gameplay.Characters;
 using Project.Source.Gameplay.Guns;
@@ -61,10 +62,7 @@ namespace Project.Source.MachineLearning
 
         private void Update()
         {
-            if (uiContext.GameContext == null)
-            {
-                uiContext.GameContext = gameContexts.Count == 0 ? null : gameContexts[0].GameContext;
-            }
+            UpdateUiContext();
 
             if (server.IsConnected && !hasInitialized)
             {
@@ -307,6 +305,39 @@ namespace Project.Source.MachineLearning
         private void LoadInstanceScene()
         {
             sceneLoader.LoadAdditiveScene(InstanceSceneName, scene, LocalPhysicsMode.Physics3D);
+        }
+
+        private void UpdateUiContext()
+        {
+            if (gameContexts.Count == 0)
+            {
+                return;
+            }
+
+            if (uiContext.GameContext == null)
+            {
+                uiContext.GameContext = gameContexts[0].GameContext;
+
+                return;
+            }
+
+            if (UnityEngine.Input.GetKeyDown(KeyCode.A))
+            {
+                var currentIndex = gameContexts.FindIndex(x => x.GameContext == uiContext.GameContext);
+                currentIndex--;
+                currentIndex = MathUtility.Wrap(currentIndex, 0, gameContexts.Count - 1);
+
+                uiContext.GameContext = gameContexts[currentIndex].GameContext;
+            }
+
+            if (UnityEngine.Input.GetKeyDown(KeyCode.D))
+            {
+                var currentIndex = gameContexts.FindIndex(x => x.GameContext == uiContext.GameContext);
+                currentIndex++;
+                currentIndex = MathUtility.Wrap(currentIndex, 0, gameContexts.Count - 1);
+
+                uiContext.GameContext = gameContexts[currentIndex].GameContext;
+            }
         }
 
         private string Serialize(object value)
