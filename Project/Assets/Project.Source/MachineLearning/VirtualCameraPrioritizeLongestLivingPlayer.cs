@@ -1,19 +1,15 @@
 using Cinemachine;
-using UniDi;
-using UnityEngine;
+using Project.Source.UserInterface;
 
 namespace Project.Source.MachineLearning
 {
-    public class VirtualCameraPrioritizeLongestLivingPlayer : MonoBehaviour
+    public class VirtualCameraPrioritizeLongestLivingPlayer : GameUiBehaviour
     {
         public CinemachineVirtualCamera VirtualCamera;
 
-        [Inject]
-        private GameContext gameContext;
-
         private void Update()
         {
-            VirtualCamera.Priority = (int)(gameContext.TimeAlive * 100);
+            VirtualCamera.Priority = (int)(GameContext.TimeAlive * 100);
         }
     }
 }

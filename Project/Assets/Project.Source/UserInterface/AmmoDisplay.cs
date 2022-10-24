@@ -5,16 +5,13 @@ using UnityEngine;
 
 namespace Project.Source.UserInterface
 {
-    public class AmmoDisplay : MonoBehaviour
+    public class AmmoDisplay : GameUiBehaviour
     {
         public TMP_Text Text;
 
-        [Inject]
-        private GameContext gameContext;
-
         private void Update()
         {
-            switch (gameContext.PlayerGunController.GunState)
+            switch (GameContext.PlayerGunController.GunState)
             {
                 case GunState.Reloading:
                 {
@@ -31,8 +28,8 @@ namespace Project.Source.UserInterface
                 case GunState.Ready:
                 default:
                 {
-                    var currentAmmo = gameContext.PlayerGunController.GetCurrentAmmo();
-                    var maxAmmo = gameContext.PlayerGunController.GetMaxAmmo();
+                    var currentAmmo = GameContext.PlayerGunController.GetCurrentAmmo();
+                    var maxAmmo = GameContext.PlayerGunController.GetMaxAmmo();
 
                     Text.text = $"{currentAmmo} / {maxAmmo}";
 

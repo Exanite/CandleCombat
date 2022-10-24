@@ -1,11 +1,10 @@
 using TMPro;
-using UniDi;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Project.Source.UserInterface
 {
-    public class AbilityDisplay : MonoBehaviour
+    public class AbilityDisplay : GameUiBehaviour
     {
         public int AbilityIndex;
         public string KeyTextContent;
@@ -14,12 +13,9 @@ namespace Project.Source.UserInterface
         public Image IconImage;
         public Image CooldownImage;
         
-        [Inject]
-        private GameContext gameContext;
-
         private void Update()
         {
-            var ability = gameContext.Abilities[AbilityIndex];
+            var ability = GameContext.Abilities[AbilityIndex];
             if (ability == null)
             {
                 return;

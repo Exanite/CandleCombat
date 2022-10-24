@@ -1,18 +1,14 @@
-using UniDi;
 using UnityEngine;
 
 namespace Project.Source.UserInterface
 {
-    public class DeathMessageDisplay : MonoBehaviour
+    public class DeathMessageDisplay : GameUiBehaviour
     {
         public GameObject Target;
 
-        [Inject]
-        private GameContext gameContext;
-
         private void Update()
         {
-            var isDead = gameContext.IsDead;
+            var isDead = GameContext.IsDead;
 
             Target.SetActive(isDead);
         }

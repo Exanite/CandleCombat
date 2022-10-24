@@ -1,19 +1,15 @@
-using UniDi;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Project.Source.UserInterface
 {
-    public class HealthDisplay : MonoBehaviour
+    public class HealthDisplay : GameUiBehaviour
     {
         public Image Image;
 
-        [Inject]
-        private GameContext gameContext;
-
         private void Update()
         {
-            var healthRatio = Mathf.Clamp01(gameContext.CurrentHealth / gameContext.MaxHealth);
+            var healthRatio = Mathf.Clamp01(GameContext.CurrentHealth / GameContext.MaxHealth);
 
             Image.fillAmount = healthRatio;
         }
