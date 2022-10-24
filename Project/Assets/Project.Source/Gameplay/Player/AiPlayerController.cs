@@ -35,8 +35,8 @@ namespace Project.Source.Gameplay.Player
                 if (character && !character.IsPlayer && !character.IsDead)
                 {
                     var offsetToCharacter = character.transform.position - player.transform.position;
-                    var canSeeCharacter = physicsScene.Raycast(player.transform.position + Vector3.up, offsetToCharacter.normalized, out var hit,
-                            offsetToCharacter.magnitude)
+                    var canSeeCharacter = physicsScene.Raycast(player.transform.position + Vector3.up, offsetToCharacter.normalized, 
+                            out var hit, offsetToCharacter.magnitude, queryTriggerInteraction: QueryTriggerInteraction.Ignore)
                         && hit.collider.TryGetComponent(out Character hitCharacter)
                         && hitCharacter == character;
 

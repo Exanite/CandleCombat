@@ -817,20 +817,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7248003370848667053
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9093820852291369876}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5bbb1d1c8dbc674195ae20462becda7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  smRenderer: {fileID: 3791641840116894563}
-  Duration: 1
 --- !u!114 &2250288973554215811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -872,9 +858,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1f9f289523f02344abc855d7f1597a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsOwnedByPlayer: 0
   EquippedGunIndex: 0
   equippableGuns:
   - {fileID: 1582939442411967555}
+--- !u!114 &7248003370848667053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9093820852291369876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5bbb1d1c8dbc674195ae20462becda7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  smRenderer: {fileID: 3791641840116894563}
+  Duration: 1
 --- !u!114 &8991834137252470452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -904,6 +905,7 @@ MonoBehaviour:
   JumpSpeed: 1
   JumpSpeedAnimatorFloat: JumpSpeed
   CharacterRadius: 0.25
+  JumpCollisionForceMultiplier: 10
   IsDeadAnimationBool: IsDead
   CollisionDamageAmount: 10
   CollisionForce: 200

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Project.Source.Gameplay.Characters;
 using Project.Source.Gameplay.Guns;
-using UniDi;
 using UnityEngine;
 
 namespace Project.Source.Gameplay.Player
@@ -17,6 +16,8 @@ namespace Project.Source.Gameplay.Player
         private Character character;
         private int currentEquippedGunIndex;
         private Gun equippedGun;
+
+        public GunState GunState => equippedGun ? equippedGun.State : GunState.Ready;
 
         private void Start()
         {
@@ -44,7 +45,7 @@ namespace Project.Source.Gameplay.Player
 
             MoveGunToCharacterGunPoint(character);
 
-            if (equippedGun.IsHolstered())
+            if (equippedGun.IsHolstered)
             {
                 character.GunPosition.HandleHolster(equippedGun.GunHoldType);
             }
@@ -53,7 +54,7 @@ namespace Project.Source.Gameplay.Player
                 character.GunPosition.HandleDraw(equippedGun.GunHoldType);
             }
 
-            if (equippedGun.IsFiring())
+            if (equippedGun.IsFiring)
             {
                 character.GunPosition.HandleFire(equippedGun.GunHoldType);
             }
@@ -99,7 +100,7 @@ namespace Project.Source.Gameplay.Player
                         MoveGunToCharacterGunPoint(character);
                     }
 
-                    equippedGun.OnSwitch();
+                    equippedGun.OnSwitching();
                 }
                 else
                 {
@@ -125,7 +126,7 @@ namespace Project.Source.Gameplay.Player
                 return 0;
             }
 
-            return equippedGun.GetAmmo();
+            return equippedGun.AmmoCount;
         }
 
         public int GetMaxAmmo()
@@ -136,16 +137,6 @@ namespace Project.Source.Gameplay.Player
             }
 
             return equippedGun.MaxAmmo;
-        }
-
-        public bool IsReloading()
-        {
-            if (equippedGun == null)
-            {
-                return false;
-            }
-
-            return equippedGun.IsReloading();
         }
 
         public void ReloadEquippedGun()
@@ -165,13 +156,15 @@ namespace Project.Source.Gameplay.Player
 
         private void MoveGunToCharacterGunPoint(Character character)
         {
-            var gun = equippedGun.transform;
-            var model = equippedGun.GetModel().transform;
+            var gunTransform = equippedGun.transform;
+            var modelTransform = equippedGun.ModelTransform;
             var characterGun = character.GunPosition;
-            gun.position = characterGun.transform.position;
-            gun.rotation = characterGun.transform.rotation;
-            model.position = characterGun.GetAnimationPosition();
-            model.rotation = characterGun.GetAnimationRotation();
+            
+            gunTransform.position = characterGun.transform.position;
+            gunTransform.rotation = characterGun.transform.rotation;
+            
+            modelTransform.position = characterGun.GetAnimationPosition();
+            modelTransform.rotation = characterGun.GetAnimationRotation();
         }
 
         public void Cleanup()

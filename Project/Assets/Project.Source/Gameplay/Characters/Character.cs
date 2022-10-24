@@ -15,7 +15,7 @@ namespace Project.Source.Gameplay.Characters
         [Header("Dependencies")]
         public Rigidbody Rigidbody;
         public DissolveShader DissolveShader;
-        
+
         [Header("Configuration")]
         [SerializeField]
         [FormerlySerializedAs("CurrentHealth")]
@@ -26,30 +26,30 @@ namespace Project.Source.Gameplay.Characters
         public float HealthRegenPerSecond;
         public GunPosition GunPosition;
         public List<Light> PointLights;
-        
+
         [Header("Wick")]
         public Transform PlayerWickPosition;
         public string WickVelocityVfxString = "Player Velocity";
-        
+
         [Header("Runtime")]
         public bool IsDead;
         public bool IsInvulnerable;
-        
+
         [Header("On Death")]
         public List<Behaviour> DisableOnDeathBehaviours = new List<Behaviour>();
         public List<Collider> DisableOnDeathColliders = new List<Collider>();
         public float OnDeathDestroyDelay = 3f;
-        
+
         private VisualEffect playerWick;
 
         [Inject]
         private GameContext gameContext;
-        
+
         [Inject]
         private IInstantiator instantiator;
 
         public bool IsPlayer => this == gameContext.CurrentPlayer;
-        
+
         public float CurrentHealth
         {
             get => currentHealth;
@@ -58,7 +58,7 @@ namespace Project.Source.Gameplay.Characters
 
         public event Action<Character> Dead;
         public event EventHandler<Character, float> TookDamage;
-        
+
         private void Start()
         {
             if (IsPlayer)
@@ -67,8 +67,10 @@ namespace Project.Source.Gameplay.Characters
             }
             else
             {
-                foreach(var pointLight in PointLights)
+                foreach (var pointLight in PointLights)
+                {
                     pointLight.gameObject.SetActive(false);
+                }
             }
         }
 
@@ -87,7 +89,7 @@ namespace Project.Source.Gameplay.Characters
             if (IsDead)
             {
                 Rigidbody.velocity = Vector3.zero;
-                
+
                 return;
             }
 
@@ -105,7 +107,7 @@ namespace Project.Source.Gameplay.Characters
             {
                 gameContext.CurrentHealth -= damageAmount;
             }
-            
+
             TookDamage?.Invoke(this, damageAmount);
         }
 
@@ -113,28 +115,32 @@ namespace Project.Source.Gameplay.Characters
         {
             CurrentHealth = value;
         }
-        
+
         public void OnPossessed()
         {
-            int playerLayer = LayerMask.NameToLayer("Player");
+            var playerLayer = LayerMask.NameToLayer("Player");
             gameObject.layer = playerLayer;
             Rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
-            
-            foreach(var pointLight in PointLights)
+
+            foreach (var pointLight in PointLights)
+            {
                 pointLight.gameObject.SetActive(true);
+            }
         }
 
         public void SwitchLights(bool isActive)
         {
-            foreach(var pointLight in PointLights)
+            foreach (var pointLight in PointLights)
+            {
                 pointLight.gameObject.SetActive(isActive);
+            }
         }
 
         private void UpdateHealthDecay()
         {
             CurrentHealth += Time.deltaTime * HealthRegenPerSecond;
         }
-        
+
         private void UpdatePlayerWick()
         {
             if (IsPlayer)
@@ -153,7 +159,7 @@ namespace Project.Source.Gameplay.Characters
                 playerWick = null;
             }
         }
-        
+
         private void CheckDeath()
         {
             if (CurrentHealth <= 0)
@@ -176,7 +182,7 @@ namespace Project.Source.Gameplay.Characters
             {
                 behaviour.enabled = false;
             }
-            
+
             foreach (var collider in DisableOnDeathColliders)
             {
                 collider.enabled = false;
@@ -190,7 +196,7 @@ namespace Project.Source.Gameplay.Characters
             }
 
             yield return new WaitForSeconds(1);
-            
+
             DissolveShader.StartDissolve();
             Destroy(gameObject, OnDeathDestroyDelay);
         }

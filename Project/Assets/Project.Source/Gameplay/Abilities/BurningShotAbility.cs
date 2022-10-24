@@ -1,5 +1,3 @@
-using Project.Source.Gameplay.Guns;
-using Project.Source.Gameplay.Player;
 using UniDi;
 using UnityEngine;
 
@@ -8,11 +6,9 @@ namespace Project.Source.Gameplay.Abilities
     public class BurningShotAbility : Ability
     {
         [Header("Settings")]
-        [SerializeField]
-        private int fireGunIndex = 1;
+        [SerializeField] private int fireGunIndex = 1;
 
-        [Inject]
-        private GameContext gameContext;
+        [Inject] private GameContext gameContext;
 
         public override void Execute()
         {
@@ -24,25 +20,22 @@ namespace Project.Source.Gameplay.Abilities
 
             var controller = gameContext.PlayerGunController;
             var previousGunIndex = controller.EquippedGunIndex;
-            
-            controller.SwitchGun(fireGunIndex);
-            AddBulletShotHandler(controller, previousGunIndex);
-        }
 
-        private void AddBulletShotHandler(GunController controller, int previousGunIndex)
-        {
-            var gun = controller.GetEquippedGun();
-            var shotsLeft = gun.MaxAmmo;
+            controller.SwitchGun(fireGunIndex);
             
-            gun.BulletShot += OnBulletShot;
+            var fireGun = controller.GetEquippedGun();
+            fireGun.ForceReload();
+            fireGun.BulletShot += OnBulletShot;
 
             void OnBulletShot()
             {
-                shotsLeft--;
-
-                if (shotsLeft <= 0)
+                if (controller.GetEquippedGun() != fireGun)
                 {
-                    gun.BulletShot -= OnBulletShot;
+                    fireGun.BulletShot -= OnBulletShot;
+                }
+                else if (fireGun.AmmoCount <= 0)
+                {
+                    fireGun.BulletShot -= OnBulletShot;
                     controller.SwitchGun(previousGunIndex);
                 }
             }
