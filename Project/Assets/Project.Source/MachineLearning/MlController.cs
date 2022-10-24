@@ -325,7 +325,7 @@ namespace Project.Source.MachineLearning
             {
                 var currentIndex = gameContexts.FindIndex(x => x.GameContext == uiContext.GameContext);
                 currentIndex--;
-                currentIndex = MathUtility.Wrap(currentIndex, 0, gameContexts.Count - 1);
+                currentIndex = MathUtility.Wrap(currentIndex, 0, gameContexts.Count);
 
                 uiContext.GameContext = gameContexts[currentIndex].GameContext;
             }
@@ -334,7 +334,7 @@ namespace Project.Source.MachineLearning
             {
                 var currentIndex = gameContexts.FindIndex(x => x.GameContext == uiContext.GameContext);
                 currentIndex++;
-                currentIndex = MathUtility.Wrap(currentIndex, 0, gameContexts.Count - 1);
+                currentIndex = MathUtility.Wrap(currentIndex, 0, gameContexts.Count);
 
                 uiContext.GameContext = gameContexts[currentIndex].GameContext;
             }
