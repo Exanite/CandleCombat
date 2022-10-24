@@ -1,7 +1,5 @@
 using Project.Source.Gameplay.Guns;
 using TMPro;
-using UniDi;
-using UnityEngine;
 
 namespace Project.Source.UserInterface
 {
@@ -11,6 +9,11 @@ namespace Project.Source.UserInterface
 
         private void Update()
         {
+            if (GameContext == null)
+            {
+                return;
+            }
+            
             switch (GameContext.PlayerGunController.GunState)
             {
                 case GunState.Reloading:

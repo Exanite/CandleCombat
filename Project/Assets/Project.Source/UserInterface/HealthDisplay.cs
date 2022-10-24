@@ -9,6 +9,11 @@ namespace Project.Source.UserInterface
 
         private void Update()
         {
+            if (GameContext == null)
+            {
+                return;
+            }
+            
             var healthRatio = Mathf.Clamp01(GameContext.CurrentHealth / GameContext.MaxHealth);
 
             Image.fillAmount = healthRatio;

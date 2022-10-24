@@ -15,6 +15,11 @@ namespace Project.Source.UserInterface
         
         private void Update()
         {
+            if (GameContext == null)
+            {
+                return;
+            }
+            
             var ability = GameContext.Abilities[AbilityIndex];
             if (ability == null)
             {

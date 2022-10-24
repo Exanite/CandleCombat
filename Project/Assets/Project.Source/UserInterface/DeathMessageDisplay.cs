@@ -8,6 +8,11 @@ namespace Project.Source.UserInterface
 
         private void Update()
         {
+            if (GameContext == null)
+            {
+                return;
+            }
+            
             var isDead = GameContext.IsDead;
 
             Target.SetActive(isDead);

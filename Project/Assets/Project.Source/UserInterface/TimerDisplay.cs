@@ -9,6 +9,11 @@ namespace Project.Source.UserInterface
 
         private void Update()
         {
+            if (GameContext == null)
+            {
+                return;
+            }
+            
             text.text = TimeSpan.FromSeconds(GameContext.TimeAlive).ToString(@"mm\:ss\.fff");
         }
     }

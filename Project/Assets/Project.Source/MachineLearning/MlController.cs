@@ -9,6 +9,7 @@ using Project.Source.Gameplay.Guns;
 using Project.Source.Gameplay.Player;
 using Project.Source.SceneManagement;
 using Project.Source.Serialization;
+using Project.Source.UserInterface;
 using UniDi;
 using UnityEditor;
 using UnityEngine;
@@ -29,14 +30,10 @@ namespace Project.Source.MachineLearning
 
         private readonly List<MlGameContext> gameContexts = new List<MlGameContext>();
 
-        [Inject]
-        private SceneLoader sceneLoader;
-
-        [Inject]
-        private Scene scene;
-
-        [Inject]
-        private ProjectJsonSerializer serializer;
+        [Inject] private SceneLoader sceneLoader;
+        [Inject] private Scene scene;
+        [Inject] private ProjectJsonSerializer serializer;
+        [Inject] private UiContext uiContext;
 
         private NamedPipeServerStream server;
         private StreamReader streamReader;
@@ -64,6 +61,11 @@ namespace Project.Source.MachineLearning
 
         private void Update()
         {
+            if (uiContext.GameContext == null)
+            {
+                uiContext.GameContext = gameContexts.Count == 0 ? null : gameContexts[0].GameContext;
+            }
+
             if (server.IsConnected && !hasInitialized)
             {
                 Debug.Log("Detected connection");
