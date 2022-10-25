@@ -52,9 +52,9 @@ namespace Project.Source.MachineLearning
             {
                 TryReadCommandLineArguments();
             }
-            catch
+            catch (Exception e)
             {
-                Debug.LogError("Failed to parse CLI arguments");
+                Debug.LogError($"Failed to parse CLI arguments: {e}");
                 Application.Quit();
 
                 return;
@@ -175,11 +175,11 @@ namespace Project.Source.MachineLearning
                                 enemyData.OffsetFromPlayer = new Vector2(offsetFromPlayer.x, offsetFromPlayer.z);
 
                                 var canSeeFromPlayer = game.PhysicsScene.Raycast(
-                                                           playerPosition + Vector3.up,
-                                                           offsetFromPlayer.normalized,
-                                                           out var hit, offsetFromPlayer.magnitude)
-                                                       && hit.collider.TryGetComponent(out Character hitCharacter)
-                                                       && hitCharacter == character;
+                                        playerPosition + Vector3.up,
+                                        offsetFromPlayer.normalized,
+                                        out var hit, offsetFromPlayer.magnitude)
+                                    && hit.collider.TryGetComponent(out Character hitCharacter)
+                                    && hitCharacter == character;
 
                                 enemyData.CanSeeFromPlayer = canSeeFromPlayer;
                             }
@@ -246,8 +246,8 @@ namespace Project.Source.MachineLearning
                 if (inputs.Count != outputs.Count)
                 {
                     throw new ArgumentException("Did not receive the same number of inputs as outputs. " +
-                                                $"Input count: {inputs.Count}. " +
-                                                $"Output count: {outputs.Count}.");
+                        $"Input count: {inputs.Count}. " +
+                        $"Output count: {outputs.Count}.");
                 }
 
                 for (var i = 0; i < inputs.Count; i++)
@@ -333,7 +333,6 @@ namespace Project.Source.MachineLearning
                 {
                     break;
                 }
-                    ;
                 default: throw ExceptionUtility.NotSupportedEnumValue(RespawnBehavior);
             }
         }
@@ -379,7 +378,7 @@ namespace Project.Source.MachineLearning
             for (var i = 0; i < args.Length; i++)
             {
                 var arg = args[i];
-                
+
                 if (arg == "--instance-count")
                 {
                     TargetInstanceCount = int.Parse(args[i + 1]);
