@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
 using Cysharp.Threading.Tasks;
+using Exanite.Core.Utilities;
 using Newtonsoft.Json;
 using Project.Source.Gameplay.Characters;
 using Project.Source.Gameplay.Guns;
 using Project.Source.Gameplay.Player;
 using Project.Source.SceneManagement;
 using Project.Source.Serialization;
-using Project.Source.UserInterface;
 using UniDi;
 using UnityEditor;
 using UnityEngine;
@@ -26,11 +26,15 @@ namespace Project.Source.MachineLearning
         public string PipeName = "CandleCombatMachineLearning";
         public int TargetInstanceCount = 10;
         public bool LogInputOutputs;
-        public bool RespawnPlayers = true;
 
-        [Inject] private SceneLoader sceneLoader;
-        [Inject] private Scene scene;
-        [Inject] private ProjectJsonSerializer serializer;
+        public PlayerRespawnBehavior RespawnBehavior = PlayerRespawnBehavior.Immediate;
+
+        [Inject]
+        private SceneLoader sceneLoader;
+        [Inject]
+        private Scene scene;
+        [Inject]
+        private ProjectJsonSerializer serializer;
 
         private NamedPipeServerStream server;
         private StreamReader streamReader;
@@ -55,7 +59,7 @@ namespace Project.Source.MachineLearning
             Debug.Log($"Starting named pipe: {PipeName}");
             Debug.Log($"Target instance count: {TargetInstanceCount}");
             Debug.Log($"Log input/outputs: {LogInputOutputs}");
-            Debug.Log($"Should respawn players: {RespawnPlayers}");
+            Debug.Log($"Player respawn behavior: {RespawnBehavior}");
         }
 
         private void Update()
@@ -65,7 +69,7 @@ namespace Project.Source.MachineLearning
             {
                 return;
             }
-            
+
             if (server.IsConnected && !hasInitialized)
             {
                 Debug.Log("Detected connection");
@@ -74,6 +78,8 @@ namespace Project.Source.MachineLearning
                 // Initialize
                 hasInitialized = true;
                 LoadInstanceScenes();
+
+                return;
             }
 
             if (!server.IsConnected && hasInitialized)
@@ -86,10 +92,19 @@ namespace Project.Source.MachineLearning
 #else
                 Application.Quit();
 #endif
+
+                return;
             }
 
-            if (server.IsConnected && hasInitialized && GameContexts.Count > 0)
+            if (server.IsConnected && hasInitialized)
             {
+                if (RespawnBehavior == PlayerRespawnBehavior.Waves && GameContexts.Count == 0)
+                {
+                    LoadInstanceScenes();
+
+                    return;
+                }
+
                 Debug.Log($"Running tick: {tickCount}");
                 tickCount++;
 
@@ -150,11 +165,11 @@ namespace Project.Source.MachineLearning
                                 enemyData.OffsetFromPlayer = new Vector2(offsetFromPlayer.x, offsetFromPlayer.z);
 
                                 var canSeeFromPlayer = game.PhysicsScene.Raycast(
-                                        playerPosition + Vector3.up,
-                                        offsetFromPlayer.normalized,
-                                        out var hit, offsetFromPlayer.magnitude)
-                                    && hit.collider.TryGetComponent(out Character hitCharacter)
-                                    && hitCharacter == character;
+                                                           playerPosition + Vector3.up,
+                                                           offsetFromPlayer.normalized,
+                                                           out var hit, offsetFromPlayer.magnitude)
+                                                       && hit.collider.TryGetComponent(out Character hitCharacter)
+                                                       && hitCharacter == character;
 
                                 enemyData.CanSeeFromPlayer = canSeeFromPlayer;
                             }
@@ -221,8 +236,8 @@ namespace Project.Source.MachineLearning
                 if (inputs.Count != outputs.Count)
                 {
                     throw new ArgumentException("Did not receive the same number of inputs as outputs. " +
-                        $"Input count: {inputs.Count}. " +
-                        $"Output count: {outputs.Count}.");
+                                                $"Input count: {inputs.Count}. " +
+                                                $"Output count: {outputs.Count}.");
                 }
 
                 for (var i = 0; i < inputs.Count; i++)
@@ -290,9 +305,26 @@ namespace Project.Source.MachineLearning
         {
             sceneLoader.UnloadScene(scene).Forget();
 
-            if (RespawnPlayers)
+            switch (RespawnBehavior)
             {
-                LoadInstanceScene();
+                case PlayerRespawnBehavior.Immediate:
+                {
+                    LoadInstanceScene();
+
+                    break;
+                }
+                case PlayerRespawnBehavior.Waves:
+                {
+                    // Handled by Update
+
+                    break;
+                }
+                case PlayerRespawnBehavior.None:
+                {
+                    break;
+                }
+                    ;
+                default: throw ExceptionUtility.NotSupportedEnumValue(RespawnBehavior);
             }
         }
 
@@ -323,11 +355,10 @@ namespace Project.Source.MachineLearning
 
         private T Deserialize<T>(string json)
         {
-            using (var stringReader = new StringReader(json))
-            using (var jsonReader = new JsonTextReader(stringReader))
-            {
-                return serializer.Deserialize<T>(jsonReader);
-            }
+            using var stringReader = new StringReader(json);
+            using var jsonReader = new JsonTextReader(stringReader);
+
+            return serializer.Deserialize<T>(jsonReader);
         }
 
         private void TryReadCommandLineArguments()
@@ -338,6 +369,7 @@ namespace Project.Source.MachineLearning
             for (var i = 0; i < args.Length; i++)
             {
                 var arg = args[i];
+                
                 if (arg == "--instance-count")
                 {
                     TargetInstanceCount = int.Parse(args[i + 1]);
@@ -348,9 +380,9 @@ namespace Project.Source.MachineLearning
                     PipeName = args[i + 1];
                 }
 
-                if (arg == "--respawn-players")
+                if (arg == "--respawn-behavior")
                 {
-                    RespawnPlayers = bool.Parse(args[i + 1]);
+                    RespawnBehavior = Enum.Parse<PlayerRespawnBehavior>(args[i + 1], true);
                 }
 
                 if (arg == "--log-input-outputs")
