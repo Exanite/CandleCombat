@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
 using Cysharp.Threading.Tasks;
-using Exanite.Core.Utilities;
 using Newtonsoft.Json;
 using Project.Source.Gameplay.Characters;
 using Project.Source.Gameplay.Guns;
@@ -29,8 +28,6 @@ namespace Project.Source.MachineLearning
         public bool LogInputOutputs;
         public bool RespawnPlayers = true;
 
-        private readonly List<MlGameContext> gameContexts = new List<MlGameContext>();
-
         [Inject] private SceneLoader sceneLoader;
         [Inject] private Scene scene;
         [Inject] private ProjectJsonSerializer serializer;
@@ -43,6 +40,8 @@ namespace Project.Source.MachineLearning
         private bool hasInitialized;
 
         private long tickCount;
+
+        public List<MlGameContext> GameContexts { get; } = new List<MlGameContext>();
 
         private void Start()
         {
@@ -62,8 +61,6 @@ namespace Project.Source.MachineLearning
 
         private void Update()
         {
-            UpdateUiContext();
-
             if (server.IsConnected && !hasInitialized)
             {
                 Debug.Log("Detected connection");
@@ -86,7 +83,7 @@ namespace Project.Source.MachineLearning
 #endif
             }
 
-            if (server.IsConnected && hasInitialized && gameContexts.Count > 0)
+            if (server.IsConnected && hasInitialized && GameContexts.Count > 0)
             {
                 Debug.Log($"Running tick: {tickCount}");
                 tickCount++;
@@ -94,7 +91,7 @@ namespace Project.Source.MachineLearning
                 // Output data and wait for input
                 // Gather outputs
                 var outputs = new List<MlGameOutput>();
-                foreach (var mlGameContext in gameContexts)
+                foreach (var mlGameContext in GameContexts)
                 {
                     var game = mlGameContext.GameContext;
 
@@ -226,7 +223,7 @@ namespace Project.Source.MachineLearning
                 for (var i = 0; i < inputs.Count; i++)
                 {
                     var input = inputs[i];
-                    var mlGameContext = gameContexts[i];
+                    var mlGameContext = GameContexts[i];
                     var playerPosition = mlGameContext.GameContext.CurrentPlayer
                         ? mlGameContext.GameContext.CurrentPlayer.transform.position
                         : Vector3.zero;
@@ -262,10 +259,10 @@ namespace Project.Source.MachineLearning
         {
             Debug.Log("Registering GameContext");
 
-            var index = gameContexts.FindIndex(x => x.GameContext == gameContext);
+            var index = GameContexts.FindIndex(x => x.GameContext == gameContext);
             if (index == -1)
             {
-                gameContexts.Add(new MlGameContext
+                GameContexts.Add(new MlGameContext
                 {
                     GameContext = gameContext,
                     Controller = gameContext.GetComponent<ExternalPlayerController>(),
@@ -277,10 +274,10 @@ namespace Project.Source.MachineLearning
         {
             Debug.Log("Unregistering GameContext");
 
-            var index = gameContexts.FindIndex(x => x.GameContext == gameContext);
+            var index = GameContexts.FindIndex(x => x.GameContext == gameContext);
             if (index != -1)
             {
-                gameContexts.RemoveAt(index);
+                GameContexts.RemoveAt(index);
             }
         }
 
@@ -305,39 +302,6 @@ namespace Project.Source.MachineLearning
         private void LoadInstanceScene()
         {
             sceneLoader.LoadAdditiveScene(InstanceSceneName, scene, LocalPhysicsMode.Physics3D);
-        }
-
-        private void UpdateUiContext()
-        {
-            if (gameContexts.Count == 0)
-            {
-                return;
-            }
-
-            if (uiContext.GameContext == null)
-            {
-                uiContext.GameContext = gameContexts[0].GameContext;
-
-                return;
-            }
-
-            if (UnityEngine.Input.GetKeyDown(KeyCode.A))
-            {
-                var currentIndex = gameContexts.FindIndex(x => x.GameContext == uiContext.GameContext);
-                currentIndex--;
-                currentIndex = MathUtility.Wrap(currentIndex, 0, gameContexts.Count);
-
-                uiContext.GameContext = gameContexts[currentIndex].GameContext;
-            }
-
-            if (UnityEngine.Input.GetKeyDown(KeyCode.D))
-            {
-                var currentIndex = gameContexts.FindIndex(x => x.GameContext == uiContext.GameContext);
-                currentIndex++;
-                currentIndex = MathUtility.Wrap(currentIndex, 0, gameContexts.Count);
-
-                uiContext.GameContext = gameContexts[currentIndex].GameContext;
-            }
         }
 
         private string Serialize(object value)
