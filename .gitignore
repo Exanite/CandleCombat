@@ -1,2 +1,4 @@
 Build/
 Builds/
+models/
+__pycache__/
