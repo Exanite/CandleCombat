@@ -1,10 +1,10 @@
-using UniDi;
+using Project.Source.UserInterface;
 using UnityEngine;
 using UnityEngine.Audio;
 
 namespace Project.Source.Audio
 {
-    public class HealthAudioSync : MonoBehaviour
+    public class HealthAudioSync : GameUiBehaviour
     {
         public AudioMixer Mixer;
         public AudioMixerSnapshot NormalSnapshot;
@@ -15,9 +15,6 @@ namespace Project.Source.Audio
         private AudioMixerSnapshot[] snapshots;
         private float[] snapshotWeights;
 
-        [Inject]
-        private GameContext gameContext;
-
         private void Start()
         {
             snapshots = new AudioMixerSnapshot[] { NormalSnapshot, LowHpSnapshot };
@@ -26,7 +23,13 @@ namespace Project.Source.Audio
 
         private void Update()
         {
-            var healthRatio = Mathf.Clamp01(gameContext.CurrentHealth / gameContext.MaxHealth);
+            var healthRatio = GameContext ? Mathf.Clamp01(GameContext.CurrentHealth / GameContext.MaxHealth) : 1;
+
+            SetHealthRatio(healthRatio);
+        }
+
+        private void SetHealthRatio(float healthRatio)
+        {
             var inverseHealthRatio = 1 - healthRatio;
 
             snapshotWeights[0] = Mathf.Clamp01(1 - Curve.Evaluate(inverseHealthRatio));

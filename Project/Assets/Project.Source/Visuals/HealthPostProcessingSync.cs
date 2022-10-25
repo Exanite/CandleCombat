@@ -1,20 +1,17 @@
-using UniDi;
+using Project.Source.UserInterface;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 namespace Project.Source.Visuals
 {
-    public class HealthPostProcessingSync : MonoBehaviour
+    public class HealthPostProcessingSync : GameUiBehaviour
     {
         public Volume Volume;
         public AnimationCurve GrayoutCurve;
-
-        [Inject]
-        private GameContext gameContext;
-
+        
         private void Update()
         {
-            var healthRatio = Mathf.Clamp01(gameContext.CurrentHealth / gameContext.MaxHealth);
+            var healthRatio = GameContext ? Mathf.Clamp01(GameContext.CurrentHealth / GameContext.MaxHealth) : 1;
             var weight = Mathf.Clamp01(GrayoutCurve.Evaluate(1 - healthRatio));
 
             Volume.weight = weight;
