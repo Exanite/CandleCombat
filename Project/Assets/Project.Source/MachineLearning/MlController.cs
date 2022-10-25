@@ -355,11 +355,10 @@ namespace Project.Source.MachineLearning
 
         private T Deserialize<T>(string json)
         {
-            using (var stringReader = new StringReader(json))
-            using (var jsonReader = new JsonTextReader(stringReader))
-            {
-                return serializer.Deserialize<T>(jsonReader);
-            }
+            using var stringReader = new StringReader(json);
+            using var jsonReader = new JsonTextReader(stringReader);
+
+            return serializer.Deserialize<T>(jsonReader);
         }
 
         private void TryReadCommandLineArguments()
@@ -370,6 +369,7 @@ namespace Project.Source.MachineLearning
             for (var i = 0; i < args.Length; i++)
             {
                 var arg = args[i];
+                
                 if (arg == "--instance-count")
                 {
                     TargetInstanceCount = int.Parse(args[i + 1]);
@@ -382,7 +382,7 @@ namespace Project.Source.MachineLearning
 
                 if (arg == "--respawn-behavior")
                 {
-                    RespawnBehavior = Enum.Parse<PlayerRespawnBehavior>(args[i + 1]);
+                    RespawnBehavior = Enum.Parse<PlayerRespawnBehavior>(args[i + 1], true);
                 }
 
                 if (arg == "--log-input-outputs")
