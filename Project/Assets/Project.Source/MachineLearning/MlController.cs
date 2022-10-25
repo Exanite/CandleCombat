@@ -31,7 +31,6 @@ namespace Project.Source.MachineLearning
         [Inject] private SceneLoader sceneLoader;
         [Inject] private Scene scene;
         [Inject] private ProjectJsonSerializer serializer;
-        [Inject] private UiContext uiContext;
 
         private NamedPipeServerStream server;
         private StreamReader streamReader;
@@ -61,6 +60,12 @@ namespace Project.Source.MachineLearning
 
         private void Update()
         {
+            Time.timeScale = sceneLoader.IsLoading ? 0 : 1;
+            if (sceneLoader.IsLoading)
+            {
+                return;
+            }
+            
             if (server.IsConnected && !hasInitialized)
             {
                 Debug.Log("Detected connection");

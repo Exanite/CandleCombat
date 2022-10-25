@@ -16,9 +16,7 @@ namespace Project.Source.SceneManagement
     public class SceneLoader : MonoBehaviour
     {
         public const string ParentSceneId = "ParentScene";
-
-        private bool isLoading;
-
+        
         private SceneContextRegistry sceneContextRegistry;
 
         [Inject]
@@ -26,6 +24,8 @@ namespace Project.Source.SceneManagement
         {
             this.sceneContextRegistry = sceneContextRegistry;
         }
+        
+        public bool IsLoading { get; private set; }
 
         /// <summary>
         ///     Loads the <see cref="Scene"/> using the provided
@@ -97,8 +97,8 @@ namespace Project.Source.SceneManagement
             };
 
             // Allow only one scene to load at a time
-            await UniTask.WaitWhile(() => isLoading);
-            isLoading = true;
+            await UniTask.WaitWhile(() => IsLoading);
+            IsLoading = true;
 
             PrepareForSceneLoad(parent, bindings, bindingsLate);
 
@@ -118,7 +118,7 @@ namespace Project.Source.SceneManagement
             finally
             {
                 // Prevent dead lock
-                isLoading = false;
+                IsLoading = false;
 
                 Cleanup();
             }
@@ -152,8 +152,8 @@ namespace Project.Source.SceneManagement
             }
 
             // Allow only one scene to load at a time
-            await UniTask.WaitWhile(() => isLoading);
-            isLoading = true;
+            await UniTask.WaitWhile(() => IsLoading);
+            IsLoading = true;
 
             PrepareForSceneLoad(null, bindings, bindingsLate);
 
@@ -173,7 +173,7 @@ namespace Project.Source.SceneManagement
             finally
             {
                 // Prevent dead lock
-                isLoading = false;
+                IsLoading = false;
 
                 Cleanup();
             }
