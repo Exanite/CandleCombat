@@ -48,7 +48,17 @@ namespace Project.Source.MachineLearning
 
         private void Start()
         {
-            TryReadCommandLineArguments();
+            try
+            {
+                TryReadCommandLineArguments();
+            }
+            catch
+            {
+                Debug.LogError("Failed to parse CLI arguments");
+                Application.Quit();
+
+                return;
+            }
 
             server = new NamedPipeServerStream(PipeName, PipeDirection.InOut);
             server.WaitForConnectionAsync(this.GetCancellationTokenOnDestroy());
