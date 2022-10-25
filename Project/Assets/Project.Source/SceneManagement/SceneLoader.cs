@@ -16,16 +16,13 @@ namespace Project.Source.SceneManagement
     public class SceneLoader : MonoBehaviour
     {
         public const string ParentSceneId = "ParentScene";
-        
-        private SceneContextRegistry sceneContextRegistry;
 
-        [Inject]
-        public void Inject(SceneContextRegistry sceneContextRegistry)
-        {
-            this.sceneContextRegistry = sceneContextRegistry;
-        }
+        private int internalLoadingCount;
+        private bool internalIsLoading;
         
-        public bool IsLoading { get; private set; }
+        [Inject] private SceneContextRegistry sceneContextRegistry;
+
+        public bool IsLoading => internalLoadingCount != 0;
 
         /// <summary>
         ///     Loads the <see cref="Scene"/> using the provided
@@ -97,8 +94,9 @@ namespace Project.Source.SceneManagement
             };
 
             // Allow only one scene to load at a time
-            await UniTask.WaitWhile(() => IsLoading);
-            IsLoading = true;
+            internalLoadingCount++;
+            await UniTask.WaitWhile(() => internalIsLoading);
+            internalIsLoading = true;
 
             PrepareForSceneLoad(parent, bindings, bindingsLate);
 
@@ -118,7 +116,8 @@ namespace Project.Source.SceneManagement
             finally
             {
                 // Prevent dead lock
-                IsLoading = false;
+                internalIsLoading = false;
+                internalLoadingCount--;
 
                 Cleanup();
             }
@@ -152,8 +151,9 @@ namespace Project.Source.SceneManagement
             }
 
             // Allow only one scene to load at a time
-            await UniTask.WaitWhile(() => IsLoading);
-            IsLoading = true;
+            internalLoadingCount++;
+            await UniTask.WaitWhile(() => internalIsLoading);
+            internalIsLoading = true;
 
             PrepareForSceneLoad(null, bindings, bindingsLate);
 
@@ -173,7 +173,8 @@ namespace Project.Source.SceneManagement
             finally
             {
                 // Prevent dead lock
-                IsLoading = false;
+                internalIsLoading = false;
+                internalLoadingCount--;
 
                 Cleanup();
             }
