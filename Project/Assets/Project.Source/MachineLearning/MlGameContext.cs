@@ -1,6 +1,6 @@
 using Project.Source.Gameplay.Player;
 
-namespace Project.Source.MachineLearning.Data
+namespace Project.Source.MachineLearning
 {
     public class MlGameContext
     {

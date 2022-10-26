@@ -33,20 +33,19 @@ namespace Project.Source.MachineLearning
 
         public PlayerRespawnBehavior RespawnBehavior = PlayerRespawnBehavior.Immediate;
 
-        [Inject]
-        private SceneLoader sceneLoader;
-        [Inject]
-        private Scene scene;
-        [Inject]
-        private ProjectJsonSerializer serializer;
+        [Inject] private SceneLoader sceneLoader;
+        [Inject] private Scene scene;
+        [Inject] private ProjectJsonSerializer serializer;
 
         private NamedPipeServerStream server;
         private StreamReader streamReader;
         private StreamWriter streamWriter;
 
         private bool hasInitialized;
-
         private long tickCount;
+        
+        private readonly List<MlGameStartedEvent> startedGames = new List<MlGameStartedEvent>();
+        private readonly List<MlGameClosedEvent> closedGames = new List<MlGameClosedEvent>();
 
         public List<MlGameContext> GameContexts { get; } = new List<MlGameContext>();
 
@@ -131,8 +130,13 @@ namespace Project.Source.MachineLearning
                 // Output data and wait for input
                 // Gather outputs
                 var mlOutput = new MlOutput();
-                var outputs = mlOutput.GameOutputs;
+                mlOutput.StartedGames.AddRange(startedGames);
+                mlOutput.ClosedGames.AddRange(closedGames);
                 
+                startedGames.Clear();
+                closedGames.Clear();
+
+                var outputs = mlOutput.GameOutputs;
                 foreach (var mlGameContext in GameContexts)
                 {
                     var game = mlGameContext.GameContext;
@@ -310,6 +314,11 @@ namespace Project.Source.MachineLearning
                     GameContext = gameContext,
                     Controller = gameContext.GetComponent<ExternalPlayerController>(),
                 });
+                
+                startedGames.Add(new MlGameStartedEvent()
+                {
+                    Id = gameContext.Id,
+                });
             }
         }
 
@@ -321,6 +330,12 @@ namespace Project.Source.MachineLearning
             if (index != -1)
             {
                 GameContexts.RemoveAt(index);
+                
+                closedGames.Add(new MlGameClosedEvent()
+                {
+                    Id = gameContext.Id,
+                    TimeAlive = gameContext.TimeAlive,
+                });
             }
         }
 

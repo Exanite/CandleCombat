@@ -60,8 +60,20 @@ interface MlGameInput {
   IsReloadPressed: boolean;
 }
 
+interface MlGameStartedEvent {
+  Id: string;
+}
+
+interface MlGameClosedEvent {
+  Id: string;
+  TimeAlive: number;
+}
+
 interface MlOutput {
   GameOutputs: MlGameOutput[];
+
+  StartedGames: MlGameStartedEvent[];
+  ClosedGames: MlGameClosedEvent[];
 }
 
 interface MlInput {
@@ -161,11 +173,20 @@ const run = async (): Promise<void> => {
   });
 
   for await (const mlOutputJson of lineReader) {
-    console.log("Received data");
-    console.log(mlOutputJson);
+    // console.log("Received data");
+    // console.log(mlOutputJson);
     const mlOutput = JSON.parse(mlOutputJson) as MlOutput;
     const gameOutputs = mlOutput.GameOutputs;
     const gameInputs: MlGameInput[] = [];
+
+    for (const startedGame of mlOutput.StartedGames) {
+      console.log(`Game started: ${startedGame.Id}`);
+    }
+
+    for (const closedGame of mlOutput.ClosedGames) {
+      console.log(`Game closed: ${closedGame.Id}`);
+      console.log(`Time alive: ${closedGame.TimeAlive}`);
+    }
 
     for (const output of gameOutputs) {
       const input: MlGameInput = {
@@ -301,8 +322,8 @@ const run = async (): Promise<void> => {
     
     const mlInputJson = JSON.stringify(mlInput);
 
-    console.log("Sending");
-    console.log(mlInputJson);
+    // console.log("Sending");
+    // console.log(mlInputJson);
 
     socket.write(mlInputJson);
     socket.write("\n");
