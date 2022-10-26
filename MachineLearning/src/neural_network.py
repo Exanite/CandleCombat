@@ -25,7 +25,7 @@ def get_weights_mutated(first, second, mutation_rate):
     if is_number(first) and is_number(second):
         # randomly switch biases between the two
         pct = random.random()
-        if pct >= 0.5:
+        if pct >= 0.66:
             return first
         else:
             return second
@@ -38,16 +38,15 @@ def get_weights_mutated(first, second, mutation_rate):
         weight_first = (first[i] * pct)
         weight_second = (second[i] * (1 - pct))
         weight = weight_first + weight_second
-        # TODO: mutate the weight by some normal distribution
-        # mutation = np.random.normal(weight, mutation_rate, weight.shape)
-        out.append(weight)
+        mutation = np.random.normal(weight, mutation_rate, weight.shape)
+        out.append(mutation)
     return out
 
 class NeuralNetwork:
-    def __init__(self, input_size, output_size, hidden_layers, learning_rate, init_std=5.0):
+    def __init__(self, input_size, hidden_layers, output_size, learning_rate, init_std=5.0):
         self.input_size = input_size
-        self.output_size = output_size
         self.hidden_layers = hidden_layers
+        self.output_size = output_size
         self.learning_rate = learning_rate
         self.init_std = init_std
 
@@ -55,22 +54,23 @@ class NeuralNetwork:
 
     def _build_model(self):
         initializer = tf.keras.initializers.RandomNormal(stddev=self.init_std)
+        bias_initializer = tf.keras.initializers.RandomNormal(stddev=0.5)
 
         self.model = tf.keras.Sequential()
         # input layer
-        self.model.add(tf.keras.layers.Dense(self.input_size, input_dim=self.input_size, activation='relu', 
+        self.model.add(tf.keras.layers.Dense(self.input_size, input_dim=self.input_size, activation='sigmoid',
                         kernel_initializer=initializer,
-                        bias_initializer=initializer))
+                        bias_initializer=bias_initializer))
         # hidden layers
         for layer in self.hidden_layers:
             self.model.add(tf.keras.layers.Dense(layer, activation='relu',
                             kernel_initializer=initializer,
-                            bias_initializer=initializer))
+                            bias_initializer=bias_initializer))
 
         # output layer
         self.model.add(tf.keras.layers.Dense(self.output_size, activation='tanh',
             kernel_initializer=initializer,
-            bias_initializer=initializer))
+            bias_initializer=bias_initializer))
 
         self.model.compile(loss='mse', optimizer=tf.keras.optimizers.Adam(lr=self.learning_rate))
 
@@ -97,7 +97,7 @@ class NeuralNetwork:
                 out.append(new_weights)
             output_weights.append(out)
         # print_arr_shape(output_weights, name='output_weights')
-        output = NeuralNetwork(self.input_size, self.output_size, self.hidden_layers, self.learning_rate)
+        output = NeuralNetwork(self.input_size, self.hidden_layers, self.output_size, self.learning_rate)
         output.model.set_weights([np.array(a) for a in output_weights])
         output.model.compile(loss='mse', optimizer=tf.keras.optimizers.Adam(lr=self.learning_rate))
         return output

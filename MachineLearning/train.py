@@ -10,14 +10,28 @@ import numpy as np
 import src.neural_network as nn
 import pygad
 
-pipe_name = "Pipe4"
-num_instances = 50
+pipe_name = "Pipe6"
+num_instances = 20
+respawn_players = 'True'
 exe_path = os.path.join("Builds", "Server", "Project.exe")
 
 
 def get_distances_from_player(player, enemy):
     return math.sqrt((player["Position"]["x"] - enemy["OffsetFromPlayer"]["x"])**2 + (player["Position"]["y"] - enemy["OffsetFromPlayer"]["y"])**2)
 
+async def get_prediction(model, player):
+    in_arr, time_alive = get_row_from_obj(player)
+    prediction = model.predict([list(in_arr.values())])
+    return prediction
+
+models = {}
+
+async def get_predictions(players):
+    predictions = []
+    for player in players:
+        predictions.append(get_prediction(models[player['Id']], player))
+    predictions = await asyncio.gather(*predictions)
+    return predictions
 
 def get_row_from_obj(obj):
     player = obj["Player"]
@@ -67,7 +81,7 @@ def get_row_from_obj(obj):
 def start_pipe():
     print("starting game")
     os.system(
-        f"{exe_path} --instance-count {num_instances} --pipe-name {pipe_name} --respawn-player False")
+        f"{exe_path} --instance-count {num_instances} --pipe-name {pipe_name} --respawn-players {respawn_players}")
     print("finished")
 
 def main():
@@ -95,7 +109,6 @@ def main():
     max_results = -1
     count_last_max = 0
     f = open(pipe_path, "r+")
-    models = {}
     results = {}
     history = []
 
@@ -110,7 +123,7 @@ def main():
                 player = player_arr[i]
                 if len(models) < num_instances:
                     print(f"Initializing model for player {player['Id']}")
-                    models[player['Id']] = nn.NeuralNetwork(24, 9, [64, 32], 1.0, init_std=5.0)
+                    models[player['Id']] = nn.NeuralNetwork(24, [64, 16], 9, 1.0, init_std=5.0)
                     models[player['Id']]._build_model()
                     results[player['Id']] = 0.0
                 else:
@@ -130,18 +143,14 @@ def main():
                     models[player['Id']] = models[max_id].new_generation(second_best=second_best)
                     results[player['Id']] = 0.0
                     history.append(results[max_id])
+            results[player_arr[i]['Id']] = player_arr[i]["Player"]["TimeAlive"]
 
         output = []
-        predictions = []
+        predictions = asyncio.run(get_predictions(player_arr))
 
-        for player in player_arr:
-            in_arr, time_alive = get_row_from_obj(player)
-            # print(f"Predicting for player {player['Id']}, time alive: {time_alive}")
-            prediction = models[player['Id']].predict([list(in_arr.values())])
-            predictions.append(prediction[0])
-
-        for prediction in predictions:
+        for pred in predictions:
             tmp = base_player.copy()
+            prediction = pred[0]
 
             tmp["MovementDirection"]["x"] = float(prediction[0])
             tmp["MovementDirection"]["y"] = float(prediction[1])
@@ -154,7 +163,6 @@ def main():
             tmp["IsReloadPressed"] = float(prediction[8]) > 0.5
 
             output.append(tmp)
-            results[player['Id']] = time_alive
 
         timed_runs = list(results.values())
         tmp_max_results = max(timed_runs)
