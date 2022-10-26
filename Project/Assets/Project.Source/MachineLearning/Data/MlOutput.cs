@@ -8,5 +8,7 @@ namespace Project.Source.MachineLearning.Data
 
         public readonly List<MlGameStartedEvent> StartedGames = new List<MlGameStartedEvent>();
         public readonly List<MlGameClosedEvent> ClosedGames = new List<MlGameClosedEvent>();
+
+        public float DeltaTime;
     }
 }

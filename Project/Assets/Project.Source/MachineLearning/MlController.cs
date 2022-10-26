@@ -124,7 +124,7 @@ namespace Project.Source.MachineLearning
                     return;
                 }
 
-                Debug.Log($"Running tick: {tickCount}");
+                Debug.Log($"Running tick: {tickCount}. Delta time: {Time.deltaTime}");
                 tickCount++;
 
                 // Output data and wait for input
@@ -132,6 +132,7 @@ namespace Project.Source.MachineLearning
                 var mlOutput = new MlOutput();
                 mlOutput.StartedGames.AddRange(startedGames);
                 mlOutput.ClosedGames.AddRange(closedGames);
+                mlOutput.DeltaTime = Time.deltaTime;
                 
                 startedGames.Clear();
                 closedGames.Clear();

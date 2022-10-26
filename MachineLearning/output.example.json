@@ -69,5 +69,20 @@
         }
       ]
     }
-  ]
+  ],
+  "StartedGames": [
+    {
+      "Id": "b9dbd0a0-7d20-4185-94b2-4d8867c336a0"
+    },
+    {
+      "Id": "e83dc0e9-6e0c-4ca0-8aca-ef0044960636"
+    }
+  ],
+  "ClosedGames": [
+    {
+      "Id": "0d37a0d7-6379-4a4a-ad02-d05e9c7f7c24",
+      "TimeAlive": 24.0818615
+    }
+  ],
+  "DeltaTime": 0.03333334
 }

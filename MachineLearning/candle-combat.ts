@@ -80,6 +80,8 @@ interface MlOutput {
 
   StartedGames: MlGameStartedEvent[];
   ClosedGames: MlGameClosedEvent[];
+  
+  DeltaTime: number;
 }
 
 interface MlInput {
