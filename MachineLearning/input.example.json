@@ -1,17 +1,19 @@
-[
-  {
-    "MovementDirection": {
-      "x": 0.29594098875800734,
-      "y": 0.9764236661541497
-    },
-    "TargetDirection": {
-      "x": -0.13570661122842465,
-      "y": 0.38015368855463505
-    },
-    "IsBurningShotPressed": true,
-    "IsSoulTransferPressed": true,
-    "IsDodgePressed": true,
-    "IsShootPressed": true,
-    "IsReloadPressed": true
-  }
-]
+{
+  "GameInputs": [
+    {
+      "MovementDirection": {
+        "x": 0.29594098875800734,
+        "y": 0.9764236661541497
+      },
+      "TargetDirection": {
+        "x": -0.13570661122842465,
+        "y": 0.38015368855463505
+      },
+      "IsBurningShotPressed": true,
+      "IsSoulTransferPressed": true,
+      "IsDodgePressed": true,
+      "IsShootPressed": true,
+      "IsReloadPressed": true
+    }
+  ]
+}

@@ -60,6 +60,14 @@ interface MlGameInput {
   IsReloadPressed: boolean;
 }
 
+interface MlOutput {
+  GameOutputs: MlGameOutput[];
+}
+
+interface MlInput {
+  GameInputs: MlGameInput[];
+}
+
 // From http://asserttrue.blogspot.com/2011/12/perlin-noise-in-javascript_31.html
 class PerlinNoise {
   public noise(x: number, y: number, z: number): number {
@@ -152,13 +160,14 @@ const run = async (): Promise<void> => {
     crlfDelay: Infinity,
   });
 
-  for await (const inputJson of lineReader) {
+  for await (const mlOutputJson of lineReader) {
     console.log("Received data");
-    console.log(inputJson);
-    const outputs = JSON.parse(inputJson) as MlGameOutput[];
-    const inputs: MlGameInput[] = [];
+    console.log(mlOutputJson);
+    const mlOutput = JSON.parse(mlOutputJson) as MlOutput;
+    const gameOutputs = mlOutput.GameOutputs;
+    const gameInputs: MlGameInput[] = [];
 
-    for (const output of outputs) {
+    for (const output of gameOutputs) {
       const input: MlGameInput = {
         MovementDirection: {
           x: 0,
@@ -175,7 +184,7 @@ const run = async (): Promise<void> => {
         IsReloadPressed: false,
       };
 
-      inputs.push(input);
+      gameInputs.push(input);
 
       let closestEnemy: undefined | MlEnemyData = undefined;
       {
@@ -286,12 +295,16 @@ const run = async (): Promise<void> => {
       }
     }
 
-    const outputJson = JSON.stringify(inputs);
+    const mlInput: MlInput = {
+      GameInputs: gameInputs,
+    }
+    
+    const mlInputJson = JSON.stringify(mlInput);
 
     console.log("Sending");
-    console.log(outputJson);
+    console.log(mlInputJson);
 
-    socket.write(outputJson);
+    socket.write(mlInputJson);
     socket.write("\n");
   }
 };

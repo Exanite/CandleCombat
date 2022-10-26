@@ -130,7 +130,9 @@ namespace Project.Source.MachineLearning
 
                 // Output data and wait for input
                 // Gather outputs
-                var outputs = new List<MlGameOutput>();
+                var mlOutput = new MlOutput();
+                var outputs = mlOutput.GameOutputs;
+                
                 foreach (var mlGameContext in GameContexts)
                 {
                     var game = mlGameContext.GameContext;
@@ -232,7 +234,7 @@ namespace Project.Source.MachineLearning
                 }
 
                 // Serialize and send outputs
-                var outputJson = Serialize(outputs);
+                var outputJson = Serialize(mlOutput);
 
                 if (LogInputOutputs)
                 {
@@ -250,7 +252,8 @@ namespace Project.Source.MachineLearning
                     print(inputJson);
                 }
 
-                var inputs = Deserialize<List<MlGameInput>>(inputJson);
+                var mlInput = Deserialize<MlInput>(inputJson);
+                var inputs = mlInput.GameInputs;
 
                 // Apply inputs
                 if (inputs.Count != outputs.Count)
