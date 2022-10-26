@@ -1,6 +1,12 @@
 import net from "net";
 import readline from "readline";
 
+const settings = {
+  logInputOutput: true,
+  logGameStartedClosedEvents: true,
+  pipeName: "\\\\.\\pipe\\CandleCombatMachineLearning",
+}
+
 interface Vector2 {
   x: number;
   y: number;
@@ -163,7 +169,7 @@ const getMagnitude = (value: Vector2): number => {
 };
 
 const run = async (): Promise<void> => {
-  const socket = net.connect("\\\\.\\pipe\\CandleCombatMachineLearning", () => {
+  const socket = net.connect(settings.pipeName, () => {
     console.log("Connected");
   });
 
@@ -173,19 +179,24 @@ const run = async (): Promise<void> => {
   });
 
   for await (const mlOutputJson of lineReader) {
-    // console.log("Received data");
-    // console.log(mlOutputJson);
+    if (settings.logInputOutput) {
+      console.log("Received data");
+      console.log(mlOutputJson);
+    }
+    
     const mlOutput = JSON.parse(mlOutputJson) as MlOutput;
     const gameOutputs = mlOutput.GameOutputs;
     const gameInputs: MlGameInput[] = [];
 
-    for (const startedGame of mlOutput.StartedGames) {
-      console.log(`Game started: ${startedGame.Id}`);
-    }
+    if (settings.logGameStartedClosedEvents) {
+      for (const startedGame of mlOutput.StartedGames) {
+        console.log(`Game started: ${startedGame.Id}`);
+      }
 
-    for (const closedGame of mlOutput.ClosedGames) {
-      console.log(`Game closed: ${closedGame.Id}`);
-      console.log(`Time alive: ${closedGame.TimeAlive}`);
+      for (const closedGame of mlOutput.ClosedGames) {
+        console.log(`Game closed: ${closedGame.Id}`);
+        console.log(`Time alive: ${closedGame.TimeAlive}`);
+      }
     }
 
     for (const output of gameOutputs) {
@@ -322,8 +333,10 @@ const run = async (): Promise<void> => {
     
     const mlInputJson = JSON.stringify(mlInput);
 
-    // console.log("Sending");
-    // console.log(mlInputJson);
+    if (settings.logInputOutput) {
+      console.log("Sending");
+      console.log(mlInputJson);
+    }
 
     socket.write(mlInputJson);
     socket.write("\n");
