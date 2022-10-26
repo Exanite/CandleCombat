@@ -22,10 +22,13 @@ namespace Project.Source.MachineLearning
     public class MlController : MonoBehaviour
     {
         public string InstanceSceneName = "MachineLearningInstance";
-
         public string PipeName = "CandleCombatMachineLearning";
+        
         public int TargetInstanceCount = 10;
         public bool LogInputOutputs;
+        
+        public bool UseTimestepLimit = true;
+        public float TimestepLimit = 1f / 30f;
 
         public PlayerRespawnBehavior RespawnBehavior = PlayerRespawnBehavior.Immediate;
 
@@ -59,6 +62,11 @@ namespace Project.Source.MachineLearning
 
                 return;
             }
+            
+            if (UseTimestepLimit)
+            {
+                Time.maximumDeltaTime = TimestepLimit;
+            }
 
             server = new NamedPipeServerStream(PipeName, PipeDirection.InOut);
             server.WaitForConnectionAsync(this.GetCancellationTokenOnDestroy());
@@ -70,6 +78,7 @@ namespace Project.Source.MachineLearning
             Debug.Log($"Target instance count: {TargetInstanceCount}");
             Debug.Log($"Log input/outputs: {LogInputOutputs}");
             Debug.Log($"Player respawn behavior: {RespawnBehavior}");
+            Debug.Log($"Timestep limit: {Time.maximumDeltaTime} ({1 / Time.maximumDeltaTime} Hz)");
         }
 
         private void Update()
@@ -397,6 +406,12 @@ namespace Project.Source.MachineLearning
                 if (arg == "--log-input-outputs")
                 {
                     LogInputOutputs = bool.Parse(args[i + 1]);
+                }
+                
+                if (arg == "--timestep-limit")
+                {
+                    UseTimestepLimit = true;
+                    TimestepLimit = float.Parse(args[i + 1]);
                 }
             }
         }
