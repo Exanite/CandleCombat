@@ -86,6 +86,8 @@ interface MlOutput {
 
 interface MlInput {
   GameInputs: MlGameInput[];
+
+  NewGamesToStartCount: number;
 }
 
 // From http://asserttrue.blogspot.com/2011/12/perlin-noise-in-javascript_31.html
@@ -331,6 +333,7 @@ const run = async (): Promise<void> => {
 
     const mlInput: MlInput = {
       GameInputs: gameInputs,
+      NewGamesToStartCount: gameOutputs.length == 0 ? 3 : 0,
     }
     
     const mlInputJson = JSON.stringify(mlInput);

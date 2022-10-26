@@ -120,8 +120,6 @@ namespace Project.Source.MachineLearning
                 if (RespawnBehavior == PlayerRespawnBehavior.Waves && GameContexts.Count == 0)
                 {
                     LoadInstanceScenes();
-
-                    return;
                 }
 
                 Debug.Log($"Running tick: {tickCount}. Delta time: {Time.deltaTime}");
@@ -278,6 +276,11 @@ namespace Project.Source.MachineLearning
 
                     input.CopyTo(mlGameContext.Controller.PlayerInputData, playerPosition);
                 }
+
+                if (mlInput.NewGamesToStartCount > 0)
+                {
+                    LoadInstanceScenes(mlInput.NewGamesToStartCount);
+                }
             }
         }
 
@@ -368,7 +371,12 @@ namespace Project.Source.MachineLearning
 
         private void LoadInstanceScenes()
         {
-            for (var i = 0; i < TargetInstanceCount; i++)
+            LoadInstanceScenes(TargetInstanceCount);
+        }
+        
+        private void LoadInstanceScenes(int count)
+        {
+            for (var i = 0; i < count; i++)
             {
                 LoadInstanceScene();
             }

@@ -15,5 +15,6 @@
       "IsShootPressed": true,
       "IsReloadPressed": true
     }
-  ]
+  ],
+  "NewGamesToStartCount": 8
 }
