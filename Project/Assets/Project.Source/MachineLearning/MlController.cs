@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Project.Source.Gameplay.Characters;
 using Project.Source.Gameplay.Guns;
 using Project.Source.Gameplay.Player;
+using Project.Source.MachineLearning.Data;
 using Project.Source.SceneManagement;
 using Project.Source.Serialization;
 using UniDi;
