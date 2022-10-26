@@ -1,6 +1,12 @@
 import net from "net";
 import readline from "readline";
 
+const settings = {
+  logInputOutput: true,
+  logGameStartedClosedEvents: true,
+  pipeName: "\\\\.\\pipe\\CandleCombatMachineLearning",
+}
+
 interface Vector2 {
   x: number;
   y: number;
@@ -58,6 +64,28 @@ interface MlGameInput {
   IsDodgePressed: boolean;
   IsShootPressed: boolean;
   IsReloadPressed: boolean;
+}
+
+interface MlGameStartedEvent {
+  Id: string;
+}
+
+interface MlGameClosedEvent {
+  Id: string;
+  TimeAlive: number;
+}
+
+interface MlOutput {
+  GameOutputs: MlGameOutput[];
+
+  StartedGames: MlGameStartedEvent[];
+  ClosedGames: MlGameClosedEvent[];
+  
+  DeltaTime: number;
+}
+
+interface MlInput {
+  GameInputs: MlGameInput[];
 }
 
 // From http://asserttrue.blogspot.com/2011/12/perlin-noise-in-javascript_31.html
@@ -143,7 +171,7 @@ const getMagnitude = (value: Vector2): number => {
 };
 
 const run = async (): Promise<void> => {
-  const socket = net.connect("\\\\.\\pipe\\CandleCombatMachineLearning", () => {
+  const socket = net.connect(settings.pipeName, () => {
     console.log("Connected");
   });
 
@@ -152,13 +180,28 @@ const run = async (): Promise<void> => {
     crlfDelay: Infinity,
   });
 
-  for await (const inputJson of lineReader) {
-    console.log("Received data");
-    console.log(inputJson);
-    const outputs = JSON.parse(inputJson) as MlGameOutput[];
-    const inputs: MlGameInput[] = [];
+  for await (const mlOutputJson of lineReader) {
+    if (settings.logInputOutput) {
+      console.log("Received data");
+      console.log(mlOutputJson);
+    }
+    
+    const mlOutput = JSON.parse(mlOutputJson) as MlOutput;
+    const gameOutputs = mlOutput.GameOutputs;
+    const gameInputs: MlGameInput[] = [];
 
-    for (const output of outputs) {
+    if (settings.logGameStartedClosedEvents) {
+      for (const startedGame of mlOutput.StartedGames) {
+        console.log(`Game started: ${startedGame.Id}`);
+      }
+
+      for (const closedGame of mlOutput.ClosedGames) {
+        console.log(`Game closed: ${closedGame.Id}`);
+        console.log(`Time alive: ${closedGame.TimeAlive}`);
+      }
+    }
+
+    for (const output of gameOutputs) {
       const input: MlGameInput = {
         MovementDirection: {
           x: 0,
@@ -175,7 +218,7 @@ const run = async (): Promise<void> => {
         IsReloadPressed: false,
       };
 
-      inputs.push(input);
+      gameInputs.push(input);
 
       let closestEnemy: undefined | MlEnemyData = undefined;
       {
@@ -286,12 +329,18 @@ const run = async (): Promise<void> => {
       }
     }
 
-    const outputJson = JSON.stringify(inputs);
+    const mlInput: MlInput = {
+      GameInputs: gameInputs,
+    }
+    
+    const mlInputJson = JSON.stringify(mlInput);
 
-    console.log("Sending");
-    console.log(outputJson);
+    if (settings.logInputOutput) {
+      console.log("Sending");
+      console.log(mlInputJson);
+    }
 
-    socket.write(outputJson);
+    socket.write(mlInputJson);
     socket.write("\n");
   }
 };

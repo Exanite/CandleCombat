@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
 using Cysharp.Threading.Tasks;
+using Exanite.Core.Utilities;
 using Newtonsoft.Json;
 using Project.Source.Gameplay.Characters;
 using Project.Source.Gameplay.Guns;
 using Project.Source.Gameplay.Player;
+using Project.Source.MachineLearning.Data;
 using Project.Source.SceneManagement;
 using Project.Source.Serialization;
-using Project.Source.UserInterface;
 using UniDi;
 using UnityEditor;
 using UnityEngine;
@@ -22,11 +23,15 @@ namespace Project.Source.MachineLearning
     public class MlController : MonoBehaviour
     {
         public string InstanceSceneName = "MachineLearningInstance";
-
         public string PipeName = "CandleCombatMachineLearning";
+        
         public int TargetInstanceCount = 10;
         public bool LogInputOutputs;
-        public bool RespawnPlayers = true;
+        
+        public bool UseTimestepLimit = true;
+        public float TimestepLimit = 1f / 30f;
+
+        public PlayerRespawnBehavior RespawnBehavior = PlayerRespawnBehavior.Immediate;
 
         [Inject] private SceneLoader sceneLoader;
         [Inject] private Scene scene;
@@ -37,14 +42,31 @@ namespace Project.Source.MachineLearning
         private StreamWriter streamWriter;
 
         private bool hasInitialized;
-
         private long tickCount;
+        
+        private readonly List<MlGameStartedEvent> startedGames = new List<MlGameStartedEvent>();
+        private readonly List<MlGameClosedEvent> closedGames = new List<MlGameClosedEvent>();
 
         public List<MlGameContext> GameContexts { get; } = new List<MlGameContext>();
 
         private void Start()
         {
-            TryReadCommandLineArguments();
+            try
+            {
+                TryReadCommandLineArguments();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Failed to parse CLI arguments: {e}");
+                Application.Quit();
+
+                return;
+            }
+            
+            if (UseTimestepLimit)
+            {
+                Time.maximumDeltaTime = TimestepLimit;
+            }
 
             server = new NamedPipeServerStream(PipeName, PipeDirection.InOut);
             server.WaitForConnectionAsync(this.GetCancellationTokenOnDestroy());
@@ -55,7 +77,8 @@ namespace Project.Source.MachineLearning
             Debug.Log($"Starting named pipe: {PipeName}");
             Debug.Log($"Target instance count: {TargetInstanceCount}");
             Debug.Log($"Log input/outputs: {LogInputOutputs}");
-            Debug.Log($"Should respawn players: {RespawnPlayers}");
+            Debug.Log($"Player respawn behavior: {RespawnBehavior}");
+            Debug.Log($"Timestep limit: {Time.maximumDeltaTime} ({1 / Time.maximumDeltaTime} Hz)");
         }
 
         private void Update()
@@ -65,7 +88,7 @@ namespace Project.Source.MachineLearning
             {
                 return;
             }
-            
+
             if (server.IsConnected && !hasInitialized)
             {
                 Debug.Log("Detected connection");
@@ -74,6 +97,8 @@ namespace Project.Source.MachineLearning
                 // Initialize
                 hasInitialized = true;
                 LoadInstanceScenes();
+
+                return;
             }
 
             if (!server.IsConnected && hasInitialized)
@@ -86,16 +111,33 @@ namespace Project.Source.MachineLearning
 #else
                 Application.Quit();
 #endif
+
+                return;
             }
 
-            if (server.IsConnected && hasInitialized && GameContexts.Count > 0)
+            if (server.IsConnected && hasInitialized)
             {
-                Debug.Log($"Running tick: {tickCount}");
+                if (RespawnBehavior == PlayerRespawnBehavior.Waves && GameContexts.Count == 0)
+                {
+                    LoadInstanceScenes();
+
+                    return;
+                }
+
+                Debug.Log($"Running tick: {tickCount}. Delta time: {Time.deltaTime}");
                 tickCount++;
 
                 // Output data and wait for input
                 // Gather outputs
-                var outputs = new List<MlGameOutput>();
+                var mlOutput = new MlOutput();
+                mlOutput.StartedGames.AddRange(startedGames);
+                mlOutput.ClosedGames.AddRange(closedGames);
+                mlOutput.DeltaTime = Time.deltaTime;
+                
+                startedGames.Clear();
+                closedGames.Clear();
+
+                var outputs = mlOutput.GameOutputs;
                 foreach (var mlGameContext in GameContexts)
                 {
                     var game = mlGameContext.GameContext;
@@ -197,7 +239,7 @@ namespace Project.Source.MachineLearning
                 }
 
                 // Serialize and send outputs
-                var outputJson = Serialize(outputs);
+                var outputJson = Serialize(mlOutput);
 
                 if (LogInputOutputs)
                 {
@@ -215,7 +257,8 @@ namespace Project.Source.MachineLearning
                     print(inputJson);
                 }
 
-                var inputs = Deserialize<List<MlGameInput>>(inputJson);
+                var mlInput = Deserialize<MlInput>(inputJson);
+                var inputs = mlInput.GameInputs;
 
                 // Apply inputs
                 if (inputs.Count != outputs.Count)
@@ -262,7 +305,7 @@ namespace Project.Source.MachineLearning
 
         public void RegisterGameContext(GameContext gameContext)
         {
-            Debug.Log("Registering GameContext");
+            Debug.Log($"Registering GameContext: {gameContext.Id}");
 
             var index = GameContexts.FindIndex(x => x.GameContext == gameContext);
             if (index == -1)
@@ -272,17 +315,28 @@ namespace Project.Source.MachineLearning
                     GameContext = gameContext,
                     Controller = gameContext.GetComponent<ExternalPlayerController>(),
                 });
+                
+                startedGames.Add(new MlGameStartedEvent()
+                {
+                    Id = gameContext.Id,
+                });
             }
         }
 
         public void UnregisterGameContext(GameContext gameContext)
         {
-            Debug.Log("Unregistering GameContext");
+            Debug.Log($"Unregistering GameContext: {gameContext.Id}");
 
             var index = GameContexts.FindIndex(x => x.GameContext == gameContext);
             if (index != -1)
             {
                 GameContexts.RemoveAt(index);
+                
+                closedGames.Add(new MlGameClosedEvent()
+                {
+                    Id = gameContext.Id,
+                    TimeAlive = gameContext.TimeAlive,
+                });
             }
         }
 
@@ -290,9 +344,25 @@ namespace Project.Source.MachineLearning
         {
             sceneLoader.UnloadScene(scene).Forget();
 
-            if (RespawnPlayers)
+            switch (RespawnBehavior)
             {
-                LoadInstanceScene();
+                case PlayerRespawnBehavior.Immediate:
+                {
+                    LoadInstanceScene();
+
+                    break;
+                }
+                case PlayerRespawnBehavior.Waves:
+                {
+                    // Handled by Update
+
+                    break;
+                }
+                case PlayerRespawnBehavior.None:
+                {
+                    break;
+                }
+                default: throw ExceptionUtility.NotSupportedEnumValue(RespawnBehavior);
             }
         }
 
@@ -323,11 +393,10 @@ namespace Project.Source.MachineLearning
 
         private T Deserialize<T>(string json)
         {
-            using (var stringReader = new StringReader(json))
-            using (var jsonReader = new JsonTextReader(stringReader))
-            {
-                return serializer.Deserialize<T>(jsonReader);
-            }
+            using var stringReader = new StringReader(json);
+            using var jsonReader = new JsonTextReader(stringReader);
+
+            return serializer.Deserialize<T>(jsonReader);
         }
 
         private void TryReadCommandLineArguments()
@@ -338,6 +407,7 @@ namespace Project.Source.MachineLearning
             for (var i = 0; i < args.Length; i++)
             {
                 var arg = args[i];
+
                 if (arg == "--instance-count")
                 {
                     TargetInstanceCount = int.Parse(args[i + 1]);
@@ -348,14 +418,20 @@ namespace Project.Source.MachineLearning
                     PipeName = args[i + 1];
                 }
 
-                if (arg == "--respawn-players")
+                if (arg == "--respawn-behavior")
                 {
-                    RespawnPlayers = bool.Parse(args[i + 1]);
+                    RespawnBehavior = Enum.Parse<PlayerRespawnBehavior>(args[i + 1], true);
                 }
 
                 if (arg == "--log-input-outputs")
                 {
                     LogInputOutputs = bool.Parse(args[i + 1]);
+                }
+                
+                if (arg == "--timestep-limit")
+                {
+                    UseTimestepLimit = true;
+                    TimestepLimit = float.Parse(args[i + 1]);
                 }
             }
         }
