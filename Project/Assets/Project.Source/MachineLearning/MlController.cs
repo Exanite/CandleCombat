@@ -241,7 +241,7 @@ namespace Project.Source.MachineLearning
 
                 if (LogInputOutputs)
                 {
-                    print(outputJson);
+                    Debug.Log(outputJson);
                 }
 
                 streamWriter.WriteLine(outputJson);
@@ -252,7 +252,7 @@ namespace Project.Source.MachineLearning
 
                 if (LogInputOutputs)
                 {
-                    print(inputJson);
+                    Debug.Log(inputJson);
                 }
 
                 var mlInput = Deserialize<MlInput>(inputJson);
