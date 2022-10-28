@@ -333,7 +333,7 @@ const run = async (): Promise<void> => {
 
     const mlInput: MlInput = {
       GameInputs: gameInputs,
-      NewGamesToStartCount: gameOutputs.length == 0 ? 3 : 0,
+      NewGamesToStartCount: 0,
     }
     
     const mlInputJson = JSON.stringify(mlInput);
