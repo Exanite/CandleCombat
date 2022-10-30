@@ -5,6 +5,7 @@ const settings = {
   logInputOutput: true,
   logGameStartedClosedEvents: true,
   pipeName: "\\\\.\\pipe\\CandleCombatMachineLearning",
+  shouldSpin: false,
 }
 
 interface Vector2 {
@@ -299,7 +300,7 @@ const run = async (): Promise<void> => {
         if (getMagnitude(closestEnemy.OffsetFromPlayer) < 5 && (output.Player.CurrentHealth / output.Player.MaxHealth) > 0.9) {
           input.IsBurningShotPressed = Math.random() > 0.5;
         }
-      } else {
+      } else if (settings.shouldSpin) {
         input.TargetDirection = {
           x: Math.cos(output.Player.TimeAlive * 2 * Math.PI * 5),
           y: Math.sin(output.Player.TimeAlive * 2 * Math.PI * 5),
