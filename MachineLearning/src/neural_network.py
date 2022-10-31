@@ -2,15 +2,17 @@ import tensorflow as tf
 import numpy as np
 import random
 
+
 def is_number(val):
     if type(val) == type(0.0) \
-        or type(val) == type(0) \
-        or type(val) == np.float32 \
-        or type(val) == np.float64 \
-        or type(val) == np.int32 \
-        or type(val) == np.int64:
+            or type(val) == type(0) \
+            or type(val) == np.float32 \
+            or type(val) == np.float64 \
+            or type(val) == np.int32 \
+            or type(val) == np.int64:
         return True
     return False
+
 
 def print_arr_shape(arr, name="test", i=0):
     while not is_number(arr):
@@ -20,27 +22,45 @@ def print_arr_shape(arr, name="test", i=0):
             print_arr_shape(arr[j], name=f"{name}[{j}]", i=(i+1))
         break
 
+
 def get_weights_mutated(first, second, mutation_rate):
 
     if is_number(first) and is_number(second):
         # randomly switch biases between the two
-        pct = random.random()
-        if pct >= 0.66:
-            return first
-        else:
+        rand_num = random.random()
+        if rand_num < mutation_rate:
+            pct = random.random()
+            if pct < 0.5:
+                return first
             return second
+        else:
+            pct = random.random()
+            if pct < 0.5:
+                return np.random.normal(first, 5.0, 1)[0]
+            return np.random.normal(second, 5.0, 1)[0]
 
-    out = []
-    # print("\t\t\tlen(first) = %d, len(second) = %d" % (len(first), len(second)))
-    for i in range(len(first)):
-        # get the random average of the weights from the two parents
-        pct = random.random() # 0 - 1 uniform distribution
-        weight_first = (first[i] * pct)
-        weight_second = (second[i] * (1 - pct))
-        weight = weight_first + weight_second
-        mutation = np.random.normal(weight, mutation_rate, weight.shape)
-        out.append(mutation)
-    return out
+    if len(first) != len(second):
+        raise Exception("Arrays are not the same length")
+
+    rand_num = random.random()
+    if rand_num < mutation_rate:
+        pct = random.random()
+        if pct <= 0.5:
+            return first
+        return second
+    else:
+        out = []
+        # print("\t\t\tlen(first) = %d, len(second) = %d" % (len(first), len(second)))
+        for i in range(len(first)):
+            # get the random average of the weights from the two parents
+            pct = random.random()  # 0 - 1 uniform distribution
+            weight = first
+            if pct > 0.5:
+                weight = second
+            mutation = np.random.normal(weight, 5.0, weight.shape)[0]
+            out.append(mutation)
+        return out
+
 
 class NeuralNetwork:
     def __init__(self, input_size, hidden_layers, output_size, learning_rate, init_std=5.0):
@@ -54,25 +74,26 @@ class NeuralNetwork:
 
     def _build_model(self):
         initializer = tf.keras.initializers.RandomNormal(stddev=self.init_std)
-        bias_initializer = tf.keras.initializers.RandomNormal(stddev=0.5)
+        bias_initializer = tf.keras.initializers.RandomNormal(stddev=2.0)
 
         self.model = tf.keras.Sequential()
         # input layer
-        self.model.add(tf.keras.layers.Dense(self.input_size, input_dim=self.input_size, activation='sigmoid',
-                        kernel_initializer=initializer,
-                        bias_initializer=bias_initializer))
+        self.model.add(tf.keras.layers.Dense(self.input_size, input_dim=self.input_size, activation='relu',
+                                             kernel_initializer=initializer,
+                                             bias_initializer=bias_initializer))
         # hidden layers
         for layer in self.hidden_layers:
             self.model.add(tf.keras.layers.Dense(layer, activation='relu',
-                            kernel_initializer=initializer,
-                            bias_initializer=bias_initializer))
+                                                 kernel_initializer=initializer,
+                                                 bias_initializer=bias_initializer))
 
         # output layer
         self.model.add(tf.keras.layers.Dense(self.output_size, activation='tanh',
-            kernel_initializer=initializer,
-            bias_initializer=bias_initializer))
+                                             kernel_initializer=initializer,
+                                             bias_initializer=bias_initializer))
 
-        self.model.compile(loss='mse', optimizer=tf.keras.optimizers.Adam(lr=self.learning_rate))
+        self.model.compile(
+            loss='mse', optimizer=tf.keras.optimizers.Adam(lr=self.learning_rate))
 
     def predict(self, inputs):
         return self.model.predict(inputs)
@@ -93,13 +114,16 @@ class NeuralNetwork:
             out = []
             # for each node
             for i in range(len(node)):
-                new_weights = get_weights_mutated(weights_best[k][i], weights_second_best[k][i], mutation_rate)
+                new_weights = get_weights_mutated(
+                    weights_best[k][i], weights_second_best[k][i], 0.3)
                 out.append(new_weights)
             output_weights.append(out)
         # print_arr_shape(output_weights, name='output_weights')
-        output = NeuralNetwork(self.input_size, self.hidden_layers, self.output_size, self.learning_rate)
+        output = NeuralNetwork(
+            self.input_size, self.hidden_layers, self.output_size, self.learning_rate)
         output.model.set_weights([np.array(a) for a in output_weights])
-        output.model.compile(loss='mse', optimizer=tf.keras.optimizers.Adam(lr=self.learning_rate))
+        output.model.compile(
+            loss='mse', optimizer=tf.keras.optimizers.Adam(lr=self.learning_rate))
         return output
 
     def save(self, path):

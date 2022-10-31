@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 from train import get_prediction
 
-model_id = "232259b"
+model_id = "edb7bee"
 pipe_name = "ViewPipe1"
 num_instances = 1
 exe_path = os.path.join("Builds", "UI", "Project.exe")

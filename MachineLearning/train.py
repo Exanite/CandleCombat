@@ -8,16 +8,16 @@ import asyncio
 import pandas as pd
 import numpy as np
 import src.neural_network as nn
-import pygad
 
-pipe_name = "Pipe6"
-num_instances = 20
-respawn_players = 'True'
+pipe_name = "Pipe9"
+num_instances = 8
+respawn_behaviour = 'waves'
 exe_path = os.path.join("Builds", "Server", "Project.exe")
 
 
 def get_distances_from_player(player, enemy):
     return math.sqrt((player["Position"]["x"] - enemy["OffsetFromPlayer"]["x"])**2 + (player["Position"]["y"] - enemy["OffsetFromPlayer"]["y"])**2)
+
 
 async def get_prediction(model, player):
     in_arr, time_alive = get_row_from_obj(player)
@@ -26,6 +26,7 @@ async def get_prediction(model, player):
 
 models = {}
 
+
 async def get_predictions(players):
     predictions = []
     for player in players:
@@ -33,13 +34,14 @@ async def get_predictions(players):
     predictions = await asyncio.gather(*predictions)
     return predictions
 
+
 def get_row_from_obj(obj):
     player = obj["Player"]
     reward = player["TimeAlive"]
     input_obj = {}
     input_obj["health"] = player["CurrentHealth"] / player["MaxHealth"]
-    input_obj["position_x"] = player["Position"]["x"]
-    input_obj["position_y"] = player["Position"]["y"]
+    # input_obj["position_x"] = player["Position"]["x"]
+    # input_obj["position_y"] = player["Position"]["y"]
     input_obj["velocity_x"] = player["Velocity"]["x"]
     input_obj["velocity_y"] = player["Velocity"]["y"]
     input_obj["speed"] = player["MovementSpeed"]
@@ -81,8 +83,9 @@ def get_row_from_obj(obj):
 def start_pipe():
     print("starting game")
     os.system(
-        f"{exe_path} --instance-count {num_instances} --pipe-name {pipe_name} --respawn-players {respawn_players}")
+        f"{exe_path} --instance-count {num_instances} --pipe-name {pipe_name} --respawn-behavior {respawn_behaviour}")
     print("finished")
+
 
 def main():
 
@@ -105,6 +108,7 @@ def main():
     }
 
     count = 0
+    gen_count = 0
     times_run = 100000
     max_results = -1
     count_last_max = 0
@@ -114,16 +118,18 @@ def main():
 
     while count < times_run:
         line = f.readline()
-        player_arr = json.loads(line)
+        player_data = json.loads(line)
+        player_arr = player_data["GameOutputs"]
         if len(player_arr) == 0:
-            break
+            gen_count += 1
+            print(f"\n\n--- New Generation {gen_count} ---\n\n")
 
         for i in range(len(player_arr)):
             if not player_arr[i]["Id"] in models:
                 player = player_arr[i]
                 if len(models) < num_instances:
                     print(f"Initializing model for player {player['Id']}")
-                    models[player['Id']] = nn.NeuralNetwork(24, [64, 16], 9, 1.0, init_std=5.0)
+                    models[player['Id']] = nn.NeuralNetwork(22, [256, 64], 9, 1.0, init_std=5.0)
                     models[player['Id']]._build_model()
                     results[player['Id']] = 0.0
                 else:
@@ -139,7 +145,8 @@ def main():
                     models[max_id].save(os.path.join("models", file_name))
 
                     second_best = models[second_max_id]
-                    print(f"Generating new model for player {player['Id']} from players: \n\tbest={max_id} ({max_results})\n\tsecond_best={second_max_id} ({second_max_results}) \nSaved Best: {file_name}\n{'-'*16}")
+                    print(
+                        f"Generating new model for player {player['Id']} from players: \n\tbest={max_id} ({max_results})\n\tsecond_best={second_max_id} ({second_max_results}) \nSaved Best: {file_name}\n{'-'*16}")
                     models[player['Id']] = models[max_id].new_generation(second_best=second_best)
                     results[player['Id']] = 0.0
                     history.append(results[max_id])
@@ -168,10 +175,15 @@ def main():
         tmp_max_results = max(timed_runs)
         if tmp_max_results > max_results:
             max_results = tmp_max_results
-            print(f"New max results: {max_results} took {count - count_last_max} runs")
+            print(
+                f"New max results: {max_results} took {count - count_last_max} runs")
             count_last_max = count
 
-        out = json.dumps(output).replace(" ", "") + "\n"
+        out = {}
+        out["GameInputs"] = output
+        out["NewGamesToStart"] = 0
+
+        out = json.dumps(out).replace(" ", "") + "\n"
         # print(f"--- OUTPUT {count} ---")
         # print(out)
         f.write(out)
