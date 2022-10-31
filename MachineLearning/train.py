@@ -9,8 +9,8 @@ import pandas as pd
 import numpy as np
 import src.neural_network as nn
 
-pipe_name = "Pipe9"
-num_instances = 8
+pipe_name = "Pipe16"
+num_instances = 16
 respawn_behaviour = 'waves'
 exe_path = os.path.join("Builds", "Server", "Project.exe")
 
@@ -45,12 +45,12 @@ def get_row_from_obj(obj):
     input_obj["velocity_x"] = player["Velocity"]["x"]
     input_obj["velocity_y"] = player["Velocity"]["y"]
     input_obj["speed"] = player["MovementSpeed"]
-    input_obj["has_burning_shot"] = player["BurningShotCooldown"] == 0
-    input_obj["has_soul_transfer"] = player["SoulTransferCooldown"] == 0
-    input_obj["has_dodge"] = player["DodgeCooldown"] == 0
-    input_obj["has_ammo"] = player["CurrentAmmo"] > 0
+    input_obj["has_burning_shot"] = float(player["BurningShotCooldown"] == 0)
+    input_obj["has_soul_transfer"] = float(player["SoulTransferCooldown"] == 0)
+    input_obj["has_dodge"] = float(player["DodgeCooldown"] == 0)
+    input_obj["has_ammo"] = float(player["CurrentAmmo"] > 0)
     input_obj["ammo"] = player["CurrentAmmo"] / player["MaxAmmo"]
-    input_obj["is_reloading"] = player["IsReloading"]
+    input_obj["is_reloading"] = float(player["IsReloading"])
     for i in range(len(player['NavigationRaycasts'])):
         cast = player['NavigationRaycasts'][i]
         input_obj[f"cast_{i}"] = cast / player['NavigationRaycastMaxDistance']
@@ -73,7 +73,7 @@ def get_row_from_obj(obj):
                     nearest_enemy_distance = enemy_dist
 
         if nearest_enemy != {}:
-            input_obj["enemy_distance"] = -1
+            input_obj["enemy_distance"] = 8.0
             input_obj["enemy_offset_x"] = nearest_enemy["OffsetFromPlayer"]["x"]
             input_obj["enemy_offset_y"] = nearest_enemy["OffsetFromPlayer"]["y"]
 
@@ -129,7 +129,8 @@ def main():
                 player = player_arr[i]
                 if len(models) < num_instances:
                     print(f"Initializing model for player {player['Id']}")
-                    models[player['Id']] = nn.NeuralNetwork(22, [256, 64], 9, 1.0, init_std=5.0)
+                    models[player['Id']] = nn.NeuralNetwork(
+                        22, [256], 9, 0.3, init_std=5.0)
                     models[player['Id']]._build_model()
                     results[player['Id']] = 0.0
                 else:
@@ -144,10 +145,15 @@ def main():
                     file_name = f"model_{max_id[0:7]}.h5"
                     models[max_id].save(os.path.join("models", file_name))
 
+                    file_name = f"model_{second_max_id[0:7]}.h5"
+                    models[second_max_id].save(
+                        os.path.join("models", file_name))
+
                     second_best = models[second_max_id]
                     print(
                         f"Generating new model for player {player['Id']} from players: \n\tbest={max_id} ({max_results})\n\tsecond_best={second_max_id} ({second_max_results}) \nSaved Best: {file_name}\n{'-'*16}")
-                    models[player['Id']] = models[max_id].new_generation(second_best=second_best)
+                    models[player['Id']] = models[max_id].new_generation(
+                        second_best=second_best)
                     results[player['Id']] = 0.0
                     history.append(results[max_id])
             results[player_arr[i]['Id']] = player_arr[i]["Player"]["TimeAlive"]
