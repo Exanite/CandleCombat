@@ -58,7 +58,7 @@ namespace Project.Source.MachineLearning
             catch (Exception e)
             {
                 Debug.LogError($"Failed to parse CLI arguments: {e}");
-                Application.Quit();
+                Shutdown();
 
                 return;
             }
@@ -67,9 +67,19 @@ namespace Project.Source.MachineLearning
             {
                 Time.maximumDeltaTime = TimestepLimit;
             }
+            
+            try
+            {
+                server = new NamedPipeServerStream(PipeName, PipeDirection.InOut);
+                server.WaitForConnectionAsync(this.GetCancellationTokenOnDestroy());
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Failed to create pipe: {e}");
+                Shutdown();
 
-            server = new NamedPipeServerStream(PipeName, PipeDirection.InOut);
-            server.WaitForConnectionAsync(this.GetCancellationTokenOnDestroy());
+                return;
+            }
 
             streamReader = new StreamReader(server);
             streamWriter = new StreamWriter(server);
@@ -104,13 +114,8 @@ namespace Project.Source.MachineLearning
             if (!server.IsConnected && hasInitialized)
             {
                 Debug.Log("Connection lost... exiting");
-
-                // Shutdown
-#if UNITY_EDITOR
-                EditorApplication.isPlaying = false;
-#else
-                Application.Quit();
-#endif
+                
+                Shutdown();
 
                 return;
             }
@@ -442,6 +447,15 @@ namespace Project.Source.MachineLearning
                     TimestepLimit = float.Parse(args[i + 1]);
                 }
             }
+        }
+
+        private void Shutdown()
+        {
+#if UNITY_EDITOR
+            EditorApplication.isPlaying = false;
+#else
+                Application.Quit();
+#endif
         }
     }
 }
