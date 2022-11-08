@@ -34,4 +34,4 @@ Michael Tomadakis - Technical Art, VFX, Shader
 
 ## Third Party Assets
 
-All music and sounds effects were not created by us.
+Everything except sound and music were created by us.
